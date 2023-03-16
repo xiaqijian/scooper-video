@@ -1,0 +1,77 @@
+.video-main{
+    top: 84px;
+    width: 972px;
+    height: 457px;
+    left: 473px;
+    bottom: 76px;
+    li{
+        .operate-btn{
+            display: none;
+        }
+        &:hover{
+            border: none;
+        }
+        
+    }
+    li.sel{
+        border: none;
+    }
+    .btn-hungup{
+        width: 5rem;
+        height: 5rem;
+        position: absolute;
+        cursor: pointer;
+        bottom: 20px;
+        left: 450px;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        background: url(../../image/audio/hj.png) no-repeat @serious center;
+    }
+    .video-info{
+        position: absolute;
+        top: 15px;
+        margin: 0 auto;
+        left: 366px;
+        color: white;
+        width: 240px;
+        text-align: center;
+        font-size: 20px;
+        .talk-long{
+            display: block;
+        }
+    }
+    .video-zxh{
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        top: 15px;
+        right: 10px;
+        cursor: pointer;
+        display: inline-block;
+        background: url(../../image/audio/zxh.png) no-repeat;
+    }
+}
+// 全屏
+@media (min-height: 1020px) {
+    .main-wrap{
+        .mem-list-wrap{
+            .mem-list{
+                .mem-item{
+                    height: calc((100% - 2rem) / 4);
+                }
+                
+            }
+        }
+    }
+    .dail-modal{
+        top: 51vh !important;
+    }
+    .audio-modal{
+        top: 25vh !important;
+    }
+    .video-main{
+        top: 101px;
+        height: 547px;
+    }
+}

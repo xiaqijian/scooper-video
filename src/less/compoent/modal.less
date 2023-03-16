@@ -1,0 +1,1481 @@
+
+// 人员详情弹框
+.mem-detail-modal{
+    .ant-modal-body{
+        padding: 0;
+    }
+    .ant-modal-close-x{
+        width: 2.25rem;
+        height: 2.25rem;
+        line-height: 2.25rem;
+    }
+    .mem-detail-wrap{
+        .mem-info{
+            height: 200px;
+            padding: 27px 20px 0px 22px;
+            background: @mem-card-bg;
+            .mem-basic{
+                float: left;
+                margin-bottom: 22px;
+                .mem-name{
+                    font-size: 1.625rem;
+                    color: @normal-font;
+                    font-weight: bold;
+                    line-height: 45px;
+                    max-width: 255px;
+                }
+                .mem-dept{
+                    color: @normal-font;
+                    font-size: 1rem;
+                    max-width: 255px;
+                }
+            }
+            .ant-avatar{
+                float: right;
+            }
+            .mem-btns{
+                clear: both;
+                .mem-normal{
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    margin-right: 1.25rem;
+                    cursor: pointer;
+                    display: inline-block;
+                    position: relative;
+                    span{
+                        color: @main-color;
+                        position: absolute;
+                        top: 40px;
+                        left: 5px;
+                    }
+                }
+                .btn-phone{
+                    background: url("@{imgSrc}/audio/btn_phone.png") no-repeat;
+                    background-size: cover;
+                }
+                .btn-phone-dis{
+                    span{
+                        color: @unimport-font;
+                    }
+                    background: url("@{imgSrc}/audio/btn_phone_dis.png") no-repeat;
+                    background-size: cover;
+
+                }
+                .btn-telephone{
+                    background: url("@{imgSrc}/audio/btn_telephone.png") no-repeat;
+                    background-size: cover;
+                }
+                .btn-telephone-dis{
+                    span{
+                        color: @unimport-font;
+                    }
+                    background: url("@{imgSrc}/audio/btn_telephone_dis.png") no-repeat;
+                    background-size: cover;
+                }
+                .btn-msg{
+                    background: url("@{imgSrc}/audio/btn_message.png") no-repeat;
+                    background-size: cover;
+                }
+                .btn-msg-dis{
+                    background: url("@{imgSrc}/audio/btn_message_dis.png") no-repeat;
+                    background-size: cover;
+                    span{
+                        color: @unimport-font;
+                    }
+                }
+                .btn-fax{
+                    background: url("@{imgSrc}/audio/btn_fax.png") no-repeat;
+                    background-size: cover;
+                }
+                .btn-fax-dis{
+                    background: url("@{imgSrc}/audio/btn_fax_dis.png") no-repeat;
+                    background-size: cover;
+                    span{
+                        color: @unimport-font;
+                    }
+                }
+            }
+        }
+        .mem-num{
+            padding: 0 20px;
+            max-height: 252px;
+            overflow:auto;
+            li{
+                height: 3.9375rem;
+                line-height: 3.9375rem;
+                border-bottom: 1px solid @mem-divider;
+                &:last-child{
+                    border-bottom: none;
+                }
+            }
+            .mem-type{
+                width: 5rem;
+                font-size: 1rem;
+                margin-right: 0.9375rem;
+                display: inline-block;
+                float: left;
+            }
+            .mem-number{
+                max-width: 6.5625rem;
+                font-size: 1rem;
+                overflow: hidden;
+                height: 3.9375rem;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                display: inline-block;
+                margin-right: 0.3125rem;
+                float: left;
+                cursor: pointer;
+                color: @main-color;
+            }
+            .mem-main{
+                float: left;
+                background: @mem-main-bg;
+                color: @second-color;
+                font-size: 0.75rem;
+                height: 24px;
+                line-height: 20px;
+                margin-top: 20px;
+                padding: 2px 5px;
+                font-size: 0.75rem;
+            }
+            .btn-video{
+                float: right;
+                display: inline-block;
+                width: 1.625rem;
+                height: 0.875rem;
+                margin-top: 1.5625rem;
+                cursor: pointer;
+                background: url("@{imgSrc}/audio/btn_video.png") no-repeat;
+                background-size: cover;
+            }
+        }
+        .gray-unimp{
+            text-align: center;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            .ant-divider, .ant-divider-horizontal{
+                display: inline-block;
+                width: 30px !important;
+                min-width: 30px;
+            }
+            .all-gray{
+                margin: 7px;
+                color: @unimport-font;
+            }
+        }
+    }
+}
+// 语音呼叫弹框
+.audio-modal{
+    top: 20vh;
+    .ant-modal-content{
+        background: url("@{imgSrc}/audio/call-bg.png") no-repeat;
+        background-size: cover;
+        box-shadow: none;
+        .ant-modal-body{
+            height: 33.75rem;
+        }
+        .ant-modal-close-x{
+            color: #fff;
+            margin: 10px;
+        }
+    }
+    .call-audio-wrap,
+    .call-video-wrap{
+        margin-left: 32%;
+        margin-top: 17%;
+        color: #fff;
+        .audio-name,
+        .video-name{
+            font-size: 2.25rem;
+            font-weight: 400;
+            line-height: 2.8125rem;
+            margin-right: 0.625rem;
+            display: inline-block;
+            vertical-align: top;
+            max-width: 270px;
+        }
+        .audio-dept,
+        .video-dept{
+            font-size: 1.25rem;
+            font-weight: 400;
+            line-height: 2.8125rem;
+            display: inline-block;
+            vertical-align: top;
+            max-width: 170px;
+        }
+        p{
+            color:@main-color ;
+            font-size: 1.375rem;
+            margin-top: 10px;
+            margin-left: 47px;
+        }
+        .video-p{
+            margin-left: 65px;
+        }
+        .icon-callaudio{
+            margin-right: 1.25rem;
+            width:1.875rem ;
+            height: 2.875rem;
+            display: inline-block;
+            background: url("@{imgSrc}/audio/icon_callAudio.png") no-repeat;
+        }
+        .icon-callvideo{
+            margin-right: 1.25rem;
+            width:2.875rem ;
+            height: 1.625rem;
+            margin-top: 0.75rem;
+            display: inline-block;
+            background:url("@{imgSrc}/audio/icon_callVideo.png") no-repeat;
+        }
+    }
+    .call-btns{
+        position: absolute;
+        bottom: 2.8165rem;
+        left: 23%;
+        .btns{
+            width: 5rem;
+            height: 5rem;
+            border: none;
+            border-radius: 50%;
+        }
+        .icon-hungup{
+            margin-right: 9.375rem;
+            background: url("@{imgSrc}/audio/hj.png") no-repeat @serious center;
+        }
+        .icon-answer{
+            margin-right: 9.375rem;
+            background: url("@{imgSrc}/audio/btn_jt.png") no-repeat @success center;
+        }
+        .icon-transfer{
+            background: url("@{imgSrc}/audio/btn_transfer.png") no-repeat @transfer center;
+        }
+    }
+    .none-transfer{
+        .icon-hungup{
+            margin-right: 12.375rem;
+            margin-left: 2rem;
+        }
+    }
+}
+.shand-modal{
+    .call-audio-wrap{
+        p{
+            margin-left: 0;
+        }
+    }
+    .call-btns{
+        bottom: 4.2rem;
+        left: 29%;
+        .icon-hungup{
+            margin-right: 11rem !important;
+        }
+    }
+}
+// 呼入转接面板
+.transfer-wrap{
+    height: 100%;
+    .icon-goback{
+        width: 10px;
+        height: 29px;
+        margin-left: 8px;
+        cursor: pointer;
+        display: inline-block;
+        background: url("@{imgSrc}/audio/icon_return.png") no-repeat center;
+    }
+    .transfer-sel-info{
+        width: 63%;
+        margin: 0 auto;
+        padding-top: 15%;
+        color: #fff;
+        .transfer-title{
+            font-size: 1.375rem;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .title-name{
+                font-size: 1.5rem;
+            }
+        }
+        .transfer-status{
+            font-size: 1.125rem;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .transfer-success{
+            color: @main-color;
+        }
+        .transfer-ok{
+            color: @success;
+        }
+        .transfer-fail{
+            color: @serious;
+        }
+        .cancel-transfer-btn{
+            position: absolute;
+            margin: 0 auto;
+            bottom: 50px;
+            font-size: 20px;
+            left: 34%;
+            width: 21.43rem;
+            height: 3.1875rem;
+            border-radius:26px;
+            &.btn-normal{
+                background: @main-color;
+                color: @white-color;  
+                border: none;
+            }
+            &.btn-dis{
+                background:@white-color;
+                color: #000; 
+                border: none;
+                opacity: 0.1;
+                &:hover{
+                    border: 1px solid @module-divider;
+                }
+            }
+        }
+    }
+    .transfer-info{
+        width: 63%;
+        margin: 0 auto;
+        padding-top: 4%;
+        color: #fff;
+        .transfer-title{
+            font-size: 1.125rem;
+            font-weight: 400;
+            .title-name{
+                font-size: 1.5rem;
+            }
+        }
+        .recent-title{
+            font-size: 1.125rem;
+            margin-bottom: -0.5rem;
+        }
+        .recent-name{
+            font-size: 1.125rem;
+            width: calc((100% - 3.75rem) / 3);
+            height: 2.875rem;
+            margin-top: 1.25rem;
+            background:rgba(255,255,255,0.2);
+            color: #fff;
+            text-align: center;
+            line-height: 2.875rem;
+            display: inline-block;
+            margin-right: 1.25rem;
+            border-radius:4px;
+            cursor: pointer;
+        }
+        // 搜索 + 面板
+        .transfer-search{
+            width: 97%;
+            margin: 1.25rem 0 2.25rem 0;
+            position: relative;
+            .ant-input-affix-wrapper .ant-input-prefix{
+                left: 21px;
+            }
+            .ant-input{
+                height: 46px;
+                border-radius: 40px;
+                padding-left: 55px;
+                font-size: 1.125rem;
+            }
+            .icon-transfer-search{
+                background: url("@{imgSrc}/audio/icon-transfer-search.png") no-repeat;
+                display: inline-block;
+                width: 22px;
+                height: 22px;
+            }
+            
+            .result-panel{
+                position: absolute;
+                background: @white-color;
+                color: @second-font;
+                top: 54px;
+                width: 100%;
+                height: 343px;
+                border-radius: 4px;
+                font-size: 1.125rem;
+                .ant-tabs-bar{
+                    margin: 0;
+                }
+                .ant-tabs-nav-container{
+                    font-size: 1.125rem;
+                }
+                .ant-tabs-nav-wrap{
+                    padding-left: 15px;
+                }
+                .group-list,.mem-list{
+                    float: left;
+                    height: 292px;
+                    overflow-y: auto;
+                    border-right: 1px solid @module-divider;
+                    width: 50%;
+                    font-size: 1.125rem;
+                    li{
+                        padding-left: 1.875rem;
+                        height: 45px;
+                        line-height: 45px;
+                        color: @normal-font;
+                        cursor: pointer;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        &:hover{
+                            background-color: @list-bg-hover;
+                            color: @main-color;
+                        }
+                    }
+                    .onsel{
+                        background-color: @list-bg-hover;
+                        color: @main-color;
+                    }
+                }
+                .mem-list{
+                    float: right;
+                }
+                // 通讯录
+                .core-list{
+                    .ant-tree li span.ant-tree-switcher{
+                        line-height: 45px;
+                    }
+                    .ant-tree{
+                        font-size: 1.125rem;
+                        color: @normal-font;
+                        li {
+                            .ant-tree-node-content-wrapper{
+                                height: 45px;
+                                line-height: 45px;
+                                width: calc(100% - 24px);
+                                overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                &:hover,&:active{
+                                    background-color: @list-bg-hover;
+                                    color: @main-color;
+                                    width: calc(100% - 24px);
+                                    height: 45px;
+                                    line-height: 45px;
+                                }
+                            }
+                            .ant-tree-node-content-wrapper.ant-tree-node-selected{
+                                width: calc(100% - 24px);
+                                background-color: @list-bg-hover;
+                                color: @main-color;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                            }
+                        }
+                    }
+                    float: left;
+                    height: 292px;
+                    overflow-y: auto;
+                    border-right: 1px solid #D9D9D9;
+                    width: 50%;
+                    font-size: 1.125rem;
+                    padding-left: 1.875rem;
+                }
+               
+            }
+            .search-result-panel{
+                position: absolute;
+                background: @white-color;
+                color: @second-font;
+                top: 54px;
+                width: 100%;
+                height: 343px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                border-radius: 4px;
+                font-size: 1.125rem;
+                // 搜索结果
+                .search-result{
+                    padding: 10px 0 0 30px;
+                    border-bottom: 1px solid @ele-divider;
+                    &:hover{
+                        background: @list-bg-hover;
+                        color: @main-color; 
+                    }
+                    cursor: pointer;
+                    .result-name{
+                        font-size: 1.125rem;
+                        max-width: 200px;
+                        display: inline-block;
+                        margin-right: 20px;
+                    }
+                    .result-tel{
+                        display: inline-block;
+                        max-width: 130px;
+                    }
+                    .result-path{
+                        max-width: 520px;
+                        display: block;
+                        font-size: 0.875rem;
+                        margin-bottom: 10px;
+                        margin-top: -3px;
+                    }
+                }
+                // 无结果
+                .empty-search{
+                    text-align: center;
+                    font-size: 1.125rem;
+                    color: @unimport-font;
+                    margin-bottom: 15px;
+                    margin-top: 15px;
+                }
+                .empty-info{
+                    display: flex;
+                    align-items: center;
+                    background: @list-bg-hover;
+                    padding-left: 30px;
+                    height: 70px;
+                    font-size: 1.125rem;
+                    color: @main-color;
+                }
+            }
+        }
+    }
+}
+// 组呼通知弹框
+.group-modal{
+    .ant-tabs-bar{
+        border-bottom: none;
+    }
+    .ant-modal-body{
+        padding-top: 2px;
+        height: 37rem;
+    }
+    .ant-modal-footer{
+        button{
+            width: 6.875rem;
+            height: 2.82rem;
+            font-size: 1.125rem;
+        }
+    }
+    .ant-modal-title,
+    .ant-tabs-tab,
+    .ant-form label,
+    .ant-select,
+    textarea.ant-input,.ant-input-number-input
+    .ant-btn,
+    .ant-table{
+        font-size: 1.125rem;
+    }
+    .ant-modal-title{
+        font-weight: bold;
+    }
+    textarea.ant-input{
+        background-color: @table-bg;
+    }
+    .ant-form-item{
+        margin-bottom: 12px;
+    }
+    font-size: 1.125rem;
+    .content-row{
+        position: relative;
+        .add-templete{
+            position: absolute;
+            right: 10px;
+            bottom: 3px;
+            border: 1px solid @main-color;
+            color: @main-color
+        }
+    }
+    
+    .rec-mems{
+        color: @normal-font;
+        font-size: 1.125rem;
+        font-weight: 400;
+        .notify-edit{
+            color: @main-color;
+            float: right;
+            margin-right: 0.85rem;
+            cursor: pointer;
+        }
+        .notify-edit-ok{
+            i{
+                background: url("@{imgSrc}/audio/btn_edit_sel.png") no-repeat;
+                background-size: cover;
+            }
+            color: @second-color;
+        }
+        .icon-notify-edit{
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+            background: url("@{imgSrc}/audio/mem-edit.png") no-repeat;
+        }
+    }
+    .rec-wrap{
+        height: 8.4rem;
+        overflow-y: auto;
+        .rec-mem-wrap{
+            width:calc((100% - 2.5rem)/5);
+            height: 3.125rem;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-top: 0.625rem;
+            position: relative;
+            .icon-delte{
+                width: 18px;
+                height: 18px;
+                right: -5px;
+                top: -8px;
+                cursor: pointer;
+                position: absolute;
+                display: inline-block;
+                background: url("@{imgSrc}/audio/mem_delete.png") no-repeat;
+            }
+        }
+        .rec-mem{
+            width: 100%;
+            background-color: @rec-bg;
+            border: 1px solid @card-border;
+            display: inline-block;
+            font-size: 1.125rem;
+            color: @normal-font;
+            text-align: center;
+            line-height: 3.125rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .rec-mem-fail{
+            background: @fail-bg;
+            border:1px solid @fail-border;
+            color: @fail-color;
+        }
+    }
+    .rec-trans{
+        height: 12.6rem;
+    }
+    .record-info{
+        margin-top: 1rem;
+        .rec-wrap{
+            height: 12.4rem;
+        }
+        .audio-rec-wrap{
+            height: 20.4rem;
+            margin-bottom: 1rem;
+        }
+        .record-back{
+           font-size: 1.125rem;
+           display: inline-block;
+           height: 1.5rem;
+           line-height: 1.5rem;
+           color: @main-color;
+           cursor: pointer;
+           .icon-goback{
+               margin-right: 0.5rem;
+               width: 0.5rem;
+               height: 1rem;
+               display: inline-block;
+               vertical-align: middle;
+               background: url("@{imgSrc}/audio/btn_return.png") no-repeat center;
+           } 
+        }
+        .all-result,
+        .fail-result{
+            font-size: 0.875rem;
+            border: 1px solid @main-color;
+            width: 3.75rem;
+            height: 1.75rem;
+            border-radius: 1rem;
+            color: @main-color;
+            margin-right: 0.63rem;
+            letter-spacing: -1px;
+            background-color: @white-color;
+        }
+        .fail-result{
+            margin-right: 0;
+        }
+        .onsel{
+            background-color: @main-color;
+            color: @reversal-font;
+        }
+        .span-title{
+            font-size: 1.125rem;
+            color: @normal-font;
+        }
+        .span-row{
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .span-forward{
+            color: @main-color;
+            font-size: 1.125rem;
+            cursor: pointer;
+            .icon-forward{
+                width: 1rem;
+                height: 1rem;
+                margin-right: 0.5rem;
+                vertical-align: middle;
+                display: inline-block;
+                background: url("@{imgSrc}/audio/btn_forward.png") no-repeat;
+            }
+        }
+    }
+    .audio-file-wrap{
+        width: 100%;
+        background-color: @audioFile-bg;
+        color: @second-font;
+        font-size: 1rem;
+        border-radius: 3rem;
+        margin-bottom: 0.94rem;
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        .icon-audioMusic{
+            margin-left: 1.88rem;
+            margin-right: 0.99rem;
+            display: inline-block;
+            width: 2.75rem;
+            height: 2.75rem;
+            background: url("@{imgSrc}/audio/icon_music.png") no-repeat;
+        }
+        .icon-play{
+            width: 2.25rem;
+            height: 2.25rem;
+            display: inline-block;
+            background: url("@{imgSrc}/audio/btn_play.png") no-repeat;
+            position: absolute;
+            right: 35px;
+        }
+    }
+    .audio-form{
+        .ant-input,.ant-input-number-input{
+            font-size: 1.125rem;
+        }
+        .ant-input-suffix{
+            display: none;
+        }
+        .icon-search{
+            width: 0.875rem;
+            height: 0.875rem;
+            display: inline-block;
+            background: url("@{imgSrc}/audio/icon_search.png") no-repeat center;
+        }
+        .ant-col-3{
+            text-align: left;
+        }
+        .btn-upload,
+        .btn-record{
+            width: 6.25rem;
+            height: 2rem;
+            font-size: 1rem;
+            margin-top: 2px;
+            color: @main-color;
+            border: 1px solid @main-color;
+        }
+        .icon-upload{
+            width: 0.91rem;
+            height: 0.88rem;
+            display: inline-block;
+            margin-right: 0.4rem;
+            vertical-align: middle;
+            background: url("@{imgSrc}/audio/icon_upload.png") no-repeat;
+        }
+        .icon-record{
+            width: 0.94rem;
+            height: 0.88rem;
+            display: inline-block;
+            margin-right: 0.4rem;
+            background: url("@{imgSrc}/audio/icon-record.png") no-repeat;
+        }
+        .none-file{
+            width: 100%;
+            height: 13.75rem;
+            background: @table-bg;
+            border: 1px solid @module-divider;
+            border-radius: 2px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        
+            span{
+                margin: 0 auto;
+            }
+        }
+        .audio-list{
+            margin-bottom: 1rem;
+            height: 14.2rem;
+            overflow-y: auto;
+            border: 1px solid @list-divider;
+            .list-item{
+                height: calc(100% / 4);
+                border-bottom: 1px solid @list-divider;
+                &:hover{
+                    background: @list-bg-hover;
+                    cursor: pointer;
+                }
+                &:last-child{
+                    border-bottom: none;
+                }
+                .item-title,
+                .item-length{
+                    color: @normal-font;
+                    font-size: 1rem;
+                    margin-left: 0.94rem;
+                    width: 5rem;
+                    display: inline-block;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    display: inline-block;
+                    height: 56px;
+                    line-height: 56px;
+
+                }
+                .item-title{
+                    width: 12.5rem;
+                }
+                .item-length{
+                    margin-right: 45%;
+                }
+                .icon-wrap{
+                    display: inline-block;
+                    height: 33px;
+                    line-height: 56px;
+                }
+                i{
+                    width: 1rem;
+                    height: 1rem;
+                    display: inline-block;
+                    vertical-align: top;
+                }
+                .icon-delete{
+                    background: url("@{imgSrc}/audio/btn_delete_black.png") no-repeat center;
+                }
+                .icon-play{
+                    margin-right: 1rem;
+                    background: url("@{imgSrc}/audio/icon_play.png") no-repeat center;
+                }
+            }
+            .list-item-onsel{
+                background: @list-bg-hover;
+            }
+        }
+    }
+}
+.none-footer{
+    .ant-modal-body{
+        padding-bottom: 14px;
+        height: 39.625rem;
+    }
+    .ant-modal-footer{
+        display: none;
+    }
+    .record-table{
+        border: 1px solid @list-divider;
+        
+        .operate-info{
+            color: @main-color;
+            cursor: pointer;
+        }
+        .ant-table-thead{
+            tr{
+                th{
+                    background:@btn-invalid;
+                }
+            }
+        }
+        .ant-table-tbody{
+            tr{
+                td{
+                    color: @normal-font;
+                }
+            }
+            tr:last-child{
+                td{
+                    border-bottom: none;
+                   
+                }
+            }
+        }
+    }
+    .btns-bottom{
+        display: flex;
+        justify-content: flex-end;
+        border-top: 1px solid @list-divider;
+        button {
+            width: 6.875rem;
+            height: 2.82rem;
+            margin-top: 0.625rem;
+            font-size: 1.125rem;
+        }
+        .cancel-send{
+            // margin-left: 50%;
+            margin-right: 0.94rem;
+        }
+    }
+}
+
+// 更多记录弹框
+.more-modal{
+    .ant-tabs-bar{
+        border-bottom: none;
+    }
+    
+    .ant-table-thead > tr > th{
+        text-align: center;
+    }
+    .ant-table-thead > tr :nth-child(2){
+        text-align: left;
+    }
+    .search-box{
+        margin-bottom: 1rem;
+        .search-btn{
+            margin-right: 0.7rem;
+        }
+    }
+    .ant-modal-title{
+        font-weight: bold;
+    }
+    .ant-modal-body{
+        padding-top: 2px;
+    }
+    .ant-table,.ant-modal-title,.ant-tabs-tab{
+        font-size: 1.125rem;
+
+    }
+    .ant-form label,.ant-select,
+    textarea.ant-input,
+    .ant-btn{
+        font-size: 1rem;
+    }
+    .ant-table{
+        max-height: 34rem;
+        overflow-y: auto;
+    }
+    tr.ant-table-expanded-row.ant-table-expanded-row-level-1,
+    tr.ant-table-expanded-row{
+        background: @white-color;
+    }
+    .ant-table-tbody > tr > td{
+        color: @normal-font;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .ant-table-tbody {
+        tr{
+            &:last-child{
+                td{
+                    border-bottom: none;
+                }
+            }   
+        }
+    }
+    .group-table,.board-table,.present-table,.poll-table{
+        border: 1px solid @list-divider;
+        .icon-restart{
+            cursor: pointer;
+            width: 1.1rem;
+            height: 1.2rem;
+            display: inline-block;
+            background: url("@{imgSrc}/audio/icon-restart.png") no-repeat center;
+        }
+        .icon-zhankai{
+            width: 0.5rem;
+            height: 0.69rem;
+            display: inline-block;
+            background: url("@{imgSrc}/audio/icon-right.png") no-repeat center;
+        }
+        .icon-shouqi{
+            width: 0.69rem;
+            height: 0.5rem;
+            display: inline-block;
+            background: url("@{imgSrc}/audio/icon-down.png") no-repeat center;
+        }
+    }
+    //展开的样式
+    .collasp-wrap{
+        .collasp-info{
+            font-size: 1rem;
+            color: @second-font;
+            width: 100%;
+            height: 1.06rem;
+            border-left: 3px solid @main-color;
+            line-height: 1.31rem;
+            padding-left: 0.45rem;
+            margin-bottom: 1rem;
+        }
+        .rec-mem{
+            width: calc((100% - 3.75rem)/7);
+            height: 2.25rem;
+            margin-right: 0.5rem;
+            background: @rec-bg;
+            display: inline-block;
+            border:1px solid @card-border;
+            color: @second-font;
+            text-align: center;
+            color: @second-font;
+            margin-bottom: 0.5rem;
+            line-height: 2.25rem;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .fail-mem{
+            background-color: @fail-bg;
+            border: 1px solid @fail-border;
+            color: @fail-color;
+
+        }
+        
+    }
+}
+
+// 拨号盘弹框
+.dail-modal{
+    top: 43.5vh !important;
+    .ant-modal-body{
+        padding: 0;
+    }
+    .ant-modal-title{
+        font-size: 1rem;
+        color: @normal-font;
+        font-weight: bold;
+        .icon-dail{
+            width: 1rem;
+            height: 1.1rem;
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: -4px;
+            margin-right: 0.5rem;
+            background: url("@{imgSrc}/audio/icon_bhp.png") no-repeat center;
+        }
+    }
+    .input-wrap{
+        width: 100%;
+        height: 5.75rem;
+        background: @dailInput-bg;
+        position: relative;
+        .ant-input{
+            border: none;
+            background: none;
+            font-size: 2.13rem;
+            font-weight: 400;
+            color: @normal-font;
+            width: 21rem;
+            height: 100%;
+            text-align: center;
+            &:hover,&:focus,&:active{
+                border: none;
+                box-shadow: none;
+            }
+        }
+        .icon-clear{
+            width: 1.83rem;
+            height: 1.4rem;
+            display: inline-block;
+            position: absolute;
+            cursor: pointer;
+            top: 2rem;
+            right: 0.94rem;
+            background: url("@{imgSrc}/audio/btn_delete_dail.png") no-repeat;
+        }
+    }
+    .key-board{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        li{
+            height: 4.31rem;
+            width: calc(100% / 3);
+            border: 1px solid @mem-divider;
+            line-height: 3.5rem;
+            border-bottom: none;
+            border-left: none;
+            position: relative;
+            cursor: pointer;
+            &:hover{
+               background-color:@dailInput-bg; 
+            }
+            &:nth-child(3n-2){
+                border-left: none;
+            }
+            &:nth-child(3n){
+                border-right: none;
+            }
+            &:nth-child(10),
+            &:nth-child(11),
+            &:nth-child(12){
+                border-bottom: 1px solid @mem-divider;
+            }
+            span{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 2.13rem;
+                color: @second-font;
+                font-weight: 400;
+            }
+            .extra-info{
+                position: absolute;
+                color: #999;
+                font-size: 0.75rem;
+                height: 0.75rem;
+                bottom: 0.75rem;
+                left: 40%;
+                padding-top: 0.625rem;
+            }
+            .extra-second{
+                margin-left: 0.625rem;
+            }
+            .extra-three{
+                margin-left: 1.25rem;
+            }
+            .letter-star{
+                font-size: 3.94rem;
+                margin-top: 0.875rem;
+            }
+        } 
+    }
+    .btn-wrap{
+        width: 100%;
+        height: 4.81rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        button{
+            width: 7.75rem;
+            height: 3.13rem;
+            border-radius: 23px;
+            color: @white-color; 
+        }
+        .btn-transfer{
+            width: 3.625rem;
+            height: 2.5rem;
+            border-radius: 28px;
+            background: url("@{imgSrc}/audio/btn_zj.png") no-repeat center @main-color;
+        }
+        .btn-call{
+            margin: 0 2.25rem;
+            background: url("@{imgSrc}/audio/btn_hj.png") no-repeat center @main-color;
+        }
+        .btn-joinMeet{
+            width: 3.625rem;
+            height: 2.5rem;
+            border-radius: 28px;
+            background: url("@{imgSrc}/audio/btn_jrhc.png") no-repeat center @main-color;
+        }
+    }
+
+}
+.dail-iframe-modal{
+    top: 40.8vh !important;
+}
+// 暂离弹框
+.temp-leave-modal{
+    .ant-modal-close-x{
+        display: none;
+    }
+    .leave-wrap{
+        // display: flex;
+        // justify-content: center;
+        .leave-title{
+            color: @normal-font;
+            font-size: 2.25rem;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .ant-form{
+            label{
+                font-size: 1.25rem;
+                color: @second-font;
+            }
+            .ant-form-item{
+                margin-bottom: 32px;
+            }
+            .ant-form-item-children{
+                input{
+                    border: none;
+                    color: @normal-font;
+                    font-size: 1.25rem;
+                    height: 42px;
+                    background: @mem-card-bg;
+                    &:hover,&:active,&:focus{
+                        border: none;
+                        box-shadow: none;
+                    }
+                    &::placeholder{
+                        font-size: 1rem;
+                    }
+                }
+                
+            }
+            .ant-input-affix-wrapper .ant-input-suffix{
+                i{
+                    width: 12px;
+                    height: 12px;
+                    display: inline-block;
+                    background: url("@{imgSrc}/audio/btn_close.png") no-repeat;
+                    svg{
+                        display: none;
+                    }
+                }
+
+                // background: url(@{imgSrc}/audio/btn_close.png) no-repeat;
+            }
+        }
+        .btn-wrap{
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            margin-left: 20px;
+            margin-top: 57px;
+            .ant-col-15{
+                width: 64%;
+            }
+        }
+        .modal-ok{
+            background: @main-color;
+            border: 1px solid @main-color;
+            color: @reversal-font;
+            width:12.3rem;
+            height: 50px;
+            font-size: 1.125rem;
+            margin-left: 20px;
+        }
+        .modal-cancel{
+            width:12.3rem;
+            height: 50px; 
+            background: @btn-invalid;
+            border: 1px solid @module-divider;
+            color: @unimport-font;
+            font-size: 1.125rem;
+        }
+    }
+}
+// 回到岗位弹框
+.temp-goback-modal{
+    .ant-modal-close-x{
+        display: none;
+    }
+    .goback-wrap{
+        width: 360px;
+        margin: 0 auto;
+        .back-head{
+            .leave-info{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .icon-leaving{
+                    width: 79px;
+                    height: 88px;
+                    display: inline-block;
+                    background: url("@{imgSrc}/audio/icon_zanli.png") no-repeat;
+                }
+                span{
+                    font-size: 2.25rem;
+                    color: @normal-font;
+                    margin-left: 30px;
+                }
+            }
+            p{
+                font-size: 1.25rem;
+                color: @unimport-font;
+                text-align: center;
+                margin-top: 20px;
+                margin-bottom: 15px;
+            }
+        }
+        .duty-wrap{
+            width: 360px;
+            height: 167px;
+            margin: 0 auto;
+            background: @mem-card-bg;
+            border: 1px solid @module-divider;
+            color:@second-font;
+            font-size: 1.25rem;
+            margin-bottom: 35px;
+            p{
+                text-align: center;
+                margin-top: 16px;
+            }
+        }
+        .btn-goBack{
+            width: 360px;
+            height: 50px;
+            margin: 0 auto;
+            background: @main-color;
+            border: 1px solid @main-color;
+            color: @reversal-font;
+            font-size: 1.125rem;
+            margin-bottom: 15px;
+        }
+    }
+}
+// 新建会议弹框
+.add-meet-modal{
+    .ant-modal-title{
+       font-size: 1.125rem;
+       color: @second-font;
+       font-weight: bold;
+    } 
+    .ant-modal-body{
+        .ant-form-item {
+            label{
+                font-size: 1rem;
+            }
+            .ant-input{
+                font-size: 1rem;
+            }
+        }
+        .add-meet-icon-wrap{
+            position: absolute;
+            display: inline-block;
+            right: 5px;
+            color: @main-color;
+            cursor: pointer;
+        }
+        .add-meet-icon{
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            margin-top: -4px;
+            vertical-align: middle;
+            margin-right: 5px;
+            background: url("@{imgSrc}/audio/btn_add_meet.png") no-repeat center ;
+            padding: 10px;
+        }
+        .add-meet-mem{
+            border: 1px solid @module-divider;
+            border-radius: 4px;
+            height: 155px;
+            overflow-y: auto;
+            transition: all 0.3s;
+            position: relative;
+            ul{
+                margin-top: 30px;
+            }
+            .no-edit{
+                margin-top: 0;
+            }
+            li{
+                width: 49%;
+                padding-left: 10px;
+                float: left;
+                height: 35px;
+                line-height: 35px;
+                .meet-memName{
+                    margin-right: 10px; 
+                    width: 43%;
+                    display: inline-block;
+                    float: left;
+                }
+                .meet-memTel{
+                    display: inline-block;
+                    width: 27%; 
+                    float: left;
+                }
+                .meet-mem-del{
+                    width: 18px;
+                    height: 24px;
+                    vertical-align: middle;
+                    cursor: pointer;
+                    display: inline-block;
+                    margin-left: 5px;
+                    background: url("@{imgSrc}/audio/mem_delete.png") no-repeat;
+                }
+            }
+        }
+        
+    }
+    .ant-modal-footer{
+        .ant-btn{
+            font-size: 1rem;
+        }
+    }
+}
+// 会议详情弹框
+.meet-detail-modal{
+    .ant-modal-title{
+        font-size: 1.125rem;
+        color: @second-font;
+        font-weight: bold;
+     } 
+    .meet-detail{
+        .meet-name,.meet-access,.meet-passwdSpeaker,.meet-passwdAudience,
+        .meet-type,.meet-type,.meet-mem{
+            height: 40px;
+            line-height: 40px;
+        }
+        .meet-name-label,.meet-access-label,.meet-passwdSpeaker-label,
+        .meet-passwdAudience-label,.meet-type-label,.meet-time-label,.meet-mem-label{
+            font-size: 1rem;
+            color: @second-font;
+        }
+        .meet-mem-info{
+            display: inline-block;
+            width: 80%;
+            vertical-align: bottom;
+        }
+    }
+}
+
+.ant-notification-notice-btn{
+    float: none !important;
+}
+.add-record-modal{
+    margin-top: 15px;
+    .add-record-btn{
+        margin-top: 15px;
+        width: 100px;
+        margin-left: 34%;
+        background: @main-color;
+        color: @white-color;
+        border: 1px solid @main-color;
+    }
+}
+.recording{
+    margin-top: 20px;
+    span{
+        display: block;
+        font-size: 1rem;
+    }
+    .record-finish{
+        margin-top: 15px;
+        width: 100px;
+        margin-left: 34%;
+        background: @serious;
+        color: @white-color;
+        border: 1px solid @serious;
+    }
+}
+.restart{
+    .restart-record,.play-record{
+        margin-top: 20px;
+        margin-left: 40px;
+        width: 100px;
+        background: @main-color;
+        color: @white-color;
+        border: 1px solid @main-color;
+    }
+}
+.ant-select-selection-selected-value{
+    .tts-delete{
+        display: none;
+    }
+}
+li.ant-select-dropdown-menu-item{
+    font-size: 1.125rem;
+}
+.tts-delete{
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    margin-left: 5px;
+    background: url("@{imgSrc}/audio/mem_delete.png") no-repeat;
+}

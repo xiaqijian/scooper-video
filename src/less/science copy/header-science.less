@@ -1,0 +1,243 @@
+.common-header {
+    background: url("../../image/science/nav_head_left.png"), url("../../image/science/bg_repeat.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-bottom: 1px solid @assist-color;
+    width: 100%;
+    //左边标题和图标
+    .common-header-title {
+        width: 20%;
+        font-size: 27px;
+        color: @header-font-color;
+        line-height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &-logo {
+            display: inline-block;
+            width: 43px;
+            height: 41px;
+            vertical-align: middle;
+            background: url("@{imgSrc}/index_logo.png") no-repeat;
+            background-size: 100%;
+            margin-right: 20px;
+        }
+        span{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+            width: calc(100% - 50px);
+        }
+    }
+    //标题样式
+    ul {
+        width: 60%;
+        text-align: center;
+        li {
+            padding: 1.25rem 0;
+            a {
+                z-index: 1;
+                padding: 0 1.875rem;
+                margin: 0;
+                line-height: 41px;
+                background: url("../../image/science/nav_middle_title.png");
+                background-size: 105% 145%;
+                background-position: -7px 43%;
+                // font-size: 22px;
+            }
+            .has-subtitle-icon {
+                padding-right: 14px;
+                i {
+                    display: inline-block;
+                    width: 11px;
+                    height: 7px;
+                    margin-left: 15px;
+                }
+                .down-arrow {
+                    background: url("../../image/science/nav_down_arrow.png") no-repeat;
+                    background-size: contain;
+                }
+                .up-arrow {
+                    background: url("../../image/science/nav_up_arrow.png") no-repeat;
+                    background-size: contain;
+                }
+            }
+            //标题选中样式
+            .checked-style {
+                border: 0;
+                color: @white-color;
+                background: #00A5BE;
+                .down-arrow {
+                    background: url("../../image/science/nav_checked_down_arrow.png") no-repeat;
+                    background-size: contain;
+                }
+                .up-arrow {
+                    background: url("../../image/science/nav_checked_up_arrow.png") no-repeat;
+                    background-size: contain;
+                }
+            }
+        }
+
+        li:first-child {
+            a {
+                background: url("../../image/science/nav_left_title.png") no-repeat;
+                background-size: 105% 145%;
+                background-position: -8px 43%;
+            }
+            .checked-style {
+                background: url("../../image/science/nav_left_sel.png") no-repeat;
+                background-size: 105% 145%;
+                background-position: -8px 43%;
+            }
+        }
+        li:last-child {
+            a {
+                padding-left: 10px;
+                background: url("../../image/science/nav_right_title.png") no-repeat;
+                background-size: 108% 151%;
+                background-position: -1px 46%;
+            }
+            .checked-style {
+                width: 154px;
+                padding-left: 10px;
+                background: url("../../image/science/nav_right_sel.png") no-repeat;
+                background-size: 108% 151%;
+                background-position: -1px 46%;
+            }
+        }
+        //二级菜单下拉框样式
+        .subtitle-box {
+            z-index: 999;
+            padding: 1px;
+            // width: 0;
+            // height: 0;
+            width: 120px;
+            height: 160px;
+            position: absolute;
+            left: 50%;
+            background: @main-color;
+            box-shadow: 0 0px 10px @assist-color inset;
+            clip-path: polygon(
+                10px 10px,
+                calc(100% - 78%) 10px,
+                calc(100% - 70%) 0px,
+                calc(100% - 62%) 10px,
+                calc(100% - 10px) 10px,
+                100% 20px,
+                100% calc(100% - 10px),
+                calc(100% - 10px) 100%,
+                10px 100%,
+                0 calc(100% - 10px),
+                0 20px
+            );
+
+            .subtitle-box-content {
+                width: 100%;
+                height: 100%;
+                background: #041d36;
+                box-shadow: 0 12px 10px @assist-color inset, 0 0px 10px @assist-color inset;
+                clip-path: polygon(
+                    10px 10px,
+                    calc(100% - 78%) 10px,
+                    calc(100% - 70%) 2px,
+                    calc(100% - 63%) 10px,
+                    calc(100% - 10px) 10px,
+                    100% 20px,
+                    100% calc(100% - 10px),
+                    calc(100% - 10px) 100%,
+                    10px 100%,
+                    0 calc(100% - 10px),
+                    0 20px
+                );
+            }
+        }
+    }
+
+    .openbox {
+        animation: openbox 0.4s; //下拉框展开动画
+    }
+    @keyframes openbox {
+        from {
+            width: 120px;
+            height: 0;
+        }
+        to {
+            width: 120px;
+            height: 120px;
+        }
+    }
+
+    //右侧个人时间样式
+    .common-header-right {
+        width: 18%;
+        margin-right: 21px;
+        padding: 0px 30px;
+        height: 70px;
+        background: url("../../image/science/nav_time_info.png") no-repeat;
+        background-size: 100% 60%;
+        background-position: center;
+        //个人中心信息
+        .user-name-core{
+            color: @normal-font;
+        }
+        .time-info-part {
+            margin-top: 8px;
+            padding: 0;
+            h2,
+            h4 {
+                line-height: 55px;
+                font-size: 18px;
+                color: #00c1de;
+                float: right;
+                span {
+                    display: none; //控制星期显示
+                }
+            }
+            h2 {
+                margin-left: 10px;
+            }
+        }
+    }
+}
+@media (min-width: 0) {
+    .common-header{
+        background-position: -87%;
+        .common-header-right{
+            width: 28%;
+        }
+        ul{
+            li{
+                &:first-child{
+                    a{
+                        background-position: -5px 43%;
+                    }
+                }
+            }
+        }
+    }
+}
+@media (min-width: 1405px) {
+    .common-header{
+        background-position: -25%;
+        .common-header-right{
+            width: 26%;
+        }
+    }
+}
+@media (min-width: 1605px) {
+    .common-header{
+        background-position: -15%;
+        .common-header-right{
+            width: 22%;
+        }
+    }
+}
+@media (min-width: 1900px) {
+    .common-header{
+        background-position: 0%;
+        .common-header-right{
+            width: 18%;
+        }
+    }
+}

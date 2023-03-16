@@ -1,0 +1,577 @@
+.right-wrap{
+    width: 21%;
+    height: 100%;
+    border-left: 1px solid @module-divider;
+    // 呼入队列
+    .call-in-wrap {
+        width: 100%;
+        height: 31%;
+        .call-header{
+            height: 19%;
+            width: 100%;
+            padding: 0 0.75rem;
+            background-color: @module-bg;
+            i {
+                display: inline-block;
+                width: 1.3rem;
+                height: 1.3rem;
+                margin-right: 0.625rem;
+                vertical-align: middle;
+                background:url(../../image/audio/icon_call_list.png) no-repeat;
+            }
+            .call-in-span{
+                color: @second-font;
+                line-height: 3.125rem;
+                display: inline-block;
+                font-size: 1.25rem;
+            }
+            .group-answer{
+                float: right;
+                width: 16%;
+                height: 60%;
+                font-size: 0.875rem;
+                line-height: 1;
+                margin-top: 0.625rem;
+                z-index: 999;
+            }
+            .group-answer-normal{
+                background-color: @main-color;
+                color: @white-color;
+                border: 1px solid @main-color;
+            }
+            .group-answer-dis{
+                background-color: @btn-invalid;
+                color: @unimport-font; 
+                border: 1px solid @module-divider;
+            }
+        }
+        .call-list{
+            height: 81%;
+            overflow-y: auto;
+            position: relative;
+            .keep-pane{
+                top: 0;
+                width: 100%;
+                height: 33%;
+                background-color: @main-color;
+                box-shadow:0px 4px 10px rgba(0,0,0,0.3);
+                .ant-carousel-vertical .slick-dots li button{
+                    width: 7px;
+                    height: 7px;
+                    border-radius: 50%;
+                }
+                .ant-carousel-vertical .slick-dots-left{
+                    left: 10px;
+                }
+                li:hover{
+                    border-radius: 50%;
+                }
+                .keep-list{
+                    margin-top: 5px;
+                    margin-left: 2.2rem;
+                    color: @white-color;
+                    .keep-memName{
+                        font-size: 20px;
+                        margin-right: 2.625rem;
+                    }
+                    .keep-duty{
+                        font-size: 0.875rem;
+                    }
+                    .keep-date-wrap{
+                        margin-top: 0.25rem;
+                        .keep-time{
+                            font-size: 0.875rem;
+                            margin-left:0.5rem ;
+                        }
+                    }
+                    .btn-take{
+                        float: right;
+                        right: 12%;
+                        margin-top: 15px;
+                        width:60px;
+                        height: 30px;
+                        background-color: @white-color;
+                        color: @main-color;
+                        border-radius: 4px;
+                        border: none;
+                    }
+                }
+            }
+            .call-ul{
+                height: 100%;
+            }
+            .call-ul-none{
+                height: 66%;
+                .call-li{
+                    height: 50%;
+                    line-height: 50%;
+                }
+            }
+            .call-li{
+                height: 33%;
+                line-height: 33%;
+                position: relative;
+                cursor: pointer;
+                &:first-child{
+                    .call-list-item{
+                        border: none;
+                    }
+                }
+                &:hover{
+                    background: @record-bg-hover;
+                    border-right: 2px solid @main-color;
+                }
+                .call-list-item {
+                    margin: 0 15px;
+                    border-bottom: 1px solid @list-divider;
+                    .mem-level{
+                        width:1.5rem;
+                        height:0.875rem;
+                        display: inline-block;
+                        line-height: 0.875rem;
+                        border-radius:0px 10px 10px 0px;
+                        color: @white-color;
+                        background-color: @second-color;
+                        font-size:0.75rem ;
+                        position: absolute;
+                        text-align: center;
+                        top: 14px;
+                        left: 0;
+                    }
+                    .mem-info{
+                        height: 0px;
+                        line-height: 44px;
+                        width: 70%;
+                    }
+                    .mem-name{
+                        font-size: 1.125rem;
+                        margin-left: 1.25rem;
+                        width: 24%;
+                        display: inline-block;
+                        color: @normal-font;
+                        margin-right: 1.5rem;
+                    }
+                    .mem-duty{
+                        font-size: 0.875rem;
+                        display: inline-block;
+                        max-width: 40%;
+                        color: @second-font;
+                    }
+                    .call-time{
+                        font-size: 0.75rem;
+                        color: @second-font;
+                        font-size: 0.75rem;
+                        display: inline-block;
+                        position: absolute;
+                        top: 0px;
+                        bottom: 0;
+                        margin-left: 21px;
+                        line-height: 75px;
+                        padding-top: 17px;
+                    }
+                    .icon-audio{
+                        float: right;
+                        margin-top: 20px;
+                        display: inline-block;
+                        margin-right: 20px;
+                        width: 24px;
+                        height: 36px;
+                        background: url(../../image/audio/icon_audio.png) no-repeat;
+                    }
+                    .icon-video{
+                        float: right;
+                        margin-top: 22px;
+                        margin-right: 13px;
+                        display: inline-block;
+                        width: 35px;
+                        height: 20px;
+                        background: url(../../image/audio/icon_video.png) no-repeat;
+                    }
+                   
+                }
+            }
+            .empty-status{
+                width: 100%;
+                height: 82%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .icon-null{
+                    width: 109px;
+                    height: 113px;
+                    display: inline-block;
+                    background: url(../../image/audio/icon_null.png) no-repeat;
+                }
+                .empty-span{
+                    color: @unimport-font;
+                    font-size: 1.128rem;
+                    position: absolute;
+                    top: 70%;
+                }
+            }
+        }
+    }
+    // 通话记录
+    .right-second{
+        height: 67%;
+    }
+    .call-record-wrap, 
+    .black-wrap{
+        height: 100%;
+        .call-header{
+            height: 3.125rem;
+            background-color: @module-bg;
+            padding-left: 12px;
+            i {
+                display: inline-block;
+                width: 20px;
+                height: 24px;
+                margin-right: 10px;
+                vertical-align: middle;
+                background:url(../../image/audio/icon_call_log.png) no-repeat;
+            }
+            .title{
+                color: @second-font;
+                line-height: 3.125rem;
+                display: inline-block;
+                font-size: 1.25rem;
+                margin-right: 0.63rem;
+            }
+            .all-record,
+            .miss-record{
+                border: 1px solid @main-color;
+                width: 3.75rem;
+                height: 1.75rem;
+                border-radius: 1rem;
+                color: @main-color;
+                margin-right: 0.63rem;
+                background-color: @module-bg;
+            }
+            .onsel{
+                background-color: @main-color;
+                color: @white-color;
+            }
+            .miss-record{
+                position: relative;
+                .ant-badge{
+                    position: absolute;
+                    right: 0;
+                }
+            }
+            .btn-more{
+                float: right;
+                display: inline-block;
+                line-height: 3.125rem;
+                font-size: 1.125rem;
+                color: @main-color;
+                cursor: pointer;
+                .icon-more{
+                    width: 0.5rem;
+                    height: 0.875rem;
+                    margin-left: 0.5rem;
+                    background: url(../../image/audio/btn_more_left.png) no-repeat;
+                }
+            }
+        }
+        .search-wrap{
+            margin: 0.65rem 0.75rem ;
+            position: relative;
+            .ant-input{
+                background: @mem-card-bg;
+            }
+            .record-search{
+                width: 87%;
+                height: 2.1rem;
+                margin-right: 0.625rem;
+                .icon-record-search{
+                    width: 14px;
+                    height: 14px;
+                    display: inline-block;
+                    background: url(../../image/audio/icon-record-search.png) no-repeat;
+                }
+                i.anticon.anticon-search.ant-input-search-icon{
+                    display: none;
+                }
+                .ant-input{
+                    // padding-right: 10px !important;
+                }
+                // .ant-input-search-button{
+                //     padding: 0 8px;
+                //     .anticon.anticon-search{
+                //         width: 18px;
+                //         height: 18px;
+                //         display: inline-block;
+                //         background: url(../../image/audio/icon_blk_search.png) no-repeat;
+                //         svg{
+                //             display: none;
+                //         }
+                //     }
+
+                // }
+                
+                
+                // icon_blk_search.png
+            }
+            .record-show{
+                width: 80%;
+            }
+            .record-search-btn{
+                position: absolute;
+                right: 45px;
+                width: 2.1rem;
+                height: 2.1rem;
+                border: none;
+                background: url(../../image/audio/icon_blk_search.png) no-repeat center @main-color;
+                background-size: 54%;
+            }
+            .date-search{
+                margin-top: 0.5rem;
+                .ant-form-inline{
+                    .ant-form-item{
+                        margin-right: 1px;
+                    }
+                }
+                .divider-line{
+                    width: 4%;
+                    display: inline-block;
+                    text-align: center;
+                    margin: 0 7px;
+                }
+            }
+        }
+        .black-menu{
+            width: 10%;
+            float: right;
+            height: 2rem;
+            border: none;
+            background: url(../../image/audio/btn_balckList.png) no-repeat center @main-color;
+            background-size: 54%;
+        }
+        
+        .record-list-wrap{
+            height: calc(100% - 8rem);
+            margin: 0 auto;    
+            position: relative;
+            ul{
+                height: calc(100% - 4.13rem);
+                overflow-y: auto;
+            }
+            .onsel{
+                background-color:@record-bg-hover ;
+            }
+            .record-list{
+                width: 100%;
+                padding: 0 0.75rem;
+                height: 75px;
+                // height: calc(100% / 5);
+                
+                border-bottom: 1px solid @ele-divider;
+                cursor: pointer;
+                &:hover{
+                    background-color:@record-bg-hover ;
+                }
+                .icon-record{
+                    width: 1rem;
+                    height: 1rem;
+                    display: inline-block;
+                    margin: 0.93rem 0.625rem;
+                    float: left;
+                }
+                .record-date{
+                    font-size: 1rem;
+                    color: @second-font;
+                    float: right;
+                    padding-top: 0.75rem;
+                }
+                .record-name{
+                    font-size: 1.125rem;
+                    color: #333;
+                    font-weight: 400;
+                    display: inline-block;
+                    padding-top: 0.625rem;
+                    max-width: 46%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+                .record-miss-name,
+                .record-miss-date{
+                    color: @serious;
+                    padding-top: 1.75rem;
+                }
+                .call-length{
+                    color: @second-font;
+                    font-size: 1rem;
+                    margin-top: -0.375rem;
+                }
+                
+                .icon-callin{
+                    background: url(../../image/audio/icon_callIn.png) no-repeat;
+                }
+                .icon-callout{
+                    background: url(../../image/audio/icon_hc.png) no-repeat;
+                }
+                .icon-callmiss{
+                    width: 0.95rem;
+                    height: 1rem;
+                    background: url(../../image/audio/icon_wj.png) no-repeat center;
+                    margin-top: 1.98rem;
+                }
+            }
+            .icon-operates{
+                position: absolute;
+                bottom: 0;
+                height: 4.13rem;
+                width: 100%;
+                background-color: @module-bg;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                i{
+                    width: 3.2rem;
+                    height: 3.2rem;
+                    display: inline-block;
+                    margin-right: 2.5rem;
+                    cursor: pointer;
+                }
+                .icon-call{
+                    background: url(../../image/audio/btn_call.png) no-repeat center;
+                    background-size: 97%;
+                }
+                .icon-meet{
+                    background: url(../../image/audio/btn_jrhy.png) no-repeat center;
+                    background-size: 97%;
+                }
+                .icon-radio{
+                    background: url(../../image/audio/btn_ly.png) no-repeat center;
+                    background-size: 97%;
+                }
+                .icon-radio-dis{
+                    background: url(../../image/audio/icon_ly_dis.png) no-repeat center;
+                    background-size: 97%;
+                }
+                .icon-black{
+                    background: url(../../image/audio/btn_blacklist.png) no-repeat center;
+                    background-size: 99%;
+                    margin-right: 0;
+                }
+                .icon-ignore{
+                    background: url(../../image/audio/btn_hlwj.png) no-repeat center;
+                }
+            }
+        }
+        .record-height{
+            height: calc(100% - 5.4rem);
+        }
+    }
+    .black-wrap{
+        .call-header{
+            .icon-blackList{
+                width: 1.375rem;
+                height: 1.375rem;
+                margin-top: -3px;
+                vertical-align: middle;
+                background:url(../../image/audio/icon_blacklist.png) no-repeat center;
+            }
+            .close-black{
+                float: right;
+                width: 12.5%;
+                height: 100%;
+                border-radius: 0px;
+                background: url(../../image/audio/btn_close_sel.png) no-repeat center @main-color;
+                background-size: 32%;
+            }
+        }
+        .add-wrap{
+            margin: 0.75rem;
+            .add-span{
+                color: @normal-font;
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            .add-type{
+                width: 100%;
+                display: flex;
+                .core-add{
+                    width: 26.5%;
+                    margin-right: 0.75rem;
+                }
+                .num-add{
+                    width: 70%;
+                }
+                .ant-input-suffix{
+                    right: 0px;
+                    display: inline-block;
+                }
+                .icon-add{
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                    background: url(../../image/audio/btn_add_black.png) no-repeat center @main-color;
+                }
+            }
+            
+        }
+        .ant-input{
+            background: @mem-card-bg;
+        }
+        .icon-search-num{
+            width: 0.875rem;
+            height: 0.875rem;
+            display: inline-block;
+            background: url(../../image/audio/icon_search.png) no-repeat center;
+        }
+        .black-search{
+            margin: 0 0.75rem;
+            width: 94%;
+            .ant-input-suffix{
+                display: none;
+            }
+        }
+        .black-table{
+            margin: 0.75rem;
+            border: 1px solid @list-divider;
+            height: 415px;
+            overflow-y: auto;
+            .black-delete{
+                cursor: pointer;
+            }
+            .icon-delete{
+                width: 1rem;
+                height: 1rem;
+                display: inline-block;
+                margin-right: 0.5rem;
+                vertical-align: middle;
+                background: url(../../image/audio/btn_delete_black.png) no-repeat center;
+            }
+            .delete-span{
+                font-size: 0.875rem;
+                color:@table-del-font;
+            }
+        }
+        .ant-table-tbody{
+            tr{
+                &:nth-child(2n + 1){
+                    background: @table-bg;
+                }
+                td{
+                    border-bottom:none;
+                }
+            }
+        }
+        
+    }
+}
+
+// 全屏
+@media (min-height: 1020px) {
+    .right-wrap{
+        .call-record-wrap{
+            .record-list-wrap{
+                .record-list{
+                    height: calc(100% / 7);
+                }
+                
+            }
+        }
+    }
+}

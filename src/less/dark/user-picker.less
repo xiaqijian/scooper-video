@@ -1,0 +1,47 @@
+.skin-modal{
+    color: @normal-font;
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active{
+        color: @normal-font;
+    }
+    .ant-modal-title{
+        color: @normal-font;
+    }
+    .selectBox,.ant-modal-footer{
+        border-color: @ele-divider;
+        .ant-tree,.mem-item,.ant-input-affix-wrapper .ant-input-suffix{
+            color: @normal-font;
+        }
+        
+        .ant-tree.ant-tree-directory > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper::before, .ant-tree.ant-tree-directory .ant-tree-child-tree > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper::before,
+        .ant-tree.ant-tree-directory > li span.ant-tree-node-content-wrapper:hover::before, .ant-tree.ant-tree-directory .ant-tree-child-tree > li span.ant-tree-node-content-wrapper:hover::before,.ant-menu-item-selected,.ant-menu-item-active{
+            background: @list-bg-hover;
+        }
+    }
+    .ant-tabs-nav-wrap,.ant-tabs .ant-tabs-top-content,.ant-tabs-bar,.selectLeft,.chosed-tip-text,.ant-menu-vertical,
+    ul.ant-menu.selectRight.skin-menu-basic.ele-divider.ant-menu-light.ant-menu-root.ant-menu-vertical{
+        border-color: @ele-divider;
+    }
+    .selectBox,.ant-menu{
+        background: @modal-bg;
+    }
+    .ant-tree-iconEle{
+        .anticon{
+            color: @normal-font;
+        }
+    }
+    .ant-tree-title{
+        color: @normal-font;
+    }
+    .ant-tree-node-selected,
+    .ant-tree.ant-tree-directory > li span.ant-tree-node-content-wrapper:hover,
+    .ant-tree.ant-tree-directory .ant-tree-child-tree > li span.ant-tree-node-content-wrapper:hover{
+        .ant-tree-iconEle{
+            .anticon{
+                color: @reversal-font;
+            }
+        }
+        .ant-tree-title{
+            color: @reversal-font;
+        }
+    }
+}

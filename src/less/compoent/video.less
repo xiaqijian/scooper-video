@@ -1,0 +1,113 @@
+.video-part{
+    .hide{
+        display: none;
+    }
+}
+.operate-btn{
+    .send-audio-btn,.unsend-audio-btn{
+        display: none !important;
+    }
+}
+.video-main-full {
+    top: 128px;
+    width: 937px;
+    height: 460px;
+    left: 491px;
+    bottom: 76px;
+    z-index: 997;
+
+    li {
+        .operate-btn {
+            display: none;
+        }
+
+        &:hover {
+            border: none;
+        }
+
+    }
+
+    li.sel {
+        border: none;
+    }
+
+    .btn-hungup {
+        width: 5rem;
+        height: 5rem;
+        position: absolute;
+        cursor: pointer;
+        bottom: 20px;
+        left: 433px;
+        border: none;
+        z-index: 997;
+        border-radius: 50%;
+        display: inline-block;
+        background: url("@{imgSrc}/audio/hj.png") no-repeat @serious center;
+    }
+
+    .video-info {
+        position: absolute;
+        top: 15px;
+        margin: 0 auto;
+        left: 366px;
+        color: white;
+        width: 240px;
+        text-align: center;
+        font-size: 20px;
+
+        .talk-long {
+            display: block;
+        }
+    }
+
+    .video-zxh {
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        top: 15px;
+        right: 10px;
+        cursor: pointer;
+        display: inline-block;
+        background: url("@{imgSrc}/audio/zxh.png") no-repeat;
+    }
+}
+.video-tip{
+    top: 20% !important;
+    left: 44% !important;
+}
+
+
+// 全屏
+@media (min-height: 1020px) {
+    .main-wrap {
+        .mem-list-wrap {
+            .mem-list {
+                .mem-item {
+                    height: calc((100% - 2rem) / 4);
+                }
+
+            }
+        }
+    }
+
+    .dail-modal {
+        top: 51vh !important;
+    }
+
+    .audio-modal {
+        top: 25vh !important;
+    }
+
+    .video-main {
+        top: 101px;
+        height: 547px;
+    }
+}
+
+@media (min-height: 1000px) {
+    .dail-iframe-modal {
+        top: 46.6vh !important;
+    }
+}
+
+// }

@@ -1,0 +1,29 @@
+@import './basic.less';
+@imgSrc: '../../image/light';
+
+//
+.skin-light{
+    @import '../compoent/index.less';
+    @import './cover.less';
+    ::-webkit-scrollbar-track{
+        border-radius:5px;
+        background-color: @invalid-ico;
+    }
+    ::-webkit-scrollbar-thumb{
+        border-radius:10px;
+        background-color: @second-ico;
+    } 
+    .content-fream{
+        height: calc(100% - 70px);
+    }
+}
+::-webkit-scrollbar-track{
+    border-radius:5px;
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb{
+    border-radius:10px;
+    background-color: transparent;
+}
+ 
+

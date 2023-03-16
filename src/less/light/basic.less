@@ -1,0 +1,177 @@
+@charset "UTF-8";
+
+//全局主色
+@main-color: #0080FF;
+
+//次要颜色
+@second-color: #FAAD14;
+
+//辅助颜色
+@assist-color: #CCE6FF;
+
+//列表背景色
+@list-bg: #fff;
+
+//列表高亮色 群组&通话记录
+@list-bg-hover: #DEEFFF;
+
+// 卡片背景色
+@card-bg:#F2F9FF;
+// 卡片颜色
+@card-bg-hover:#E6F1FC;
+// 卡片边框
+@card-border:#C0DEFD;
+
+// 卡片蓝
+@card-meet:#3F9FFF;
+
+// 通话记录高亮色&呼入队列高亮色
+@record-bg-hover:#D6EBFF;
+
+//白色
+@white-color: #fff;
+
+// 模块背景色
+@module-bg:#EDF2FA;
+
+// 通话背景色
+@call-bg:#EDEDED;
+// 通话中背景色
+@calling-bg:#D9ECFF;
+
+// 拨号豆颜色
+@dail-bg:#7FBFFF;
+
+// 人员详情
+@mem-card-bg:#F2F2F2;
+
+// 主号码背景
+@mem-main-bg:#FEEFD0;
+
+// 选中背景
+@cur-mem-bg:#FEF4E2;
+
+// 表格奇数背景
+@table-bg:#FAFAFA;
+
+// 表格删除字体颜色
+@table-del-font:#F0473A ;
+
+// 接收人背景
+@rec-bg:#E6F1FC;
+
+// 语音文件背景
+@audioFile-bg:#EFEFEF;
+@dailInput-bg:#F6F7F8;
+@switch-bg:#DAD7DB;
+@tree-border:#d9d9d9;
+@tree-hover:#EAF5FF;
+/********** 按钮 start *****************/
+
+// 主按钮色
+@btn-main:@main-color;
+// 失效按钮色
+@btn-invalid:#F5F5F5;
+// 按钮点击色
+@btn-click:@second-color;
+// 组呼通只失败按钮背景色
+@fail-bg:#FEEBEA;
+@fail-border:#FBC0BD;
+// 组呼通只失败按钮色
+@fail-color:#F04134;
+
+/********** end **********/
+
+
+/********* 分割线/边框色 start **********/
+
+//元素分割线  普通边框色
+@ele-divider: #F2F2F2;
+//模块分割线
+@module-divider: #D9D9D9;
+// list分割线（呼入队列）
+@list-divider:#EDEDED;
+// 人员详情 号码分割线
+@mem-divider:#EBEBEB;
+
+/********** end **********/
+
+
+/********** 文字 start **********/
+
+//常规文字
+@normal-font: #333333;
+//次要文字
+@second-font: #666666;
+//不重要文字
+@unimport-font: #999999;
+//反转文字
+@reversal-font: #fff;
+
+/********** end **********/
+
+
+/********** 图标 start **********/
+
+//重要图标
+@importance-ico: #666666;
+//次要图标
+@second-ico: #999999;
+//选中图标
+@select-ico: #0080FF;
+//失效图标
+@invalid-ico: #f5f5f5;
+
+/********** end **********/
+
+
+/********** 状态 start **********/
+
+//正常
+@normal: #0080FF;
+//成功
+@success: #52C41A;
+//警告
+@warm: #faad14;
+//严重
+@serious: #F5222D;
+// 转接
+@transfer:#1D303D;
+// 会议桌人员列表为空的背景色
+@meet-bg-none:#EDF0F5;
+// 设置主会场按钮背景颜色
+@main-meet-bg:#C2E2FF;
+
+/********** end **********/
+
+/********** 共用头部 start **********/
+//头部字体总颜色
+@header-font-color: #fff;
+//头部分割线颜色
+@grey-line-color: rgba(1, 1, 1, 0.1);
+//星期字体颜色
+@sub-font-color: #b1d9ff;
+//菜单选中样式
+@menu-selected-style: #fff;
+//右侧内容详情表格
+@content-detail-background: #eef7ff;
+/********** end **********/
+
+
+.borderRadius(@r:5px){
+    -webkit-border-radius: @r;
+    -moz-border-radius: @r;
+    border-radius: @r;
+}
+
+.boxShadow(@s){
+    -webkit-box-shadow: @s;
+    -moz-box-shadow:  @s;
+    box-shadow:  @s;
+}
+
+.trans(@time){
+    transition: all @time;
+    -webkit-transition: all @time;
+}
+

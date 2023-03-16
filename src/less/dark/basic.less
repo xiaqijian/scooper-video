@@ -1,0 +1,182 @@
+@charset "UTF-8";
+
+//全局主色
+@main-color: #177DDC;
+
+//次要颜色
+@second-color: #AA6215;
+
+//辅助颜色
+@assist-color: #004080;
+
+//列表背景色
+@list-bg: #262626;
+@right-bg:#141414;
+
+//列表高亮色 群组&通话记录
+@list-bg-hover: #177DDC;
+
+// 卡片背景色
+@card-bg:#0D0D0D;
+// 卡片颜色
+@card-bg-hover:#1A1A1A;
+// 卡片边框
+@card-border:#303030;
+@body-bg:#000000;
+
+// 卡片蓝
+@card-meet:#1765AD;
+
+// 通话记录高亮色&呼入队列高亮色
+@record-bg-hover:#262626;
+
+//白色
+@white-color: #fff;
+
+// 模块背景色
+@module-bg:#262626;
+
+// 通话背景色
+@call-bg:#000;
+// 通话中背景色
+@calling-bg:#15395B;
+
+// 拨号豆颜色
+@dail-bg:#1f1f1f;
+
+// 人员详情
+@mem-card-bg:#262626;
+
+// 主号码背景
+@mem-main-bg:#493622;
+
+// 选中背景
+@cur-mem-bg:#442A11;
+
+// 表格奇数背景
+@table-bg:#FAFAFA;
+
+// 表格删除字体颜色
+@table-del-font:#A61D24 ;
+
+// 接收人背景
+@rec-bg:#1A1A1A;
+@modal-bg:#141414;
+// 语音文件背景
+@audioFile-bg:#EFEFEF;
+@dailInput-bg:#1A1A1A;  //拨号盘输入框颜色
+@switch-bg:#303030;  //主副手柄切换背景
+@tree-border:#d9d9d9;
+@tree-hover:#093E60;
+
+/********** 按钮 start *****************/
+
+// 主按钮色
+@btn-main:@main-color;
+// 失效按钮色
+@btn-invalid:#4D4D4D;
+// 按钮点击色
+@btn-click:@second-color;
+// 组呼通只失败按钮背景色
+@fail-bg:#2A1215;
+@fail-border:#58181C;
+// 组呼通只失败按钮色
+@fail-color:#A61D24;
+
+/********** end **********/
+
+
+/********* 分割线/边框色 start **********/
+
+//元素分割线  普通边框色
+@ele-divider:#303030;
+//模块分割线
+@module-divider: #303030;
+// list分割线（呼入队列）
+@list-divider:#303030;
+// 人员详情 号码分割线
+@mem-divider:#303030;
+
+/********** end **********/
+
+
+/********** 文字 start **********/
+
+//常规文字
+@normal-font: #DEDEDE;
+//次要文字
+@second-font:#A6A6A6 ;
+//不重要文字
+@unimport-font: #9D9D9D;
+@place-font:#434343;  //placeholder字体样色
+//反转文字
+@reversal-font: #fff;
+
+/********** end **********/
+
+
+/********** 图标 start **********/
+
+//重要图标
+@importance-ico: #666666;
+//次要图标
+@second-ico: #999999;
+//选中图标
+@select-ico: #0080FF;
+//失效图标
+@invalid-ico: #f5f5f5;
+
+/********** end **********/
+
+
+/********** 状态 start **********/
+
+//正常
+@normal: #0080FF;
+//成功
+@success: #52C41A;
+//警告
+@warm: #faad14;
+//严重
+@serious: #A61D24;
+// 转接
+@transfer:#1D303D;
+// 会议桌人员列表为空的背景色
+@meet-bg-none:#1A1A1A;
+// 设置主会场按钮背景颜色
+@main-meet-bg:#C2E2FF;
+@ant-alert-bg:@dail-bg;
+@check-bg: #AA6215;
+/********** end **********/
+
+/********** 共用头部 start **********/
+//头部字体总颜色
+@header-font-color: #177DDC;
+//头部分割线颜色
+@grey-line-color: rgba(1, 1, 1, 0.1);
+//星期字体颜色
+@sub-font-color:#434343;
+//菜单选中样式
+@menu-selected-style: #fff;
+//右侧内容详情表格
+@content-detail-background: #eef7ff;
+/********** end **********/
+
+
+.borderRadius(@r:5px){
+    -webkit-border-radius: @r;
+    -moz-border-radius: @r;
+    border-radius: @r;
+}
+
+.boxShadow(@s){
+    -webkit-box-shadow: @s;
+    -moz-box-shadow:  @s;
+    box-shadow:  @s;
+}
+
+.trans(@time){
+    transition: all @time;
+    -webkit-transition: all @time;
+}
+

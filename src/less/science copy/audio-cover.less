@@ -1,0 +1,251 @@
+.page-content{
+    background: url('../../image/science/bg_repeat.png') @mem-card-bg;
+}
+.audio-wrap{
+    .left-core{
+        background: @body-bg;
+        .ant-tabs-nav{
+            .ant-tabs-tab{
+                color: @normal-second-font;
+            }
+            .ant-tabs-tab-active{
+                color: @main-color;
+            }
+        }
+        .onsel{
+            .group-list{
+                .group-name,.group-num{
+                    color: @white-color;
+                }
+            }
+        }
+    }
+    .main-wrap{
+        background: url('../../image/science/bg_repeat.png') @mem-card-bg;
+        .btn-wrap{
+            .signal-wrap{
+                .signal-btns{
+                    .btn-dis{
+                        border: 1px solid @normal-second-font;
+                    }
+                    .btn-normal{
+                        color: @reversal-font;
+                    }
+                }
+            }
+        }
+        .mem-list-wrap{
+            .list-header{
+                .list-operate{
+                    .edit-more,.check-more{
+                        .ant-alert{
+                            background-color: @ant-alert-bg !important;
+                            .ant-alert-message,.ant-alert-icon{
+                                color: @normal-font;
+                            }
+                        }
+                    }
+                }
+            }
+            .check-list{
+                background: @ant-alert-bg;
+                box-shadow: 0px -1px 4px rgba(0, 211, 243, 0.16);
+                .more-info span,.check-list-item .check-memname{
+                    background: @rec-bg;
+                }
+                .more-info .show-all{
+                    background: none;
+                }
+            }
+            .cur-select{
+                background-color: #283D47;
+            }
+        }
+    }
+    .right-wrap{
+        background: @body-bg;
+        .call-in-wrap .call-header .call-in-span,
+        .call-record-wrap .call-header .title,
+        .black-wrap .call-header .title{
+            color: @normal-second-font;
+        }
+        .call-record-wrap .search-wrap .date-search .divider-line{ 
+            color: @unimport-font;
+        }
+        .ant-table-tbody > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected) > td{
+            background: @list-bg-hover;
+        }
+    }
+}
+
+// 拨号盘
+.dail-modal{
+    background-color: @dail-bg;
+    .key-board li .extra-info{
+        color: @unimport-font;
+    }
+}
+// 人员详情
+.mem-detail-modal{
+    .ant-modal-content{
+        background-color: @dail-bg;
+    }
+    .mem-detail-wrap{
+        .mem-num{
+            .mem-type{
+                color: @unimport-font;
+            }
+            .mem-number{
+                color: @white-color;
+            }
+        }
+        .gray-unimp .ant-divider-horizontal{
+            background: @unimport-font;
+        }
+    }
+}
+.ant-modal-close{
+    color: @unimport-font;
+}
+.ant-badge-count{
+    background-color: @serious;
+    border-color: @serious;
+    color: @reversal-font;
+    box-shadow: none;
+}
+.transfer-wrap{
+    .transfer-title{
+        color: @second-font;
+    }
+    .transfer-info{
+        .transfer-search .ant-input-affix-wrapper input{
+            background-color: @mem-card-bg;
+            color: @unimport-font;
+            border-color:@normal-second-font;
+            &::placeholder{
+                color: @unimport-font;
+            }
+        }
+        .recent-title,.recent-name{
+            color: @second-font;
+        }
+        .recent-name{
+            background-color: @recent-list-bg;
+        }
+        .transfer-search{
+            .result-panel,.search-result-panel{
+                background: @mem-card-bg;
+                .ant-tabs{
+                    border: 1px solid @ele-divider;
+                }
+                .ant-tabs-bar{
+                    border-bottom-color: @ele-divider;
+                }
+                .ant-tabs-nav{
+                    color: @normal-second-font;
+                }
+                .core-list{
+                    border-right-color:@ele-divider ;
+                }
+                
+            }
+            .search-result-panel{
+                border: 1px solid @ele-divider;
+            }
+        }
+    }
+
+}
+// 组呼通知
+.group-modal{
+    textarea.ant-input{
+        background-color: @mem-card-bg;
+        border-color: @ele-divider;
+        color: @second-font;
+        &::placeholder{
+           color: @unimport-font;
+        }
+       
+    }
+    .content-row .add-templete{
+        background-color: @mem-card-bg;
+    }
+    .ant-modal-footer{
+        border-top-color: @ele-divider;
+        .ant-btn{
+            background-color: @btn-invalid;
+            color: @unimport-font;
+            border-color: @btn-invalid;
+        }
+        .ant-btn-primary {
+            background-color:@main-color;
+            color: @reversal-font;
+        }
+    }
+    .ant-form-item-label > label{
+        color: @main-color;
+    }
+    .record-table {
+        .ant-table-thead tr th{
+            background-color: @rec-bg;
+            color: @second-font;
+            border-color: @ele-divider;
+        }
+        .ant-table-tbody > tr > td{
+            border-color: @ele-divider;
+        }
+        .ant-table-row:hover,.ant-table-tbody > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected) > td{
+            background-color: @list-bg-hover;
+            
+        }
+    }
+    .record-info .fail-result,.record-info .all-result{
+        background-color: @dail-bg ;    
+    }
+    .record-info .onsel{
+        background-color: @main-color;
+        color: @reversal-font;
+    }
+    .cancel-send{
+        background-color: @btn-invalid;
+        color: @unimport-font;
+        border-color: @btn-invalid;
+    }
+    .refoward-btn {
+        background-color:@main-color;
+        color: @reversal-font;
+    }
+    
+}
+// 更多记录
+.more-modal{
+    .ant-input,.ant-calendar-range-picker-input,.ant-table-placeholder{
+        background-color: @body-bg;
+        border-color: @ele-divider;
+        &::placeholder,.ant-calendar-range-picker-separator{
+            color: @unimport-font;
+        }
+        color: @main-color;
+    }
+    tr.ant-table-expanded-row.ant-table-expanded-row-level-1,tr.ant-table-expanded-row{
+        background-color: @body-bg;
+    }
+    .search-btn{
+        background-color: @main-color;
+        color: @reversal-font;
+    }
+    .reset{
+        color: @main-color;
+    }
+    .ant-table-thead tr th{
+        background-color: @rec-bg;
+        color: @second-font;
+        border-color: @ele-divider;
+    }
+    .ant-table-tbody > tr > td{
+        border-color: @ele-divider;
+    }
+    .ant-table-row:hover,.ant-table-tbody > tr:hover:not(.ant-table-expanded-row):not(.ant-table-row-selected) > td{
+        background-color: @list-bg-hover;
+    }
+}

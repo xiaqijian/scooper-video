@@ -1,0 +1,381 @@
+.ant-btn{
+    border-color: @main-color;
+}
+.ant-message-notice-content{
+    background: @mem-card-bg;
+    color: @main-color;
+}
+.ant-message-info .anticon{
+    color: @main-color;
+}
+.ant-empty-description,.ant-tabs-tab-next,.ant-tabs-tab-prev,
+.ant-tabs-tab-btn-disabled, .ant-tabs-tab-btn-disabled:hover,
+.ant-tabs-tab-prev:hover, .ant-tabs-tab-next:hover{
+    color: @unimport-font;
+}
+.ant-dropdown-menu{
+    background: @body-bg;
+    color: @normal-second-font;
+}
+.ant-table-placeholder{
+    background: @body-bg;
+}
+.ant-dropdown-menu-item{
+    a{
+        color: @normal-second-font;
+        font-size: 1rem;
+    }
+    &:hover{
+        background: @list-bg-hover;
+        color: @white-color;
+    }
+}
+.ant-calendar-picker-icon,.ant-input-clear-icon{
+    color: @unimport-font;
+}
+.ant-input-affix-wrapper input{
+    background-color: @mem-card-bg;
+    color: @unimport-font;
+    border-color:@normal-second-font;
+    &::placeholder{
+        color: @unimport-font;
+    }
+}
+/*单选框样式覆盖*/
+.ant-radio-wrapper{
+    color: @second-ico;
+    &:hover{
+        color: @main-color;
+    }
+}
+.ant-radio-inner{
+    background-color: @dail-bg;
+    border-color: @main-color;
+}
+.ant-radio-checked{
+    .ant-radio-inner{
+        border-color: @main-color;
+        color: @main-color;
+        &::after{
+            background-color: @main-color;
+        }
+    }
+}
+.ant-radio-wrapper.ant-radio-wrapper-checked{
+    color: @main-color;
+}
+.ant-radio-disabled .ant-radio-inner{
+    border-color: @unimport-font !important;
+    color: @unimport-font;
+    background: @dail-bg;
+}
+.ant-radio-disabled + span{
+    color: @unimport-font !important;
+}
+
+.ant-modal-content,.ant-modal-header{
+    background-color: @dail-bg;
+}
+.ant-modal-header{
+    border-bottom: 1px solid @mem-divider;
+    .ant-modal-title{
+        color: @main-color;
+    }
+}
+.ant-tabs,.ant-tabs-bar,.ant-table-placeholder{
+    border-color: @ele-divider;
+}
+.ant-tabs-nav{
+    color: @normal-second-font;
+}
+.ant-tabs-nav .ant-tabs-tab-active,
+.ant-tabs-nav .ant-tabs-tab:hover,
+.ant-tree li .ant-tree-node-content-wrapper{
+    color: @main-color;
+}
+.search-user-dropdown.ant-select-dropdown,.search-meet-dropdown.ant-select-dropdown{
+    background: @body-bg;
+    .ant-select-dropdown-menu-item-group-title{
+        background-color: @module-bg;
+        color: @main-color;
+    }
+    .ant-select-dropdown-menu{
+        .ant-select-dropdown-menu-item{
+            .qz-name,.dept-name{
+                color: @normal-font;
+            }
+            .has-gray{
+                color: @second-font;
+            }
+        }
+    }
+}
+.ant-select-selection{
+    background-color: @dail-bg;
+    border-color: @ele-divider;
+}
+.ant-select-selection-selected-value{
+    color: @normal-font;
+}
+.ant-select-selection__placeholder, .ant-select-search__field__placeholder,.ant-select-arrow{
+    color: @unimport-font;
+}
+.ant-select-dropdown{
+    background: @body-bg;
+    .ant-select-dropdown-menu-item-group-title,.ant-select-dropdown-menu-item-selected,.ant-select-dropdown-menu-item-active{
+        background-color: @module-bg;
+        color: @main-color;
+    }
+    .ant-select-dropdown-menu{
+        .ant-select-dropdown-menu-item{
+            color: @unimport-font;
+        }
+    }
+    
+    .ant-select-dropdown-menu-item:hover,.ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled){
+        background-color: @list-bg-hover;
+    }
+}
+.ant-modal-confirm-body{
+    .ant-modal-confirm-title{
+        color: @main-color;
+    }
+} 
+.ant-modal-confirm-btns{
+    .ant-btn{
+        background-color: @btn-invalid;
+        color: @unimport-font;
+        border-color: @btn-invalid;
+    }
+    .ant-btn-primary {
+        background-color:@main-color;
+        color: @reversal-font;
+    }
+}
+
+// 日期
+.ant-calendar {
+    color: @normal-font;
+    background: @dail-bg;
+    border: none;
+
+    .ant-calendar-input {
+        color: @normal-font;
+        background-color: transparent;
+        border-color: @ele-divider;
+        transition: none;
+        &::placeholder{
+            color: @unimport-font;
+        }
+    }
+    .ant-calendar-header {
+        border-color: @ele-divider;
+        .ant-calendar-prev-year-btn,
+        .ant-calendar-next-year-btn,
+        .ant-calendar-prev-month-btn,
+        .ant-calendar-next-month-btn{
+            &::before,
+            &::after{
+                border-color: @normal-font;
+            }
+        }
+    }
+    .ant-calendar-footer {
+        border-color: @ele-divider;
+       
+        .ant-calendar-time-picker-btn{
+            color: @normal-font;
+        }
+        .ant-calendar-ok-btn {
+            color: @reversal-font;
+            background-color: @normal-font;
+            border-color: @normal-font;
+        }
+    }
+
+
+    .ant-calendar-picker-input {
+        
+        .ant-calendar-picker-icon {
+            color: @unimport-font;
+        }
+    }
+
+    .ant-calendar-range-middle,
+    .ant-calendar-prev-year-btn,
+    .ant-calendar-prev-month-btn,
+    .ant-calendar-year-select,
+    .ant-calendar-month-select,
+    .ant-calendar-header .ant-calendar-next-month-btn,
+    .ant-calendar-header .ant-calendar-next-year-btn {
+        color: @normal-font;
+    }
+
+    .ant-calendar-body {
+        border-top-color: @ele-divider;
+
+        .ant-calendar-date {
+            color: @normal-font;
+
+            &:hover {
+                background: @assist-color;
+            }
+        }
+
+        .ant-calendar-last-month-cell .ant-calendar-date,
+        .ant-calendar-next-month-btn-day .ant-calendar-date {
+            color: @second-font;
+        }
+
+        .ant-calendar-selected-day .ant-calendar-date {
+            background: @main-color;
+            color: @dail-bg;
+        }
+        .ant-calendar-today {
+            .ant-calendar-date {
+                &::before {
+                    border-color: @ele-divider;
+                }
+            }
+        }
+    }
+
+    &.ant-calendar-range .ant-calendar-in-range-cell:before {
+        background: @assist-color;
+    }
+
+    .ant-calendar-input-wrap {
+        border-bottom-color: @ele-divider;
+    }
+}
+// 年月选择器
+.ant-calendar-month {
+    .ant-calendar-month-panel {
+        background: @dail-bg;
+        color: @normal-font;
+
+        .ant-calendar-month-panel-header {
+            border-bottom: 1px solid @ele-divider;
+
+            .ant-calendar-month-panel-year-select,
+            .ant-calendar-month-panel-prev-year-btn,
+            .ant-calendar-month-panel-next-year-btn {
+                color: @normal-font;
+            
+            }
+        }
+    }
+
+    .ant-calendar-month-panel-month {
+        color: @normal-font;
+    }
+}
+// 年选择器
+.ant-calendar-year-panel {
+    background: @dail-bg;
+    color: @normal-font;
+
+    .ant-calendar-year-panel-header {
+        border-bottom: 1px solid @ele-divider;
+
+        .ant-calendar-year-panel-prev-decade-btn,
+        .ant-calendar-year-panel-decade-select,
+        .ant-calendar-year-panel-next-decade-btn{
+            color: @normal-font;
+            &:hover {
+                color: @normal-font;
+            }
+        }
+    }
+    .ant-calendar-year-panel-cell {
+        a {
+            color: @normal-font;
+        }
+
+        &.ant-calendar-year-panel-last-decade-cell, 
+        &.ant-calendar-year-panel-next-decade-cell {
+            a {
+                color: @second-font;
+            }
+        }
+
+        &:hover,
+        &.ant-calendar-year-panel-selected-cell {
+            a {
+                color: @dail-bg;
+                background: @main-color;
+
+            }
+        }
+    }
+}
+ // 时间选择
+ .ant-calendar-time{
+    .ant-calendar-time-picker-inner{
+        border-color:@ele-divider;
+    }
+    .ant-calendar-time-picker{
+        background: @dail-bg;
+    }
+    .ant-calendar-time-picker-select{
+        background: @dail-bg;
+        border-color: @ele-divider;
+        .ant-calendar-time-picker-select-option-selected{
+            color: @reversal-font;
+            background-color: @normal-font;
+            border-color: @normal-font;
+        }
+       
+    }
+    .ant-calendar-time-picker-combobox{
+        border-top-color: @ele-divider;
+    }
+    .ant-calendar-header{
+        .ant-calendar-ym-select{
+            .ant-calendar-day-select{
+                color: @normal-font;
+            }
+        }
+    }
+}
+
+// 时间范围选择
+.ant-picker-panel-container{
+    background: @dail-bg;
+    .ant-picker-header, .ant-picker-body {
+        color: @normal-font;
+        button{
+            color: @normal-font;
+        }
+    }
+    .ant-picker-header{
+        border-color: @ele-divider;
+    }
+    .ant-picker-body{
+        .ant-picker-content th, .ant-picker-cell-in-view, .ant-picker-cell{
+            color: @normal-font;
+        }
+    }
+    .ant-picker-panel{
+        border-color: @ele-divider;
+    }
+    .ant-picker-cell-inner{
+        &:hover{
+            background: @ele-divider;
+        }
+    }
+    // .ant-picker-cell-selected{
+    //     color: @reversal-font;
+    //     background-color: @normal-font;
+    //     border-color: @normal-font;
+    // }
+}
+.ant-picker-range-arrow::after{
+    border-color: @dail-bg;
+}
+.ant-calendar-time-picker-select li:hover{
+    background: @list-bg-hover;
+}
+.ant-calendar-range.ant-calendar-time .ant-calendar-time-picker-combobox{
+    border-color: @ele-divider;
+}

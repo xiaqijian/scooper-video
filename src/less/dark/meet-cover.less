@@ -1,0 +1,102 @@
+.meet-wrap{
+    ul{
+        .meet-sel,li:hover{
+            border-right: none;
+            color: @white-color;
+            .icon-meet{
+                background: url(../../image/dark/meet/icon_meeting_sel.png) no-repeat;
+            }
+            .meet-name,.meet-num{
+                color: @reversal-font;
+            }
+        }
+        li{
+            .meet-symbol,.main-meet{
+                background: #4597E3;
+                color: @reversal-font;
+                .main-meet-span{
+                    color: @reversal-font;
+                }
+            }
+            .main-meet{
+                height: 59px;
+                line-height: 59px;
+            }
+        }
+    }
+}
+.meet-desk-wrap{
+    .desk-wrap{ 
+        .desk-detail{
+            .desk-detail-wrap{
+                .meet-table{
+                    background: @meet-bg-none;
+                }
+                .meet-list-wrap{
+                    .meet-list{
+                        border: 1px solid @ele-divider;
+                    }
+                }
+            }
+        }
+    }
+} 
+// 大会议桌
+.big-meet-wrap{
+    .desk-detail{
+        .msg-wrap .msg-notify{
+            color: @sub-font-color;
+        }
+        .desk-detail-wrap{
+            .meet-table{
+                background: @meet-bg-none;
+                .meet-info{
+                    color: @reversal-font;
+                }
+                .meet-info-pre{
+                    .pre-wrap .pre-title{
+                        color: @reversal-font;
+                    }
+                }
+                .meet-prev-time{
+                    color: @second-font;
+                }
+            }
+            .meet-list-wrap{
+                .meet-list{
+                    border: 1px solid @ele-divider;
+                }
+            }
+           
+        }
+    }
+}
+// 平铺
+.desk-panel{
+    .msg-notify{
+        color: @sub-font-color !important;
+    }
+    .meet-list-panel{
+        color: @second-font;
+        .meet-list{
+            border: 1px solid @ele-divider;
+        }
+    }
+}
+.memDetail-wrap{
+    .meet-oper{
+        background: @right-bg;
+    }
+}
+// 新建/编辑会议弹框
+.add-meet-modal{
+    .add-meet-mem li{
+        color: @normal-font;
+    }
+}
+// 会议详情弹框
+.meet-detail-modal{
+    .meet-detail{
+        color: @normal-font;
+    }
+}

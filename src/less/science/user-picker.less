@@ -1,0 +1,36 @@
+.skin-modal{
+    color: @main-color;
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active{
+        color: @main-color;
+    }
+    .selectBox,.ant-modal-footer{
+        border-color: @ele-divider;
+        .ant-tree,.mem-item,.ant-input-affix-wrapper .ant-input-suffix{
+            color: @main-color;
+        }
+        
+        .ant-tree.ant-tree-directory > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper::before, .ant-tree.ant-tree-directory .ant-tree-child-tree > li.ant-tree-treenode-selected > span.ant-tree-node-content-wrapper::before,
+        .ant-tree.ant-tree-directory > li span.ant-tree-node-content-wrapper:hover::before, .ant-tree.ant-tree-directory .ant-tree-child-tree > li span.ant-tree-node-content-wrapper:hover::before,.ant-menu-item-selected,.ant-menu-item-active{
+            background: @list-bg-hover;
+        }
+        .ant-btn{
+            background: @btn-invalid;
+            border-color: @btn-invalid;
+            &:hover{
+                color: @reversal-font;
+            }
+        }
+        .ant-btn-primary{
+            background: @main-color;
+            color: @reversal-font;
+        }
+    }
+    .ant-tabs-nav-wrap,.ant-tabs .ant-tabs-top-content,.ant-tabs-bar,.selectLeft,.chosed-tip-text,.ant-menu-vertical,
+    ul.ant-menu.selectRight.skin-menu-basic.ele-divider.ant-menu-light.ant-menu-root.ant-menu-vertical{
+        border-color: @ele-divider;
+    }
+    .selectBox,.ant-menu{
+        background: @mem-card-bg;
+    }
+
+}

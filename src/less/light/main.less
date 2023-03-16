@@ -1,0 +1,1037 @@
+// 中间部分
+.main-wrap{
+    width: 58.8%;
+    height: 100%;
+    // 人员列表
+    .mem-list-wrap {
+        margin-top: 0.94rem;
+        margin-left: 1.25rem;
+        margin-right: 0.25rem;
+        border-bottom: 1px solid @module-divider;
+        height: calc(100% - 21.2rem);
+        .list-header{
+            height: 2rem;
+            .list-title{
+               color: @normal-font;
+               font-size: 1.125rem;
+               float: left; 
+               max-width: 175px;
+               display: inline-block;
+               overflow: hidden;
+               text-overflow: ellipsis;
+               white-space: nowrap;
+               &:focus{
+                   outline: none;
+                   background: @mem-card-bg;
+               }
+            }
+            .list-operate{
+                float: right;
+                color: @main-color;
+                margin-right: 20px;
+                font-size: 1rem;
+                .check-span{
+                    cursor: pointer;
+                    margin-right: 20px;
+                }
+                .check-more{
+                    // Alert提示框样式
+                    .ant-alert{
+                        position: absolute;
+                        top: 6px;
+                        left: 32%;
+                        width: 40rem;
+                        background-color: #fff !important;
+                        border: none !important;
+                        text-align: center;
+                        font-size: 1rem;
+                        box-shadow:0px 0px 6px rgba(0,0,0,0.3);
+                        .ant-alert-icon{
+                            left: 33%;
+                        }
+                    }
+                    float: left;
+                    .check-all{
+                        margin-right: 15px;
+                        cursor: pointer;
+                        .icon-checkAll{
+                            display: inline-block;
+                            width: 16px;
+                            height: 16px;
+                            background: url(../../image/audio/btn_checkAll.png) no-repeat;
+                            line-height: 21px;
+                            vertical-align: middle;
+                            margin-top: -2px;
+                            margin-right: 5px;
+                        }
+                        .icon-checkAllSel{
+                            width: 20px;
+                            height: 20px;
+                            background: url(../../image/audio/icon_select.png) no-repeat;
+                        }
+                    }
+                    .cancel-check{
+                        margin-right: 15px;
+                        cursor: pointer;
+                    }
+                }
+                .edit-more{
+                    display: inline-block;
+                    .ant-alert{
+                        position: absolute;
+                        top: 0;
+                        left: 32%;
+                        width: 40rem;
+                        background-color: #fff !important;
+                        border: none !important;
+                        text-align: center;
+                        font-size: 1rem;
+                        box-shadow:0px 0px 6px rgba(0,0,0,0.3);
+                        .ant-alert-icon{
+                            left: 30%;
+                        }
+                    }
+                }
+                .icon-check{
+                    width: 20px;
+                    height: 13px;
+                    margin-right: 5px;
+                    display: inline-block;
+                    background:url(../../image/audio/btn_batch.png) no-repeat;
+                }
+                .edit-span{
+                    cursor: pointer;
+                }
+                .icon-edit,.icon-edit-sel{
+                    width: 15px;
+                    height: 18px;
+                    vertical-align: middle;
+                    margin-right: 5px;
+                    display: inline-block;
+                    background: url(../../image/audio/btn_edit.png) no-repeat;
+                }
+                .edit-complete{
+                    cursor: pointer;
+                    color: @second-color;
+                    .icon-edit-sel{
+                        background: url(../../image/audio/btn_edit_sel.png) no-repeat;
+                    }
+                }
+                
+            }
+        }
+        .mem-list{
+            clear: both;
+            height: calc(100% - 3rem);
+            overflow-y: auto;
+            .mem-item{
+                width: calc((100% - 2rem) / 5);
+                height: calc((100% - 1.5rem) / 3);
+                float: left;
+                margin-right: 0.3rem;
+                margin-bottom: 0.5rem;
+                cursor: pointer;
+                .mem-item-in{
+                    width: 95%;
+                    height: 93%;
+                    margin-left: 0.3125rem;
+                    margin-top: 0.3125rem;
+                    position: relative;
+                    background: @card-bg-hover;
+                    border: 1px solid  @card-border;
+                    border-radius: 4px;
+                }
+                .mem-none{
+                    border: none;
+                    background: @card-bg
+                }
+                .none-add{
+                    background: url(../../image/audio/mem_add.png) no-repeat center @card-bg-hover;
+                   .icon-wrap{
+                       .icon-detail{
+                           background: none;
+                       }
+                   }
+                   .del-wrap{
+                       .icon-delete{
+                           background: none;
+                        }
+                   }
+                }
+                .mem-name{
+                    color: @normal-font;
+                    font-size:1.5rem;
+                    text-align: center;
+                    font-family:Microsoft YaHei;
+                    font-weight:400;
+                    padding-top: 33px;
+                    width: 100%;
+                    span{
+                        text-align: center;
+                        display: inline-block;
+                        width: 94%;
+                    }
+                }
+                .dept-name{
+                    color: @second-font;
+                    text-align: center;
+                    margin-top: 5px;
+                    span{
+                        text-align: center;
+                        display: inline-block;
+                        width: 95%;
+                    }
+                }
+                .icon-wrap{
+                    position: absolute;
+                    width: 11%;
+                    height: 13%;
+                    right: 0.1875rem;
+                    top: 0.625rem;
+                    .icon-detail{
+                        width: 100%;
+                        height: 100%;
+                        margin-right: 0.3125rem;
+                        display: inline-block;
+                        background: url(./../../image/audio/icon_detail.png) no-repeat;
+                    }
+                }
+                .del-wrap{
+                    position: absolute;
+                    width: 11%;
+                    height: 13%;
+                    right: -0.74rem;
+                    top: -0.35rem;
+                    .icon-delete{
+                        width: 100%;
+                        height: 100%;
+                        display: inline-block;
+                        background: url(../../image/audio/mem_delete.png) no-repeat;
+                    }
+                }
+                .type-wrap{
+                    position: absolute;
+                    width: 11%;
+                    height: 15%;
+                    right: 0.3125rem;
+                    top: 6.7rem;
+                    .icon-videoType{
+                        width: 100%;
+                        height: 100%;
+                        display: inline-block;
+                        background: url(../../image/audio/icon_sp.png) no-repeat;
+                    }
+                }
+                .icon-checked-wrap{
+                    position: absolute;
+                    width: 14%;
+                    height: 16%;
+                    left: 0.65rem;
+                    top: 0.625rem;
+                    .icon-checked{
+                        width: 100%;
+                        height: 100%;
+                        display: inline-block;
+                        background: url(../../image/audio/icon_select.png) no-repeat;
+                    }
+                }
+                // 振铃 
+                .btn-ring{
+                    background: url(../../image/audio/icon_ring.png) no-repeat center center @main-color;
+                    background-size: 34%;
+                    opacity: 0.75;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                       color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+                // 预振铃
+                .btn-waiting{
+                    background: url(../../image/audio/icon_waiting.png) no-repeat center @card-meet;
+                    background-size: 37%;
+                    opacity: 0.85;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                       color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+                // 监控振铃
+                .btn-monitorRing{
+                    background: url(../../image/audio/icon_ring.png) no-repeat center center @second-color;
+                    background-size: 34%;
+                    opacity: 0.75;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                       color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+                // 保持 放音
+                .btn-music{
+                    background: url(../../image/audio/icon_keep.png) no-repeat center @card-meet;
+                    background-size: 34%;
+                    opacity: 0.85;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                       color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+                // 转接中
+                .btn-transfering,.btn-transfer{
+                    background: url(../../image/audio/icon_transfer.png) no-repeat center @card-meet;
+                    background-size: 51%;
+                    opacity: 0.85;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                       color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+                //转接成功   .btn-transfer
+                
+                // 监听
+                .btn-monitor{
+                    background: url(../../image/audio/icon_jt.png) no-repeat center @card-meet;
+                    background-size: 42%;
+                    opacity: 0.85;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                       color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+                .btn-answer{
+                    background: url(../../image/audio/icon_answer.png) no-repeat center @card-meet;
+                    background-size: 37%;
+                    opacity: 0.85;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                       color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+                // 会议中
+                .btn-meet{
+                    background: url(../../image/audio/icon_meeting.png) no-repeat center @card-meet;
+                    background-size: 47%;
+                    opacity: 0.85;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                    color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+                // 强插
+                .btn-breakin{
+                    background: url(../../image/audio/icon_qc.png) no-repeat center @card-meet;
+                    background-size: 45%;
+                    opacity: 0.85;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                    color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+                // 双方通话
+                .btn-doubletalk{
+                    background: url(../../image/audio/icon_call.png) no-repeat center @card-meet;
+                    background-size: 35%;
+                    opacity: 0.85;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                    color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+                // 别人通话
+                .btn-monitoranswer{
+                    background: url(../../image/audio/icon_call.png) no-repeat center @second-color;
+                    background-size: 34%;
+                    opacity: 0.75;
+                    border: none;
+                    .mem-name,
+                    .dept-name{
+                    color: @white-color;
+                    }
+                    .icon-wrap{
+                        .icon-detail{
+                            background: url(./../../image/audio/icon_detail_sel.png) no-repeat;
+                        }
+                    }
+                }
+            } 
+            .mem-sel{
+                background-image: url("../../image/audio/icon_left_up.png"),
+                url("../../image/audio/icon_right_up.png"),
+                url("../../image/audio/icon_left_down.png"),
+                url("../../image/audio/icon_right_down.png");
+                background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+                background-position: top left, top right, bottom left, bottom right;
+            }
+            
+            
+        }
+        .cur-select{
+            position: absolute;
+            bottom: 24.7rem;
+            box-shadow:0px -6px 10px rgba(0,0,0,0.06);
+            width: 58.8%;
+            left: 20.2%;
+            line-height: 3.1875rem;
+            padding: 0 1.25rem;
+            display: flex;
+            justify-content: center;
+            background: @cur-mem-bg;
+            span{
+                font-size: 1rem;
+                color: @second-color
+            }
+            .icon-cur-select{
+                width: 1.25rem;
+                height: 1.25rem;
+                display: inline-block;
+                margin-top: 0.94rem;
+                background:url(../../image/audio/icon-mem-select.png) no-repeat;
+            }
+            .select-name{
+                font-size: 1.125rem;
+                max-width: 30%;
+                margin: 0 0.57rem 0 0.75rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .select-deptName{
+                margin-right: 0.5rem;
+                max-width: 30%;
+                display: inline-block;
+            }
+            .select-status{
+                margin-right: 2.5rem;
+            }
+        }
+        .check-list{
+            position: absolute;
+            bottom: 24.7rem;
+            box-shadow: 0px -6px 10px rgba(0,0,0,0.16);
+            width: 58.8%;
+            left: 20.2%;
+            line-height: 3.1875rem;
+            padding: 0 1.25rem;
+            display: flex;
+            background: @white-color;
+            span{
+                color: @normal-font;
+                font-size: 1.125rem;
+            }
+            .check-list-item{
+                width: 78%;
+            }
+            .check-length{
+                width: 10%;
+                display: inline-block;
+                color: @second-font;
+            }
+            .edit-check,.edit-check-complete{
+                float: right;
+                font-size: 1rem;
+                color: @main-color;
+                text-align: center;
+                cursor: pointer;
+                position: fixed;
+                right: 22.5%;
+            }
+            .check-wrap{
+                display: inline-block;
+                position: relative;
+                .checklist-del{
+                    position: absolute;
+                    cursor: pointer;
+                    width: 18px;
+                    height: 18px;
+                    top: 5px;
+                    right: -6px;
+                    display: inline-block;
+                    background: url(../../image/audio/mem_delete.png) no-repeat;
+                }
+            }
+            .check-memname{
+                border: 1px solid @list-divider;
+                // position: relative;
+                margin-left: 0.43rem;
+                border-radius: 2px;
+                white-space: nowrap;
+                width: 77px;
+                display: inline-block;
+                height: 30px;
+                line-height: 27px;
+                text-align: center;
+                vertical-align: middle;
+                
+            }
+            .more-info{
+                display: inline-block;
+                width: 8%;
+                span{
+                    border-radius: 2px;
+                    margin-right: 0.2rem;
+                    display: inline-block;
+                    position: relative;
+                    white-space: nowrap;
+                    width: 40px;
+                    display: inline-block;
+                    height: 30px;
+                    line-height: 18px;
+                    text-align: center;
+                    vertical-align: middle;
+                    border: 1px solid @list-divider;
+                }
+                .show-all{
+                    padding: 0.1875rem 0;
+                    font-size: 1rem;
+                    font-weight: 400;
+                    border: none;
+                    cursor: pointer;
+                    color: @main-color;
+                    vertical-align: inherit;
+                }
+            }
+            .more-info-edit{
+                width: 6%;
+                .check-list-edit,
+                .show-all{
+                    float: right;
+                    padding-right: 0.85rem;
+                    font-size: 1rem;
+                    font-weight: 400;
+                    border: none;
+                    cursor: pointer;
+                    color: @main-color;
+                }
+            }
+
+        }
+    }
+    .btn-wrap{
+        display: flex;
+    }
+    // 单呼
+    .signal-wrap{
+        padding-left: 1.25rem;
+        margin-top: 10px;
+        float: left;
+        width: 67.3%;
+        padding-right: 0.2rem;
+        .signal-name{
+            border-left: 3px solid @module-divider;
+            color: @second-font;
+            font-family:Microsoft YaHei;
+            font-weight:400;
+            font-size: 1rem;
+            padding-left: 10px;
+        }
+        .operate-wrap{
+            width: 99%;
+            height: 5.6rem;   
+            margin-top: 0.8rem;
+            position: relative;
+            .ant-switch{
+                position: absolute;
+                background: #DAD7DB;
+                top: 34px;
+                left: 45.5%;
+                min-width: 65px;
+                height: 30px;
+                line-height: 30px;
+                .ant-switch-inner{
+                    display: none;
+                }
+                &::after{
+                    width: 26px;
+                    height: 26px;
+                    font-size: 16px;
+                    line-height: 26px;
+                    background-color: @second-color;
+                    content: '主';
+                    color: @white-color;
+                }
+            }
+            .ant-switch-checked{
+                background: #DAD7DB;
+                &::after{
+                    background-color: @second-color;
+                    content: '主';
+                    color: @white-color;
+                }
+            }
+            .operate-info{
+                float: left;
+                color: @second-font;
+                line-height: 5.6rem;
+            }
+            .main-operate{
+                float: left;
+                width: 49.9%;
+                background: @call-bg;
+                height: 5.625rem;
+                .icon-mainOp{
+                    float: left;
+                    margin: 27px 20px 20px 20px;
+                    width: 45px;
+                    height: 37px;
+                    display: inline-block;
+                    background: url(../../image/audio/icon_sb_left.png) no-repeat;
+                }
+            }
+            .main-operate.main-talk,
+            .sub-operate.sub-talk{
+                background-color: @calling-bg;
+                .talk-memName{
+                    color: @normal-font;
+                    font-size: 1.5rem;
+                    margin-right:0.5rem ;
+                    display: inline-block;
+                    margin-top: 0.5rem;
+                    max-width: 40%;
+                }
+                .talk-dutyName{
+                    color: @second-font;
+                    font-size: 0.875rem;
+                    display: inline-block;
+                    max-width: 30%;
+                }
+                .icon-zdh{
+                    background: url(../../image/audio/btn_zdh.png) no-repeat;
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+                    margin-left: 20px;
+                    display: inline-block;
+                }
+                .talk-time{
+                    color: @main-color;
+                    font-size: 1.5rem;
+                    display: block;
+                }
+                .calling-audio,.calling-video{
+                    float: left;
+                    margin: 27px 20px 20px 20px;
+                    width: 2.19rem;
+                    height: 2.19rem;
+                    display: inline-block;
+                    background: url(../../image/audio/icon_voice.png) no-repeat;
+                }
+                .calling-video{
+                    width: 45px;
+                    background: url(../../image/audio/icon-videoing.png) no-repeat;
+                }
+            }
+            .sub-operate.sub-talk{
+                .talk-memName,.talk-time{
+                    margin-left: 54px;
+                }
+                .calling-audio,.calling-video{
+                    position: absolute;
+                    top: 3px;
+                    right: 87px;
+                }
+            }
+            .sub-operate{
+                float: right;
+                width: 49.9%;
+                height: 5.625rem;
+                background: @call-bg;
+                .dial-box{
+                    float: right;
+                    width: 13.2%;
+                    height: 5.625rem;
+                    border: none;
+                    border-top-left-radius: 0px;
+                    border-bottom-left-radius: 0px;
+                    background: url(../../image/audio/btn_bhp.png) no-repeat center @main-color;
+                }
+                .dial-box-sel{
+                    background-color: @second-color;
+                }
+                .icon-subOp{
+                    width: 45px;
+                    height: 37px;
+                    display: inline-block;
+                    background: url(../../image/audio/icon_sb_right.png) no-repeat;
+                    float: right;
+                    margin: 27px 20px 20px 20px;
+                }
+                .operate-info{
+                    float: right;
+                }
+            }
+            
+        }
+        .signal-btns{
+            margin-top: 1.2rem;
+            width: 100%;
+            button{
+                width: calc((100% - 2.82rem)/4);
+                height: 3.88rem;
+                background: @main-color;
+                font-size: 1.25rem;
+                color: @white-color;
+                margin-right: 0.7rem;
+                margin-bottom: 0.8rem;
+                &:hover{
+                    border: 1px solid @main-color;
+                }
+            }
+            .btn-noraml{
+                background: @main-color;
+                color: @white-color;  
+            }
+
+            .btn-dis{
+                background: @btn-invalid;
+                color: @unimport-font; 
+                &:hover{
+                    border: 1px solid @module-divider;
+                }
+            }
+            .btn-keep-take,.btn-normal-on,.btn-normal-tzly{
+                background-color: @second-color;
+                border: 1px solid @second-color;
+                &:hover{
+                    border: 1px solid @second-color;
+                }
+            }
+            .singal-hungUp{
+                background: @serious;
+                color: @white-color;
+                &:hover{
+                    border: 1px solid @serious;
+                }
+            }
+            i{
+                display: inline-block;
+                vertical-align: middle;
+                margin-top: -3px;
+                margin-right: 7px;
+            }
+            .icon-call{
+                width: 22px;
+                height: 22px;
+                background: url(../../image/audio/btn_call_nor.png) no-repeat;
+            }
+            .icon-call-dis{
+                width: 22px;
+                height: 22px;
+                background: url(../../image/audio/btn_call_dis.png) no-repeat;
+            } 
+            .icon-hungup{
+                width: 32px;
+                height: 32px;
+                background: url(../../image/audio/btn_gd_nor.png) no-repeat;
+            }
+            .icon-meet{
+                width: 33px;
+                height: 22px;
+                background: url(../../image/audio/btn_jrhy_nor.png) no-repeat;
+            }
+            .icon-meet-dis{
+                width: 33px;
+                height: 22px;
+                background: url(../../image/audio/btn_jrhy_dis.png) no-repeat;
+            }
+            .icon-one{
+                width: 27px;
+                height: 22px;
+                background: url(../../image/audio/btn_yht_nor.png) no-repeat;
+            }
+            .icon-one-dis{
+                width: 27px;
+                height: 22px;
+                background: url(../../image/audio/btn_yht_dis.png) no-repeat;
+            }
+            .icon-record{
+                width: 22px;
+                height: 24px;
+                background: url(../../image/audio/btn_ly_nor.png) no-repeat;
+            }
+            .icon-record-dis{
+                width: 22px;
+                height: 24px;
+                background: url(../../image/audio/btn_ly_dis.png) no-repeat;
+            }
+            .icon-record-on{
+                width: 22px;
+                height: 22px;
+                background: url(../../image/audio/btn_tzly_nor.png) no-repeat;
+            }
+            .icon-record-tzly{
+                width: 22px;
+                height: 22px;
+                background: url(../../image/audio/btn_tzly_nor.png) no-repeat;
+            }
+            .icon-keep{
+                width: 22px;
+                height: 22px;
+                background: url(../../image/audio/btn_bc_nor.png) no-repeat;
+            }
+            .icon-keep-dis{
+                width: 22px;
+                height: 22px;
+                background: url(../../image/audio/btn_bc_dis.png) no-repeat;
+            }
+            .icon-transfer{
+                width: 23px;
+                height: 19px;
+                background: url(../../image/audio/btn_zj_nor.png) no-repeat;
+            }
+            .icon-transfer-dis{
+                width: 23px;
+                height: 19px;
+                background: url(../../image/audio/btn_zj_dis.png) no-repeat;
+            }
+            .icon-breakin{
+                width: 23px;
+                height: 23px;
+                background: url(../../image/audio/btn_qc_nor.png) no-repeat;
+            }
+            .icon-breakin-dis{
+                width: 23px;
+                height: 23px;
+                background: url(../../image/audio/btn_qc_dis.png) no-repeat;
+            }
+            .icon-monitor{
+                width: 26px;
+                height: 22px;
+                background: url(../../image/audio/btn_jt_nor.png) no-repeat;
+            }
+            .icon-monitor-dis{
+                width: 26px;
+                height: 22px;
+                background: url(../../image/audio/btn_jt_dis.png) no-repeat;
+            }
+
+        }
+        
+    }
+    .ant-divider{
+        height: 17.7rem;
+        margin-top: 15px;
+    }
+    // 群组功能
+    .group-wrap{
+        float: right;
+        margin-top: 10px;
+        width: 32.5%;
+        padding-left: 0.8rem;
+        padding-right: 1.25rem;
+        .group-name{
+            border-left: 3px solid @module-divider;
+            color: @second-font;
+            font-family:Microsoft YaHei;
+            font-weight:400;
+            font-size: 1rem;
+            padding-left: 10px;
+        }
+        .btn-group{
+            width: 100%;
+            button{
+                width: calc((100% - 0.94rem)/2);
+                height: 3.19rem;
+                background: @main-color;
+                color: @white-color;
+                margin-bottom: 0.9rem;
+                font-size: 1.25rem;
+                border: none;
+                &:hover,&:focus{
+                    border: 1px solid @main-color;
+                }
+            }
+            .btn-dis,
+            .group-borad-dis,
+            .group-call-dis{
+                background: @btn-invalid;
+                color: @unimport-font; 
+                border: 1px solid @module-divider;
+                &:hover,&:focus{
+                    border: 1px solid @module-divider;
+                }
+            }
+            .group-call,
+            .group-dianming,
+            .group-msg,
+            .group-dianming-sel,
+            .group-call-sel,.group-call-dis,.group-msg-dis{
+                margin-right: 0.75rem;
+            }
+            .group-dianming-sel,
+            .group-lx-sel,
+            .group-call-sel,
+            .group-borad-sel{
+                background: @second-color;
+                color: @white-color;
+                &:hover,&:focus{
+                    border: 1px solid @second-color;
+                }
+            }
+            .group-msg-dis,.group-fax-dis{
+                background: @btn-invalid;
+                border: 1px solid @module-divider;
+                color: @unimport-font; 
+                &:hover{
+                    border: 1px solid @module-divider;
+                }
+            }
+            .group-notify{
+                width:100%;
+                margin-top: 0.8rem;
+                margin-right: 0;
+            }
+            i{
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .icon-group-notify{
+                width: 28px;
+                height: 22px;
+                margin-right: 7px;
+                background: url(../../image/audio/icon_zhtz.png) no-repeat;
+            }
+            .icon-group{
+                width: 23px;
+                height: 23px;
+                margin-right: 7px;
+                background: url(../../image/audio/icon_groupCall.png) no-repeat;
+            }
+            .icon-group-dis{
+                width: 23px;
+                height: 23px;
+                margin-right: 7px;
+                background: url(../../image/audio/icon_groupCall_dis.png) no-repeat;
+            }
+            .icon-board{
+                width: 24px;
+                height: 21px;
+                background: url(../../image/audio/icon_gb.png) no-repeat;
+                margin-right: 7px;
+            }
+            .icon-board-dis{
+                width: 24px;
+                height: 21px;
+                background: url(../../image/audio/btn_gb_dis.png) no-repeat;
+                margin-right: 7px;
+            }
+            .icon-dianming{
+                width: 22px;
+                height: 22px;
+                margin-right: 7px;
+                background: url(../../image/audio/icon_dianming.png) no-repeat;
+            }
+            .icon-lx{
+                width: 27px;
+                height: 26px;
+                background: url(../../image/audio/icon_lx.png) no-repeat;
+                margin-right: 7px;
+            }
+            .icon-msg{
+                width: 22px;
+                height: 17px;
+                margin-right: 7px;
+                background: url(../../image/audio/icon_msg.png) no-repeat;
+            }
+            .icon-msg-dis{
+                width: 22px;
+                height: 17px;
+                margin-right: 7px;
+                background: url(../../image/audio/btn_dx_dis.png) no-repeat;
+            }
+            .icon-fax-dis{
+                width: 22px;
+                height: 21px;
+                margin-right: 7px;
+                background: url(../../image/audio/btn_cz_dis.png) no-repeat;
+            }
+            .icon-fax{
+                width: 22px;
+                height: 21px;
+                margin-right: 7px;
+                background: url(../../image/audio/icon_fax.png) no-repeat;
+            }
+        }
+    }
+}
+.ant-notification-topRight{
+    right: 163px !important;
+    top: 101px !important;
+}
+// 全屏
+@media (min-height: 1020px) {
+    .main-wrap{
+        .mem-list-wrap{
+            .mem-list{
+                .mem-item{
+                    height: calc((100% - 2rem) / 4);
+                }
+                
+            }
+        }
+    }
+    .dail-modal{
+        top: 51vh !important;
+    }
+    .audio-modal{
+        top: 25vh !important;
+    }
+}
