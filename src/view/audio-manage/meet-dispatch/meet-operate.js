@@ -60,7 +60,7 @@ class MeetOperate extends Component {
    * 销毁会议
    */
   destoryMeet = async (conferenceId) => {
-    await meetapis.meetManagePrefix.deleteMeet({
+    let res = await meetapis.meetManagePrefix.deleteMeet({
       conferenceId
     })
     // message.success("撤销成功");
@@ -69,7 +69,7 @@ class MeetOperate extends Component {
    * 结束会议
    */
   endMeetHandle = async (conferenceId) => {
-    await meetapis.meetManagePrefix.endMeet({
+    let res = await meetapis.meetManagePrefix.endMeet({
       conferenceId
     })
   }
@@ -88,82 +88,115 @@ class MeetOperate extends Component {
   /**
    * 全体禁言
    */
-  allNoSpeak = (curMeet) => {
+  allNoSpeak = async (curMeet) => {
     let id = curMeet.id;
-    curMeet.attendees.map((item) => {
-      if (
-        (item.tel || item.memTel) &&
-        getTelStatus(item.tel || item.memTel) == "callst_meet"
-      ) {
-        let memMeetId = item.id || id;
-        window.scooper.meetManager.meetsObj.changeMemberLevel(
-          memMeetId,
-          item.tel || item.memTel,
-          "audience"
-        );
-      }
-    });
+    let res = await meetapis.meetOperatePrefix.setMeetOperate({
+      "conferenceId": id,
+      isMute: true
+    })
+    message.success('全体禁言')
+    // curMeet.attendees.map((item) => {
+    //   if (
+    //     (item.tel || item.memTel) &&
+    //     getTelStatus(item.tel || item.memTel) == "callst_meet"
+    //   ) {
+    //     let memMeetId = item.id || id;
+    //     window.scooper.meetManager.meetsObj.changeMemberLevel(
+    //       memMeetId,
+    //       item.tel || item.memTel,
+    //       "audience"
+    //     );
+    //   }
+    // });
   };
   /**
    * 全体发言
    */
-  allSpeak = (curMeet) => {
+  allSpeak = async (curMeet) => {
     let id = curMeet.id;
-    curMeet.attendees.map((item) => {
-      if (
-        (item.tel || item.memTel) &&
-        getTelStatus(item.tel || item.memTel) == "callst_meet"
-      ) {
-        let memMeetId = item.id || id;
-        window.scooper.meetManager.meetsObj.changeMemberLevel(
-          memMeetId,
-          item.tel || item.memTel,
-          "speak"
-        );
-      }
-    });
+    let res = await meetapis.meetOperatePrefix.setMeetOperate({
+      "conferenceId": id,
+      isMute: false
+    })
+    message.success('全体发言')
+
+    // curMeet.attendees.map((item) => {
+    //   if (
+    //     (item.tel || item.memTel) &&
+    //     getTelStatus(item.tel || item.memTel) == "callst_meet"
+    //   ) {
+    //     let memMeetId = item.id || id;
+    //     window.scooper.meetManager.meetsObj.changeMemberLevel(
+    //       memMeetId,
+    //       item.tel || item.memTel,
+    //       "speak"
+    //     );
+    //   }
+    // });
   };
   /**
    * 停止录音
    */
   stopRecord = (curMeet) => {
-    let id = curMeet.id;
-    window.scooper.meetManager.meetsObj.stopRecord(id);
+    // let id = curMeet.id;
+    // window.scooper.meetManager.meetsObj.stopRecord(id);
   };
   /**
    * 开始录音
    */
   startRecord = (curMeet) => {
-    let id = curMeet.id;
-    window.scooper.meetManager.meetsObj.startRecord(id);
+    // let id = curMeet.id;
+    // window.scooper.meetManager.meetsObj.startRecord(id);
   };
   /**
    * 会议解锁
    */
-  lock = (curMeet) => {
+  lock = async (curMeet) => {
     let id = curMeet.id;
-    window.scooper.meetManager.meetsObj.lock(id);
+    let res = await meetapis.meetOperatePrefix.setMeetOperate({
+      "conferenceId": id,
+      isLock: false
+    })
+    let curMeetobj = {
+      ...curMeet,
+      locked: false
+    }
+    this.props.setCurMeet(curMeetobj)
+    // window.scooper.meetManager.meetsObj.lock(id);
   };
   /**
    * 会议锁定
    */
-  unLock = (curMeet) => {
+  unLock = async (curMeet) => {
     let id = curMeet.id;
-    window.scooper.meetManager.meetsObj.unlock(id);
+    let res = await meetapis.meetOperatePrefix.setMeetOperate({
+      "conferenceId": id,
+      isLock: true
+    })
+
+
+    // window.scooper.meetManager.meetsObj.unlock(id);
   };
   /**
    * 取消放音
    */
-  cancelPlayVoice = (curMeet) => {
+  cancelPlayVoice = async (curMeet) => {
     let id = curMeet.id;
-    window.scooper.meetManager.meetsObj.stopPlayVoice(id);
+    let res = await meetapis.meetOperatePrefix.setMeetOperate({
+      "conferenceId": id,
+      isVoiceActive: false
+    })
   };
   /**
    * 会议放音
    */
-  playVoice = (curMeet) => {
+  playVoice = async (curMeet) => {
     let id = curMeet.id;
-    window.scooper.meetManager.meetsObj.startPlayVoice(id);
+    let res = await meetapis.meetOperatePrefix.setMeetOperate({
+      "conferenceId": id,
+      isVoiceActive: true
+    })
+    // window.scooper.meetManager.meetsObj.startPlayVoice(id);
   };
 
   render() {
@@ -175,142 +208,122 @@ class MeetOperate extends Component {
         window.scooper.dispatchManager.accountDetail ?
         window.scooper.dispatchManager.accountDetail.meetRecord :
         "";
-    return (<
-      div className="meet-operate" >
-      <
-      Button className="meet-jy"
+    console.log(curMeet);
+    return (<div className="meet-operate" >
+      <Button className="meet-jy" onClick={() => {
+        this.allNoSpeak(curMeet);
+      }
+      }>
+        <i className="icon-jy" > </i>全体禁言 </Button >
+      <Button className="meet-fy"
         onClick={
           () => {
-            this.allNoSpeak(curMeet);
+            this.allSpeak(curMeet);
           }
-        } >
-        <
-      i className="icon-jy" > < /i>全体禁言 < /
-      Button > <
-      Button className="meet-fy"
+        }>
+        <i className="icon-fy" > </i>全体发言 </Button>
+      {
+        meetStatus == 1 ? (
+          <Button className="meet-tzly" >
+            <i className="icon-ly" > </i>正在录音 </Button>
+        ) : //会场录音大开关关闭  ---> 手动录制
+          curMeet && JSON.stringify(curMeet) !== "{ }" && curMeet.onlinedata && curMeet.onlinedata.conferenceState.recordStatus === 1 ? (<Button className="meet-tzly"
             onClick={
               () => {
-                this.allSpeak(curMeet);
+                this.stopRecord(curMeet);
               }
-            } >
-            <
-      i className="icon-fy" > < /i>全体发言 < /
-      Button > {
-                meetStatus == 1 ? ( //会场录音大开关开启  ---> 自动录制
-                  <
-          Button className="meet-tzly" >
-                    <
-          i className="icon-ly" > < /i>正在录音 < /
-          Button >
-        ) : //会场录音大开关关闭  ---> 手动录制
-                      curMeet && JSON.stringify(curMeet) !== "{ }" && curMeet.recording ? ( <
-            Button className="meet-tzly"
-                        onClick={
-                          () => {
-                            this.stopRecord(curMeet);
-                          }
-                        } >
-                        <
-            i className="icon-ly" > < /i>停止录音 < /
-            Button >
-                          ) : ( <
-            Button className="meet-ly"
-                            onClick={
-                              () => {
-                                this.startRecord(curMeet);
-                              }
-                            } >
-                            <
-            i className="icon-ly" > < /i>会场录音 < /
-            Button >
-                              )
+            }>
+            <i className="icon-ly" > </i>停止录播</Button>
+          ) : (<Button className="meet-ly"
+            onClick={
+              () => {
+                this.startRecord(curMeet);
+              }
+            }>
+            <i className="icon-ly" > </i>会场录播 </Button>
+          )
       }
 
-                              {
-                                /* {curMeet && JSON.stringify(curMeet) !== '{}' && curMeet.recording ?
-                                                <Button className='meet-tzly' onClick={()=>{this.stopRecord(curMeet)}} ><i className='icon-ly'></i>停止录音</Button>
-                                                :
-                                                <Button className='meet-ly' onClick={()=>{this.startRecord(curMeet)}}><i className='icon-ly'></i>会场录音</Button>
-                                               } */
-                              } {
-                                curMeet && JSON.stringify(curMeet) !== "{}" && curMeet.locked ? (<
-          Button className="meet-js"
-                                  onClick={
-                                    () => {
-                                      this.unLock(curMeet);
-                                    }
-                                  } >
-                                  <
-          i className="icon-js" > < /i>会议解锁 < /
-          Button >
-                                    ) : ( <
-          Button className="meet-sd"
-                                      onClick={
-                                        () => {
-                                          this.lock(curMeet);
-                                        }
-                                      } >
-                                      <
-          i className="icon-sd" > < /i>会议锁定 < /
-          Button >
-                                        )
-      } {
-                                          curMeet && JSON.stringify(curMeet) !== "{}" && curMeet.playvoice ? (<
+      {
+        /* {curMeet && JSON.stringify(curMeet) !== '{}' && curMeet.recording ?
+                        <Button className='meet-tzly' onClick={()=>{this.stopRecord(curMeet)}} ><i className='icon-ly'></i>停止录音</Button>
+                        :
+                        <Button className='meet-ly' onClick={()=>{this.startRecord(curMeet)}}><i className='icon-ly'></i>会场录音</Button>
+                       } */
+      }
+      {
+        curMeet && JSON.stringify(curMeet) !== "{}" && curMeet.onlinedata && curMeet.onlinedata.conferenceState.lock ? (<Button className="meet-js"
+          onClick={
+            () => {
+              this.unLock(curMeet);
+            }
+          } >
+          <i className="icon-js" > </i>会议解锁 </Button>
+        ) : (<Button className="meet-sd"
+          onClick={
+            () => {
+              this.lock(curMeet);
+            }
+          }>
+          <i className="icon-sd" > </i>会议锁定 </Button>
+        )
+      }
+      {
+        curMeet && JSON.stringify(curMeet) !== "{}" && curMeet.onlinedata && curMeet.onlinedata.conferenceState.enableVoiceActive ? (<
           Button className="meet-qxfy"
-                                            onClick={
-                                              () => {
-                                                this.cancelPlayVoice(curMeet);
-                                              }
-                                            } >
-                                            <
+          onClick={
+            () => {
+              this.cancelPlayVoice(curMeet);
+            }
+          } >
+          <
           i className="icon-fangy" > < /i>取消放音 < /
           Button >
-                                              ) : ( <
+            ) : ( <
           Button className="meet-fangy"
-                                                onClick={
-                                                  () => {
-                                                    this.playVoice(curMeet);
-                                                  }
-                                                } >
-                                                <
+              onClick={
+                () => {
+                  this.playVoice(curMeet);
+                }
+              } >
+              <
           i className="icon-fangy" > < /i>会议放音 < /
           Button >
-                                                  )
+                )
       }
 
-                                                  {
-                                                    curMeet &&
-                                                      JSON.stringify(curMeet) !== "{}" &&
-                                                      (curMeet.conferenceTimeType == "EDIT_CONFERENCE" ||
-                                                        (curMeet.attendees &&
-                                                          curMeet.attendees.length == 0 &&
-                                                          !(
-                                                            curMeet.id == curMeet.subject ||
-                                                            curMeet.meetCreateId == curMeet.subject
-                                                          ) &&
-                                                          !(curMeet.meetCreateId == "default"))) ? (<
+                {
+                  curMeet &&
+                    JSON.stringify(curMeet) !== "{}" &&
+                    (curMeet.conferenceTimeType == "EDIT_CONFERENCE" ||
+                      (curMeet.attendees &&
+                        curMeet.attendees.length == 0 &&
+                        !(
+                          curMeet.id == curMeet.subject ||
+                          curMeet.meetCreateId == curMeet.subject
+                        ) &&
+                        !(curMeet.meetCreateId == "default"))) ? (<
             Button className="meet-destory"
-                                                            onClick={
-                                                              () => this.showDestoryConfirm(curMeet.id)
-                                                            } >
-                                                            <
+                          onClick={
+                            () => this.showDestoryConfirm(curMeet.id)
+                          } >
+                          <
             i className="icon-destory" > < /i>销毁会议 < /
             Button >
-                                                              ) : ( <
+                            ) : ( <
             Button className="meet-end"
-                                                                onClick={
-                                                                  () => {
-                                                                    this.showEndMeetConfirm(curMeet.id);
-                                                                  }
-                                                                } >
-                                                                <
+                              onClick={
+                                () => {
+                                  this.showEndMeetConfirm(curMeet.id);
+                                }
+                              } >
+                              <
             i className="icon-meetEnd" > < /i>结束会议 < /
             Button >
-                                                                  )
+                                )
       } <
-      /div>
-                                                                  );
+      /div>);
   }
 }
 
-                                                                  export default MeetOperate;
+                                export default MeetOperate;

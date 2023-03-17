@@ -11,6 +11,7 @@ import AddMember from "../../../../component/add-member";
 import { setMemTelMapCache } from '../../../../reducer/audio-handle-reducer'
 import { setAllMeetList, setMeetDetailList, setCurMeet, setEditRecord } from '../../../../reducer/meet-handle-reduce';
 import meetManager from "../../../../util/meet-manager";
+import { meetapis } from "../../../../api/meetapis";
 import { connect } from "react-redux";
 import moment from 'moment'
 
@@ -44,7 +45,8 @@ class AddMeetModal extends Component {
             addMeetMem: [], //参会人员列表
             memModalVisible: false,   //人员选择器弹框是否显示
             timeBegin: '',
-            timeEnd: ''
+            timeEnd: '',
+            editedata: []
         }
     }
 
@@ -96,11 +98,15 @@ class AddMeetModal extends Component {
      */
     getMemData = (memData) => {
         let { data } = this.props;
+        console.log(memData);
         if (data.id) {
             // 编辑情况
             if (memData.length > 0) {
                 curData.attendees = memData;
                 // curData.attendees = curData.attendees.concat(memData)
+                this.setState({
+                    editedata: [...curData.attendees]
+                })
             }
         } else {
             // 新增情况
@@ -125,12 +131,32 @@ class AddMeetModal extends Component {
     /**
      * 预约时间选定
      */
+    // timeOk = (value) => {
+    //     let a = value[0]
+    //     window.tim = value[0];
+    //     // let b = new Date().getTime();
+    //     let cur = new Date();
+    //     if ((value[0]._d && value[0]._d < cur) || (value[1]._d && value[1]._d < cur)) {
+    //         message.error("预约时间段有误");
+    //         this.setState({
+    //             timeBegin: "",
+    //             timeEnd: ""
+    //         })
+    //         this.props.form.setFieldsValue({ meetTime: "" })
+    //         return;
+    //     } else {
+    //         this.setState({
+    //             timeBegin: value[0].format('YYYY-MM-DD HH:mm:ss'),
+    //             timeEnd: value[1].format('YYYY-MM-DD HH:mm:ss')
+    //         })
+    //     }
+    // }
     timeOk = (value) => {
-        let a = value[0]
-        window.tim = value[0];
+        let a = value
+        window.tim = value;
         // let b = new Date().getTime();
         let cur = new Date();
-        if ((value[0]._d && value[0]._d < cur) || (value[1]._d && value[1]._d < cur)) {
+        if ((value._d && value._d < cur)) {
             message.error("预约时间段有误");
             this.setState({
                 timeBegin: "",
@@ -140,14 +166,18 @@ class AddMeetModal extends Component {
             return;
         } else {
             this.setState({
-                timeBegin: value[0].format('YYYY-MM-DD HH:mm:ss'),
-                timeEnd: value[1].format('YYYY-MM-DD HH:mm:ss')
+                timeBegin: value.format('YYYY-MM-DD HH:mm:ss'),
             })
         }
     }
     /**
      * 新建会议弹框确定
      */
+    localToUtc = (date) => {
+        const fmt = 'YYYY-MM-DD HH:mm:ss';
+        console.log(date);
+        return moment(date, fmt).utc().format(fmt) + ' UTC'
+    }
     modalOk = () => {
         let { timeBegin, timeEnd, addMeetMem } = this.state;
         let { data } = this.props;
@@ -155,31 +185,35 @@ class AddMeetModal extends Component {
         _this.props.form.validateFields((err, values) => {
             if (!err) {
                 let params = {
-                    accessCode: values.accessCode,
+                    // accessCode: values.accessCode,
                     conferenceTimeType: values.conferenceTimeType,
                     subject: values.subject,
                     guestPassword: values.guestPassword,
                     chairmanPassword: values.chairmanPassword,
-                    timeBegin: timeBegin,
-                    timeEnd: timeEnd,
+                    scheduleStartTime: timeBegin ? _this.localToUtc(timeBegin) : undefined,
                 }
 
                 if (data.id) {
                     // 编辑
-                    let paramMem = [];
-                    curData.attendees.map((da) => {
-                        paramMem.push((da.tel || da.memTel) + ',speak');
-                    })
 
-                    params.meetMembers = paramMem;
-                    params.id = data.id;
-                    if (!params.timeBegin) {
-                        params.timeBegin = curData.timeBegin
+                    let attendees = curData.attendees.map((item) => {
+                        return {
+                            account: item.memTel,
+                            name: item.memName,
+                            organizationName: item.deptName
+                        }
+                    })
+                    params.conferenceId = data.id;
+                    if (!params.scheduleStartTime) {
+                        params.scheduleStartTime = curData.scheduleStartTime
                     }
-                    if (!params.timeEnd) {
-                        params.timeEnd = curData.timeEnd
-                    }
-                    _this.editOk(params, (res) => {
+                    // if (!params.timeEnd) {
+                    //     params.timeEnd = curData.timeEnd
+                    // }
+                    _this.editOk({
+                        conference: params,
+                        attendees
+                    }, (res) => {
                         if (res.code != 0 || res.data.result == 'fail') {
                             if (res.message) message.error(res.message)
                         } else {
@@ -195,25 +229,30 @@ class AddMeetModal extends Component {
                         }
                     });
                 } else {
-                    let mems = [];
-                    addMeetMem.map((item) => {
-                        mems.push(item.memTel + ',speak');
-                    })
-                    params.meetMembers = mems;
-                    _this.addMeet(params, (res) => {
-                        if (res.code != 0 || res.data.result == 'fail') {
-                            if (res.message) message.error(res.message)
-                        } else {
-                            message.success('新建会议成功');
-                            let none = {}
-                            _this.props.setEditRecord({ ...none });
-                            _this.props.hidePop('addMeetVisible');
-                            if (params.conferenceTimeType != 'EDIT_CONFERENCE') {
-                                addMeetMem.map((item) => {
-                                    meetManager.meetsObj.joinMember(res.data.id, item.memTel)
-                                })
-                            }
+
+                    let attendees = addMeetMem.map((item) => {
+                        return {
+                            account: item.memTel,
+                            name: item.memName,
+                            organizationName: item.deptName
                         }
+                    })
+                    // params.meetMembers = mems;
+                    _this.addMeet(params, attendees, (res) => {
+                        console.log(res);
+                        // if (res.code != 0) {
+                        //     if (res.message) message.error(res.message)
+                        // } else {
+                        message.success('新建会议成功');
+                        let none = {}
+                        _this.props.setEditRecord({ ...none });
+                        _this.props.hidePop('addMeetVisible');
+                        if (params.conferenceTimeType != 'EDIT_CONFERENCE') {
+                            addMeetMem.map((item) => {
+                                meetManager.meetsObj.joinMember(res.data.id, item.memTel)
+                            })
+                        }
+                        // }
                     });
                 }
             }
@@ -222,29 +261,45 @@ class AddMeetModal extends Component {
     /**
      * 新建会议
      */
-    addMeet = (params, resultCallback) => {
-        let meetMembers = params.meetMembers ? params.meetMembers.join(";") : '';
-        meetManager.meetsObj.createMeetDetail(params.subject, '', resultCallback, params.accessCode, params.conferenceTimeType,
-            params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
+    addMeet = async (params, attendees, resultCallback) => {
+
+        let res = await meetapis.meetManagePrefix.create({
+            conference: params,
+            attendees,
+            participants: []
+        })
+        console.log(res);
+        resultCallback(res)
+        // meetManager.meetsObj.createMeetDetail(params.subject, '', resultCallback, params.accessCode, params.conferenceTimeType,
+        //     params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
     }
     /**
      * 编辑时删除人员
      */
     editDele = (item) => {
         let { data } = this.props;
+        console.log(item);
         curData.attendees.map((mem, index) => {
-            if (mem.tel == item.tel) {
+            if (mem.memTel == item.memTel) {
                 curData.attendees.splice(index, 1);
             }
+        })
+        this.setState({
+            editedata: [...curData.attendees]
         })
     }
     /**
      * 确定编辑
      */
-    editOk = (params, resultCallback) => {
-        let meetMembers = params.meetMembers ? params.meetMembers.join(";") : '';
-        meetManager.meetsObj.editMeet(params.id, params.subject, resultCallback, params.accessCode, params.conferenceTimeType,
-            params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
+    editOk = async (params, resultCallback) => {
+        console.log(params);
+        let res = await meetapis.meetManagePrefix.updateMeet(
+            params
+        )
+        console.log(res);
+        // let meetMembers = params.meetMembers ? params.meetMembers.join(";") : '';
+        // meetManager.meetsObj.editMeet(params.id, params.subject, resultCallback, params.accessCode, params.conferenceTimeType,
+        //     params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
 
     }
 
@@ -259,8 +314,12 @@ class AddMeetModal extends Component {
                 if (item.tel || item.memTel) {
                     let tel = item.tel || item.memTel;
                     item.orgMemId = memTelMapCache[tel] ? memTelMapCache[tel].id : '';
-                    item.memTel = tel
+                    item.memTel = item.account || item.item.memTel
+                    item.memName = item.name || item.memName
                 }
+            })
+            this.setState({
+                editedata: [...curData.attendees]
             })
         }
     }
@@ -268,8 +327,8 @@ class AddMeetModal extends Component {
     render() {
         let { visible, data } = this.props;
         const { getFieldDecorator } = this.props.form;
-        let { isShowDatePicker, addMeetMem, addMeetMemVisible } = this.state
-
+        let { isShowDatePicker, addMeetMem, addMeetMemVisible, editedata } = this.state
+        console.log(curData.attendees);
         return (
             <Modal
                 title={data.id ? '编辑会议' : '新建会议'}
@@ -291,12 +350,12 @@ class AddMeetModal extends Component {
                     </Form.Item>
                     {data.id ?
                         // 编辑会场
-                        data.accessCode && <Form.Item label="会场号">
-                            {getFieldDecorator("accessCode", {
-                                initialValue: data.accessCode,
+                        data.duration && <Form.Item label="会议时长">
+                            {getFieldDecorator("duration", {
+                                initialValue: data.duration,
                                 rules: [
                                     !(data.id && (data.meetCreated == 'default' || data.id == data.subject || data.meetCreated == data.subject)) && { pattern: /^[0-9]*$/, message: "请输入数字" },
-                                    { required: true, message: "请输入会场号！" }
+                                    { required: true, message: "请输入会议时长！" }
                                 ]
                             })(<Input
                                 disabled={(data.id && (data.meetCreated == 'default' || data.id == data.subject || data.meetCreated == data.subject)) ? true : ''}
@@ -304,12 +363,12 @@ class AddMeetModal extends Component {
                         </Form.Item>
                         :
                         // 新建会场
-                        <Form.Item label="会场号">
-                            {getFieldDecorator("accessCode", {
-                                initialValue: '',
+                        <Form.Item label="会议时长">
+                            {getFieldDecorator("duration", {
+                                initialValue: '120',
                                 rules: [
-                                    !(data.id && (data.meetCreated == 'default' || data.id == data.subject || data.meetCreated == data.subject)) && { pattern: /^[0-9]*$/, message: "请输入数字" },
-                                    { required: true, message: "请输入会场号！" }
+                                    !(data.id && (data.meetCreated == 'default' || data.id == data.subject || data.meetCreated == data.subject)) && { pattern: /^[0-9]*$/, message: "请输入数字，单位分钟" },
+                                    { required: true, message: "请输入会议时长！单位分钟" }
                                 ]
                             })(<Input autoComplete="off" />)}
                         </Form.Item>
@@ -348,7 +407,7 @@ class AddMeetModal extends Component {
                                 initialValue: (curData.timeBegin && [moment(curData.timeBegin, "YYYY-MM-DD HH:mm:ss"),
                                 moment(curData.timeEnd, "YYYY-MM-DD HH:mm:ss")]) || '',
                             })
-                                (<RangePicker showTime format="YYYY-MM-DD HH:mm:ss" onChange={this.timeOk} />)}
+                                (<DatePicker showTime format="YYYY-MM-DD HH:mm:ss" onChange={this.timeOk} />)}
                         </Form.Item>
                     }
                     {!data.id && <Form.Item label="参会人员">
@@ -362,7 +421,7 @@ class AddMeetModal extends Component {
                                 {addMeetMem && addMeetMem.map((item, index) => {
                                     return (
                                         <li key={`addMem-${index}`}>
-                                            <span className='meet-name over-ellipsis'>{item.name}</span>
+                                            <span className='meet-name over-ellipsis'>{item.memName}</span>
                                             <span className='meet-memTel over-ellipsis'>{item.memTel}</span>
                                             <i className='meet-mem-del' onClick={() => { this.delMeetMem(item) }}></i>
                                         </li>
@@ -382,11 +441,11 @@ class AddMeetModal extends Component {
                                         <i className='add-meet-icon'></i>添加</span>
                                 }
                                 <ul className={`${(data.id && data.conferenceTimeType == 'EDIT_CONFERENCE') ? '' : 'no-edit'}`}>
-                                    {curData.attendees.length > 0 && curData.attendees.map((item, index) => {
+                                    {curData.attendees.length > 0 && editedata.map((item, index) => {
                                         return (
                                             <li key={`addMem-${index}`}>
-                                                <span className='meet-name over-ellipsis'>{item.name || item.attendees}</span>
-                                                <span className='meet-memTel over-ellipsis'>{item.tel || item.memTel}</span>
+                                                <span className='meet-name over-ellipsis'>{item.memName || item.name}</span>
+                                                <span className='meet-memTel over-ellipsis'>{item.memTel || item.account}</span>
                                                 {(data.id && data.conferenceTimeType == 'EDIT_CONFERENCE') ?
                                                     <i className='meet-mem-del' onClick={() => { this.editDele(item) }}></i> : ''
                                                 }

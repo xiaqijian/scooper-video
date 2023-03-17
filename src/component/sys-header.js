@@ -110,20 +110,20 @@ class SysHeader extends PureComponent {
     // 模式2下
     itemClick = (item) => {
         let { navArr } = this.props;
-        if (item.key) {
-            navArr.forEach(element => {
-                if ($("#nav-" + element.key).hasClass("checked-style")) {
-                    $("#nav-" + element.key).removeClass("checked-style")
-                }
-            });
-            $("#nav-" + item.key).addClass("checked-style");
+        // if (item.key) {
+        //     navArr.forEach(element => {
+        //         if ($("#nav-" + element.key).hasClass("checked-style")) {
+        //             $("#nav-" + element.key).removeClass("checked-style")
+        //         }
+        //     });
+        //     $("#nav-" + item.key).addClass("checked-style");
 
-            if (!$(".iframe-" + item.key).attr("src")) {
-                $(".iframe-" + item.key).attr("src", item.url);
-            }
-            $(".content-fream").hide();
-            $(".iframe-" + item.key).show();
-        }
+        //     if (!$(".iframe-" + item.key).attr("src")) {
+        //         $(".iframe-" + item.key).attr("src", item.url);
+        //     }
+        //     $(".content-fream").hide();
+        //     $(".iframe-" + item.key).show();
+        // }
     }
     /**
      * 投屏按钮点击

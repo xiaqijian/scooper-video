@@ -150,7 +150,10 @@ class MeetNav extends Component {
     let { meetDetailList } = this.props;
     const { id } = listItem;
     let res = await meetapis.meetManagePrefix.getMeetInfo({ conferenceId: id })
-    console.log(res);
+    let getMeetingDetail = await meetapis.meetManagePrefix.getMeetingDetail({ conferenceId: id })
+    console.log(res, getMeetingDetail);
+    let listParticipantsres = await meetapis.meetManagePrefix.listParticipants({ conferenceId: id })
+    console.log(listParticipantsres);
     meetDetailList.map((item, index) => {
       if (item.id == listItem.id) {
         item.isSetMain = 1;
@@ -159,7 +162,20 @@ class MeetNav extends Component {
       }
     });
     listItem.isSetMain = 1;
-    listItem.attendees = res.data.attendees || [];
+    let lists = []
+    res.data.attendees.map((item) => {
+      listParticipantsres.content.map(items => {
+        if (item.uri === items.generalParam.uri) {
+          lists.push({
+            ...item,
+            ...items,
+          })
+        }
+      })
+    })
+    listItem.attendees = lists || [];
+    listItem.onlinedata = getMeetingDetail;
+    listItem.content = listParticipantsres.content;
     fillMeetDetailList(meetDetailList, listItem);
   };
   setMainMeet = (listItem) => {
@@ -232,7 +248,7 @@ class MeetNav extends Component {
                   <span className="meet-name over-ellipsis">
                     {item.subject || item.id}
                   </span>
-                  <span className="meet-num">
+                  {/* <span className="meet-num">
                     {!item.active
                       ? "(预约" +
                       (item.attendees && item.attendees.length) +
@@ -240,7 +256,7 @@ class MeetNav extends Component {
                       : "(" +
                       ((item.attendees && item.attendees.length) || 0) +
                       "人)"}
-                  </span>
+                  </span> */}
                   {item.meetSymbol == "main" && (
                     <span className="meet-symbol">主会场</span>
                   )}

@@ -9,6 +9,7 @@ import MeetOper from "../meet-desk/meet-oper";
 import AddMember from "../../../../component/add-member";
 import MeetDetail from "../meet-desk/meet-detail-modal";
 import meetManager from "../../../../util/meet-manager";
+import { meetapis } from "../../../../api/meetapis";
 
 
 @connect(
@@ -64,44 +65,65 @@ class BigDesk extends Component {
     /**
      * 获取人员选择器 人员  返回的人员数据 
      */
-    getMemData = (memData) => {
+    getMemData = async (memData) => {
         let { curMeet } = this.props;
         let id = curMeet.id;
         let joinMembersArray = [];
         memData.map((item) => {
             joinMembersArray.push(item.memTel)
         })
+        let attendeeslist = memData.concat(curMeet.attendees)
+        let attendees = memData.map((item) => {
+            return {
+                account: item.memTel,
+                name: item.memName,
+                organizationName: item.deptName
+            }
+        })
         if (memData.length > 0 && curMeet.conferenceTimeType != 'EDIT_CONFERENCE') {
             // 向立即会议中拉人
-            window.scooper.meetManager.meetsObj.joinMembers(id, joinMembersArray)
+            let res = await meetapis.meetOperatePrefix.joinAttendees({
+                conferenceId: id,
+                attendees,
+            })
+            console.log(res);
+            // window.scooper.meetManager.meetsObj.joinMembers(id, joinMembersArray)
         }
         if (memData.length > 0 && curMeet.conferenceTimeType == 'EDIT_CONFERENCE') {
             // 向预约会议中拉人 相当于编辑 预约会议
-            let params = {
-                id: curMeet.id,
-                subject: curMeet.subject,
-                accessCode: curMeet.accessCode,
-                conferenceTimeType: curMeet.conferenceTimeType,
-                timeBegin: curMeet.timeBegin,
-                timeEnd: curMeet.timeEnd,
-                chairmanPassword: curMeet.chairmanPassword,
-                guestPassword: curMeet.guestPassword
-            }
-            let paramMem = [];
-            curMeet.attendees.map((da) => {
-                paramMem.push((da.tel || da.memTel) + ',speak');
-            })
-            memData.map((mem) => {
-                paramMem.push(mem.memTel + ',speak')
-            })
-            params.meetMembers = paramMem
-            this.editMeetBypre(params, (res) => {
-                if (res.code != 0 || res.data.result == 'fail') {
-                    if (res.message) message.error(res.message)
-                } else {
-                    message.success('添加成功')
+            let addattendees = attendeeslist.map((item) => {
+                return {
+                    account: item.memTel || item.account,
+                    name: item.memName || item.name,
+                    organizationName: item.deptName || item.organizationName
                 }
             })
+            const hash = {};
+            // 去重
+            const newArray = addattendees.reduce((item, next) => {
+                hash[next.account] ? '' : hash[next.account] = true && item.push(next);
+                return item;
+            }, [])
+            let params = {
+                conference: {
+                    conferenceId: id,
+                    conferenceTimeType: curMeet.conferenceTimeType,
+                    subject: curMeet.subject,
+                    guestPassword: curMeet.guestPassword,
+                    chairmanPassword: curMeet.chairmanPassword,
+                    scheduleStartTime: curMeet.scheduleStartTime,
+                    // timeEnd: timeEnd,
+                    duration: curMeet.duration,
+                },
+                attendees: newArray
+            }
+            this.editMeetBypre(params, attendees, (res) => {
+                if (res.code != 0 || res.data.result == "fail") {
+                    if (res.message) message.error(res.message);
+                } else {
+                    message.success("添加成功");
+                }
+            });
         }
         this.setState({
             addModalVisible: false
@@ -110,10 +132,15 @@ class BigDesk extends Component {
     /**
      * 编辑预约会议
      */
-    editMeetBypre = (params, resultCallback) => {
-        let meetMembers = params.meetMembers ? params.meetMembers.join(";") : '';
-        meetManager.meetsObj.editMeet(params.id, params.subject, resultCallback, params.accessCode, params.conferenceTimeType,
-            params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
+    editMeetBypre = async (params, resultCallback) => {
+        let res = await meetapis.meetManagePrefix.updateMeet({
+            ...params,
+
+        })
+        resultCallback(res)
+        // let meetMembers = params.meetMembers ? params.meetMembers.join(";") : '';
+        // meetManager.meetsObj.editMeet(params.id, params.subject, resultCallback, params.accessCode, params.conferenceTimeType,
+        //     params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
 
     }
     /**

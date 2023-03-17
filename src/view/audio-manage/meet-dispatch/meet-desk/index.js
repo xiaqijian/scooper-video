@@ -35,7 +35,10 @@ class MeetDesk extends Component {
       // this.props.setCurMeet(list)
       const { id } = list
       let res = await meetapis.meetManagePrefix.getMeetInfo({ conferenceId: id })
-      console.log(res);
+      let getMeetingDetailres = await meetapis.meetManagePrefix.getMeetingDetail({ conferenceId: id })
+      let listParticipantsres = await meetapis.meetManagePrefix.listParticipants({ conferenceId: id })
+      console.log(res, getMeetingDetailres);
+      console.log(listParticipantsres);
 
       let { meetDetailList } = this.props;
       meetDetailList.map((item, index) => {
@@ -45,8 +48,22 @@ class MeetDesk extends Component {
           item.isSetMain = 2;
         }
       });
+      let lists = []
+      res.data.attendees.map((item) => {
+        listParticipantsres.content.map(items => {
+          if (item.uri === items.generalParam.uri) {
+            lists.push({
+              ...item,
+              ...items,
+            })
+          }
+        })
+      })
       list.isSetMain = 1;
-      list.attendees = res.data.attendees || [];
+      list.onlinedata = getMeetingDetailres;
+      list.content = listParticipantsres.content;
+      list.attendees = lists;
+
       fillMeetDetailList(meetDetailList, list);
     }
   };

@@ -59,6 +59,15 @@ class AppRouter extends Component {
     if (this.props.location.pathname === "/") {
       this.props.history.push("/login");
     }
+    try {
+      setTimeout(() => {
+        document.getElementsByTagName('iframe')[0].style.display = 'none'
+
+      }, 1000);
+
+    } catch (error) {
+
+    }
     // this.loadConfig();
   }
   render() {

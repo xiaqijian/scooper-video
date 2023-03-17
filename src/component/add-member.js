@@ -25,8 +25,8 @@ class AddMember extends PureComponent {
      * @param memData 返回的人员数据
      */
     getMemData = (memData) => {
-        memData.map((item)=>{
-            if(!item.orgMemId){
+        memData.map((item) => {
+            if (!item.orgMemId) {
                 item.orgMemId = item.id
             }
         })

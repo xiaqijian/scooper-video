@@ -78,14 +78,23 @@ const instance = axios.create({
  * @param {{url: string, method: string, data: {[key: string]: string}}} options
  */
 const fetch = (options) => {
+    console.log(options);
     const {
         method = 'get', data = {}, url
     } = options
     switch (method.toLowerCase()) {
         case 'post':
             return instance.post(url, qs.stringify(data))
+        case 'delete':
+            return instance.delete(`${url}${!isEmpty(data) ? `&${qs.stringify(data)}` : ''}`)
         case 'postjson':
             return instance.post(url, data, {
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+        case 'put':
+            return instance.put(url, data, {
                 headers: {
                     'Content-type': 'application/json'
                 }
@@ -93,7 +102,7 @@ const fetch = (options) => {
         case 'postfile':
             return instance.post(url, data);
         default:
-            return instance.get(`${url}${!isEmpty(data)? `&${qs.stringify(data)}` : ''}`)
+            return instance.get(`${url}${!isEmpty(data) ? `&${qs.stringify(data)}` : ''}`)
     }
 }
 

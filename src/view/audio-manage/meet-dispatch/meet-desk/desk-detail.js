@@ -21,6 +21,7 @@ import MeetOper from "./meet-oper";
 import MeetDetail from "./meet-detail-modal";
 import AddMember from "../../../../component/add-member";
 import meetManager from "../../../../util/meet-manager";
+import { meetapis } from "../../../../api/meetapis";
 
 @connect((state) => state.meetHandle, {
   setMeetDetailList,
@@ -142,38 +143,58 @@ class DeskDetail extends Component {
   /**
    * 获取人员选择器 人员  返回的人员数据
    */
-  getMemData = (memData) => {
+  getMemData = async (memData) => {
     let { curMeets } = this.props;
     let id = curMeets.id;
     let joinMembersArray = [];
     memData.map((item) => {
       joinMembersArray.push(item.memTel);
     });
+    let attendeeslist = memData.concat(curMeets.attendees)
+    let attendees = memData.map((item) => {
+      return {
+        account: item.memTel,
+        name: item.memName,
+        organizationName: item.deptName
+      }
+    })
+    console.log(memData);
     if (memData.length > 0 && curMeets.conferenceTimeType != "EDIT_CONFERENCE") {
-      // 向立即会议中拉人
-      window.scooper.meetManager.meetsObj.joinMembers(id, joinMembersArray);
+      let res = await meetapis.meetOperatePrefix.joinAttendees({
+        conferenceId: id,
+        attendees,
+      })
+      console.log(res);
     }
     if (memData.length > 0 && curMeets.conferenceTimeType == "EDIT_CONFERENCE") {
-      // 向预约会议中拉人 相当于编辑 预约会议
+
+      let addattendees = attendeeslist.map((item) => {
+        return {
+          account: item.memTel || item.account,
+          name: item.memName || item.name,
+          organizationName: item.deptName || item.organizationName
+        }
+      })
+      const hash = {};
+      // 去重
+      const newArray = addattendees.reduce((item, next) => {
+        hash[next.account] ? '' : hash[next.account] = true && item.push(next);
+        return item;
+      }, [])
       let params = {
-        id: curMeets.id,
-        subject: curMeets.subject,
-        accessCode: curMeets.accessCode,
-        conferenceTimeType: curMeets.conferenceTimeType,
-        timeBegin: curMeets.timeBegin,
-        timeEnd: curMeets.timeEnd,
-        chairmanPassword: curMeets.chairmanPassword,
-        guestPassword: curMeets.guestPassword,
-      };
-      let paramMem = [];
-      curMeets.attendees.map((da) => {
-        paramMem.push((da.tel || da.memTel) + ",speak");
-      });
-      memData.map((mem) => {
-        paramMem.push(mem.memTel + ",speak");
-      });
-      params.meetMembers = paramMem;
-      this.editMeetBypre(params, (res) => {
+        conference: {
+          conferenceId: id,
+          conferenceTimeType: curMeets.conferenceTimeType,
+          subject: curMeets.subject,
+          guestPassword: curMeets.guestPassword,
+          chairmanPassword: curMeets.chairmanPassword,
+          scheduleStartTime: curMeets.scheduleStartTime,
+          // timeEnd: timeEnd,
+          duration: curMeets.duration,
+        },
+        attendees: newArray
+      }
+      this.editMeetBypre(params, attendees, (res) => {
         if (res.code != 0 || res.data.result == "fail") {
           if (res.message) message.error(res.message);
         } else {
@@ -188,20 +209,13 @@ class DeskDetail extends Component {
   /**
    * 编辑预约会议
    */
-  editMeetBypre = (params, resultCallback) => {
-    let meetMembers = params.meetMembers ? params.meetMembers.join(";") : "";
-    meetManager.meetsObj.editMeet(
-      params.id,
-      params.subject,
-      resultCallback,
-      params.accessCode,
-      params.conferenceTimeType,
-      params.timeBegin,
-      params.timeEnd,
-      params.chairmanPassword,
-      params.guestPassword,
-      meetMembers
-    );
+  editMeetBypre = async (params, attendees, resultCallback) => {
+    let res = await meetapis.meetManagePrefix.updateMeet({
+      ...params,
+
+    })
+    resultCallback(res)
+    console.log(res);
   };
   /**
    * 显示会议详情弹框
@@ -261,7 +275,7 @@ class DeskDetail extends Component {
               </span>
             </div>
           )}
-        {curMeets.id.indexOf("none") < 0 &&
+        {/* {curMeets.id.indexOf("none") < 0 &&
           curMeets.conferenceTimeType != "EDIT_CONFERENCE" && (
             <Button
               type="primary"
@@ -273,7 +287,7 @@ class DeskDetail extends Component {
             >
               手柄入会
             </Button>
-          )}
+          )} */}
 
         <div className="desk-detail-wrap">
           <div

@@ -19,7 +19,7 @@ export let meetapis = {
   meetManagePrefix: getServices(`${mpgwPrefix}`, getToken, {
     // 查询正在召开和待召开的会议列表
     reservedMeets: {
-      url: "/meet/reservedMeets?token=123456&pageNum=0&pageSize=10&username=zhzx&regionCode=340000",
+      url: "/meet/reservedMeets?token=123456&pageNum=0&pageSize=100&username=zhzx&regionCode=340000",
       type: "get",
       getResp: true
     },
@@ -37,18 +37,32 @@ export let meetapis = {
     },
     // 创建会议
     create: {
-      url: "/meet/create",
-      type: "post",
-      getResp: true
+      url: "/meet/create?&username=zhzx&regionCode=340000",
+      type: "postjson",
+    },
+    // 通过会议id获取会场列表
+    listParticipants: {
+      url: "/meet/listParticipants?&username=zhzx&regionCode=340000",
+      type: "postjson",
+    },
+    // 获取正在召开会议详情
+    getMeetingDetail: {
+      url: "/meet/getMeetingDetail?&username=zhzx&regionCode=340000",
+      type: "postjson",
+    },
+    // 修改会议
+    updateMeet: {
+      url: "/meet/updateMeet?&username=zhzx&regionCode=340000",
+      type: "put",
     },
     // 结束会议
     endMeet: {
-      url: "/meet/endMeet",
-      type: "post",
+      url: "/meet/endMeet?&username=zhzx&regionCode=340000",
+      type: "postjson",
     },
     // 删除会议
     deleteMeet: {
-      url: "/meet/deleteMeet",
+      url: "/meet/deleteMeet?&username=zhzx&regionCode=340000",
       type: "delete",
       getResp: true
     },
@@ -57,13 +71,23 @@ export let meetapis = {
   meetOperatePrefix: getServices(`${mpgwPrefix}`, getToken, {
     // 会议控制
     setMeetOperate: {
-      url: "/meet/setMeetOperate",
-      type: "post",
+      url: "/meet/setMeetOperate?username=zhzx&regionCode=340000",
+      type: "postjson",
     },
     // 添加与会人
     joinAttendees: {
-      url: "/meet/joinAttendees",
-      type: "post",
+      url: "/meet/joinAttendees?username=zhzx&regionCode=340000",
+      type: "postjson",
+    },
+    // 会场@控制@
+    participantsStatus: {
+      url: "/meet/participantsStatus?username=zhzx&regionCode=340000",
+      type: "postjson",
+    },
+    // delete会场@控制@
+    participants: {
+      url: "/meet/participants?username=zhzx&regionCode=340000",
+      type: "delete",
     },
   }),
   // 通讯录
