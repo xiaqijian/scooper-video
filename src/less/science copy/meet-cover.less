@@ -1,72 +1,94 @@
-.meet-desk-wrap,.big-meet-wrap,.demo-content{
+.meet-desk-wrap,
+.big-meet-wrap,
+.demo-content {
     background-color: @body-bg;
-    .desk-wrap{
-        .desk-detail{
-            .desk-detail-wrap{
-                .meet-table{
+
+    .desk-wrap {
+        .desk-detail {
+            .desk-detail-wrap {
+                .meet-table {
                     background-color: @calling-bg;
                 }
             }
         }
     }
-    .desk-detail .desk-detail-wrap .meet-table{
+
+    .desk-detail .desk-detail-wrap .meet-table {
         background-color: @calling-bg;
     }
 }
-.memDetail-wrap{
-    .meet-oper{
+
+.memDetail-wrap {
+    .meet-oper {
         background-color: @dail-bg;
-        li:hover{
+
+        li:hover {
             color: @white-color;
         }
     }
 }
-.meet-wrap{
+
+.meet-wrap {
     li {
-        &:hover{
+        &:hover {
             background: #103F6B;
         }
     }
-    .meet-sel{
-        background: #103F6B; 
+
+    .meet-sel {
+        background: #103F6B;
     }
 }
-.big-meet-wrap .desk-detail .meet-list-panel .mem-name-span{
+
+.big-meet-wrap .desk-detail .meet-list-panel .mem-name-span {
     color: @main-color;
 }
-.add-meet-modal,.meet-detail-modal{
-    .ant-input{
+
+.add-meet-modal,
+.meet-detail-modal {
+    .ant-input {
         background-color: @mem-card-bg;
         color: @unimport-font;
-        border-color:@normal-second-font;
-        &::placeholder{
+        border-color: @normal-second-font;
+
+        &::placeholder {
             color: @unimport-font;
         }
     }
-    .ant-calendar-range-picker-input::placeholder,.ant-calendar-range-picker-separator{
+
+    .ant-calendar-range-picker-input::placeholder,
+    .ant-calendar-range-picker-separator {
         color: @unimport-font;
     }
-    .ant-form-item-label > label{
+
+    .ant-form-item-label>label {
         color: @main-color;
     }
-    .ant-modal-footer{
+
+    .ant-modal-footer {
         border-color: @ele-divider;
-        .ant-btn{
+
+        .ant-btn {
             background: @btn-invalid;
             border-color: @btn-invalid;
-            &:hover{
+
+            &:hover {
                 color: @reversal-font;
             }
         }
-        .ant-btn-primary{
+
+        .ant-btn-primary {
             background: @main-color;
             color: @reversal-font;
         }
     }
-    .meet-detail{
+
+    .meet-detail {
         color: @second-font;
     }
-    .meet-memName,.meet-memTel{
+
+    .meet-name,
+    .meet-memTel {
         color: @second-font;
     }
 }

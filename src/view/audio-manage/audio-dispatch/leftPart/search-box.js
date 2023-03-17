@@ -8,17 +8,17 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { apis } from '../../../../util/apis';
-import { setGroupList, setDefaultKey, setMemMapCache, setCurSelectGroup, setSearchResult, setExpandedKeys, setSelectedKeys, setMemList ,setCurSelectCore} from '../../../../reducer/audio-handle-reducer'
+import { setGroupList, setDefaultKey, setMemMapCache, setCurSelectGroup, setSearchResult, setExpandedKeys, setSelectedKeys, setMemList, setCurSelectCore } from '../../../../reducer/audio-handle-reducer'
 import { changeLoading } from '../../../../reducer/loading-reducer'
 import { Select, message } from 'antd';
 import { debounce, isEmpty, uniqBy } from 'lodash';
-import { loadOrgMember, loadGroupMember, getDeptName} from '../../../../util/method';
+import { loadOrgMember, loadGroupMember, getDeptName } from '../../../../util/method';
 
 const { Option, OptGroup } = Select;
 
 @connect(
     state => state.audioHandle,
-    { setGroupList, setDefaultKey, setMemMapCache, setCurSelectGroup,setSearchResult, setExpandedKeys, setSelectedKeys, setMemList ,setCurSelectCore}
+    { setGroupList, setDefaultKey, setMemMapCache, setCurSelectGroup, setSearchResult, setExpandedKeys, setSelectedKeys, setMemList, setCurSelectCore }
 )
 @connect(
     state => state.loading,
@@ -53,7 +53,7 @@ class SearchBox extends PureComponent {
      * 搜索部门和人员（防抖）
      */
     fetchUser = debounce(searchVal => {
-        this.setState({ deptData: [], memData: [],qzData:[] });
+        this.setState({ deptData: [], memData: [], qzData: [] });
 
         // 不输入字符就不做任何操作
         if (!searchVal || !searchVal.trim()) return;
@@ -98,10 +98,10 @@ class SearchBox extends PureComponent {
         const { memData } = this.state;
 
         const newMemData = queryMemberData.list.map(item => ({
-            alldeptName: getDeptName(item.deptName,item.dutyName),
+            alldeptName: getDeptName(item.deptName, item.dutyName),
             id: item.id,
             pid: item.deptId,
-            memName: item.memName,
+            name: item.name,
             isParent: false,
             dataType: 'orgMember',
             dutyName: item.dutyName,
@@ -156,19 +156,19 @@ class SearchBox extends PureComponent {
         if (record.props.pid) {
             // 点击的是人员
             this.props.setDefaultKey("2");
-            this.updateExpands(record.props.pid,record.props.value, 'true');
+            this.updateExpands(record.props.pid, record.props.value, 'true');
 
-        }else{
+        } else {
             let value = record.props.value.split("-")[0];
-            if(value == 'qz'){
+            if (value == 'qz') {
                 // 群组
                 this.props.setDefaultKey("1");
                 this.updateGroup(record.props.value.split("-")[1]);
-            }else if(value == 'dept'){
+            } else if (value == 'dept') {
                 // 部门
                 this.props.setDefaultKey("2");
                 this.updateExpands(record.props.value.split("-")[1])
-            }else{
+            } else {
                 message.error("数据有误！");
                 this.props.changeLoading(false);
             }
@@ -181,22 +181,22 @@ class SearchBox extends PureComponent {
         let { groupList } = this.props;
         let _this = this;
         // 选中当前组
-        if(groupList.length > 0 ){
-            groupList.map((item)=>{
+        if (groupList.length > 0) {
+            groupList.map((item) => {
                 let arr = groupList.filter(items => items.id == value);
                 arr.length > 0 && _this.props.setCurSelectGroup(arr[0]);
             })
         }
-        loadGroupMember(value,1);
+        loadGroupMember(value, 1);
         this.props.changeLoading(false);
     }
     /**
      * 更新展开通讯录树节点
      */
-    async updateExpands(deptId,orgMemId,isMember) {
-        let {expandedKeys} = this.props;
+    async updateExpands(deptId, orgMemId, isMember) {
+        let { expandedKeys } = this.props;
         let datas = await apis.core.findDepartmentPath({ id: deptId });
-        if(datas.code == 0){
+        if (datas.code == 0) {
             let data = datas.data
             data && data.map((item) => {
                 let deptIds = "dept-" + item.id;
@@ -210,28 +210,28 @@ class SearchBox extends PureComponent {
             this.props.setSelectedKeys(selectKey);  //设置选中通讯录树节点
             if (isMember) {
                 loadOrgMember(deptId, orgMemId, 1);  //加载该部门的人员数据
-            }else{
+            } else {
                 loadOrgMember(deptId, "", 1);
                 this.props.changeLoading(false);
             }
             let lastData = data[data.length - 1];  //最后一层的数据信息
             let curCore = {
-                checked:false,
-                data:lastData.orgCode,
-                dataType:'orgDept',
-                deptType:lastData.deptType,
-                isParent:true,
-                id:lastData.id,
-                name:lastData.deptName,
-                pid:lastData.parentId,
-                
+                checked: false,
+                data: lastData.orgCode,
+                dataType: 'orgDept',
+                deptType: lastData.deptType,
+                isParent: true,
+                id: lastData.id,
+                name: lastData.deptName,
+                pid: lastData.parentId,
+
             }
             this.props.setCurSelectCore(curCore);
-        }else{
+        } else {
             message.error(datas.message);
             this.props.changeLoading(false);
         }
-        
+
     }
 
     /**
@@ -317,15 +317,15 @@ class SearchBox extends PureComponent {
         }
         // {origValue.length > nember ? `${origValue.substring(0, nember)}...` : origValue}
         const index = (origValue += "").indexOf(searchValue);
-        let skin =  window.scooper.configs.skin;
+        let skin = window.scooper.configs.skin;
         const beforeStr = origValue.substr(0, index);
         const afterStr = origValue.substr(index + searchValue.length);
         const realStr = searchValue && index > -1 ? (
             <span id="name">
                 {beforeStr}
-                {skin=='science' && <span style={{ color: '#fff' }}>{searchValue}</span>}
-                {(skin=='light') && <span style={{ color: '#0080FF' }}>{searchValue}</span>}
-                {skin=='dark' && <span style={{ color: '#FFA600' }}>{searchValue}</span>}
+                {skin == 'science' && <span style={{ color: '#fff' }}>{searchValue}</span>}
+                {(skin == 'light') && <span style={{ color: '#0080FF' }}>{searchValue}</span>}
+                {skin == 'dark' && <span style={{ color: '#FFA600' }}>{searchValue}</span>}
                 {afterStr}
             </span>
         ) : <span id="name">{origValue}</span>;
@@ -343,7 +343,7 @@ class SearchBox extends PureComponent {
             <Select
                 showSearch
                 className="search-user"
-                dropdownClassName={`search-user-dropdown ${window.top.style == 'iframe' ? 'dropdown-iframe-modal':''}`}
+                dropdownClassName={`search-user-dropdown ${window.top.style == 'iframe' ? 'dropdown-iframe-modal' : ''}`}
                 placeholder="搜索联系人/群组/部门"
                 notFoundContent="无搜索结果"
                 filterOption={false}
@@ -365,7 +365,7 @@ class SearchBox extends PureComponent {
                         {
                             memData.map(mem => (
                                 <Option key={mem.id} pid={mem.pid} value={mem.orgMemId}>
-                                    <p className='mem-name'>{this.setSearchValColor(mem.memName, searchVal, 15)}</p>
+                                    <p className='mem-name'>{this.setSearchValColor(mem.name, searchVal, 15)}</p>
                                     <span className='duty-name'>{mem.alldeptName}</span>
                                 </Option>
                             ))
@@ -375,7 +375,7 @@ class SearchBox extends PureComponent {
                 {
                     // 没有查到数据或已展示了全部数据时隐藏“查看更多”
                     !isEmpty(memData) && memTotal !== memData.length &&
-                    <Option key="more-mem" style={{paddingLeft:'1.2rem'}} >
+                    <Option key="more-mem" style={{ paddingLeft: '1.2rem' }} >
                         <span className='more-mem' onClick={this.showMoreMember}>查看更多相关联系人</span>
                     </Option>
                 }
@@ -387,18 +387,18 @@ class SearchBox extends PureComponent {
                     >
                         {
                             qzData.map(qz => (
-                                <Option key={"qz-"+qz.id} value={"qz-" + qz.id}>
+                                <Option key={"qz-" + qz.id} value={"qz-" + qz.id}>
                                     <i className='icon-group-search'></i>
-                                    <p className={`qz-name ${qz.groupMems.length > 0 ?'has-gray-qz':''}`}>{this.setSearchValColor(qz.groupName, searchVal, 15)}</p>
-                                    <div className={`${qz.groupMems.length > 0 ?'has-gray':''}`}>
-                                    {qz.groupMems.length > 0 && <span>包含：</span>}
-                                    {(qz.groupMems.length > 0) && 
-                                        qz.groupMems.map((item)=>{
-                                            return (
-                                                <span key={"qzMem-" + item.id} className='qz-duty-name'>{this.setSearchValColor(item.orgMemName, searchVal, 5)} </span>
-                                            )
-                                        })
-                                    }
+                                    <p className={`qz-name ${qz.groupMems.length > 0 ? 'has-gray-qz' : ''}`}>{this.setSearchValColor(qz.groupName, searchVal, 15)}</p>
+                                    <div className={`${qz.groupMems.length > 0 ? 'has-gray' : ''}`}>
+                                        {qz.groupMems.length > 0 && <span>包含：</span>}
+                                        {(qz.groupMems.length > 0) &&
+                                            qz.groupMems.map((item) => {
+                                                return (
+                                                    <span key={"qzMem-" + item.id} className='qz-duty-name'>{this.setSearchValColor(item.orgMemName, searchVal, 5)} </span>
+                                                )
+                                            })
+                                        }
                                     </div>
                                 </Option>
                             ))
@@ -408,7 +408,7 @@ class SearchBox extends PureComponent {
                 {
                     // 没有查到数据或已展示了全部数据时隐藏“查看更多”
                     !isEmpty(qzData) && qzTotal !== qzData.length &&
-                    <Option key="more-qz" style={{paddingLeft:'1.2rem'}}>
+                    <Option key="more-qz" style={{ paddingLeft: '1.2rem' }}>
                         <span className='more-qz' onClick={this.showMoreqz}>查看更多相关群组</span>
                     </Option>
                 }
@@ -421,17 +421,17 @@ class SearchBox extends PureComponent {
                         {
                             deptData.map(dept => (
                                 <Option key={"dept-" + dept.id} value={"dept-" + dept.id}>
-                                    <p className={`dept-name ${dept.deptMems.length > 0 ?'has-gray-dept':''}`}>{this.setSearchValColor(dept.deptName, searchVal, 15)}</p>
-                                    <div className={`${dept.deptMems.length > 0 ?'has-gray':''}`}>
-                                    {dept.deptMems.length > 0 && <span>包含：</span>}
-                                    {dept.deptMems.length > 0 && 
-                                    dept.deptMems.map((item)=>{
-                                        return (
-                                            <span key={"deptMem-" + item.id} className='dept-duty-name'>{this.setSearchValColor(item.memName, searchVal, 5)} </span>
-                                        )
-                                    })
+                                    <p className={`dept-name ${dept.deptMems.length > 0 ? 'has-gray-dept' : ''}`}>{this.setSearchValColor(dept.deptName, searchVal, 15)}</p>
+                                    <div className={`${dept.deptMems.length > 0 ? 'has-gray' : ''}`}>
+                                        {dept.deptMems.length > 0 && <span>包含：</span>}
+                                        {dept.deptMems.length > 0 &&
+                                            dept.deptMems.map((item) => {
+                                                return (
+                                                    <span key={"deptMem-" + item.id} className='dept-duty-name'>{this.setSearchValColor(item.name, searchVal, 5)} </span>
+                                                )
+                                            })
 
-                                    }
+                                        }
                                     </div>
                                 </Option>
                             ))
@@ -440,7 +440,7 @@ class SearchBox extends PureComponent {
                 }
                 {
                     !isEmpty(deptData) && deptTotal !== deptData.length &&
-                    <Option key="more-dept" style={{paddingLeft:'1.2rem'}}>
+                    <Option key="more-dept" style={{ paddingLeft: '1.2rem' }}>
                         <span className='more-dept' onClick={this.showMoreDept}>查看更多相关部门</span>
                     </Option>
                 }

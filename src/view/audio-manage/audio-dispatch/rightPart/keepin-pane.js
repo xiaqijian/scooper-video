@@ -40,16 +40,16 @@ class KeepInPane extends Component {
                         return (
                             <div className="keep-list">
                                 <div style={{ float: "left" }}>
-                                    <span className='keep-memName'>{item.memName}</span>
-                                    <span className='keep-duty'>{getDeptName(item.deptName,item.dutyName)}</span>
+                                    <span className='keep-name'>{item.name}</span>
+                                    <span className='keep-duty'>{getDeptName(item.deptName, item.dutyName)}</span>
                                     <div className="keep-date-wrap">
                                         <span>正在保持</span>
                                         <span className='keep-time'>{item.waitTime}</span>
                                     </div>
                                 </div>
-                                <Button 
-                                    className={`${((accountDetail && accountDetail.mainTel && item.tel == accountDetail.mainTel) ||(accountDetail && accountDetail.viceTel && item.tel == accountDetail.viceTel))?'btn-take-dis':'btn-take' }`} 
-                                    disabled={((accountDetail && accountDetail.mainTel && item.tel == accountDetail.mainTel) ||(accountDetail && accountDetail.viceTel && item.tel == accountDetail.viceTel))?true:false } 
+                                <Button
+                                    className={`${((accountDetail && accountDetail.mainTel && item.tel == accountDetail.mainTel) || (accountDetail && accountDetail.viceTel && item.tel == accountDetail.viceTel)) ? 'btn-take-dis' : 'btn-take'}`}
+                                    disabled={((accountDetail && accountDetail.mainTel && item.tel == accountDetail.mainTel) || (accountDetail && accountDetail.viceTel && item.tel == accountDetail.viceTel)) ? true : false}
                                     onClick={(e) => { this.unhold(e, item.tel) }}> 取回 </Button>
                             </div>
                         )

@@ -113,7 +113,7 @@ class Member extends Component {
 
 
     render() {
-        let { isShowEdit, connectDragSource, connectDropTarget, item, curSelectGroup, defaultKey,configData } = this.props;
+        let { isShowEdit, connectDragSource, connectDropTarget, item, curSelectGroup, defaultKey, configData } = this.props;
         if (defaultKey == 1 && !sessionStorage.getItem('tempItem')) {
             return connectDropTarget(
                 (connectDragSource(
@@ -123,12 +123,12 @@ class Member extends Component {
                     >
                         <div id={`mem-${item.orgMemId}`}
                             className={`mem-item-in ${item.id == 'mem-add' ? 'none-add' : ''}${item.id.toString().indexOf('none-') > -1 ? 'mem-none' : ''}
-                            ${(Object.keys(configData).length !== 0 && configData.set["disp.set.show.offline"] == 'true'&& getTelStatus(item.memTel) == 'callst_offline') ? 'btn-offline':''}
+                            ${(Object.keys(configData).length !== 0 && configData.set["disp.set.show.offline"] == 'true' && getTelStatus(item.memTel) == 'callst_offline') ? 'btn-offline' : ''}
                             ${getTelStatus(item.memTel) == 'callst_waitring' ? 'btn-waiting' : ''}${getTelStatus(item.memTel) == 'callst_ring' ? 'btn-ring' : ''}${getTelStatus(item.memTel) == 'callst_transfering' ? 'btn-transfering' : ''}${getTelStatus(item.memTel) == 'callst_transfer' ? 'btn-transfer' : ''}${getTelStatus(item.memTel) == 'callst_monitorring' ? 'btn-monitorRing' : ''}${getTelStatus(item.memTel) == 'callst_hold' ? 'btn-music' : ''}${getTelStatus(item.memTel) == 'callst_monitor' ? 'btn-monitor' : ''}${getTelStatus(item.memTel) == 'callst_breakin' ? 'btn-breakin' : ''}${getTelStatus(item.memTel) == 'callst_doubletalk' ? 'btn-doubletalk' : ''}${getTelStatus(item.memTel) == 'callst_monitoranswer' ? 'btn-monitoranswer' : ''}${getTelStatus(item.memTel) == 'callst_answer' ? 'btn-answer' : ''}${getTelStatus(item.memTel) == 'callst_meet' ? 'btn-meet' : ''} `}>
                             {
                                 item.id.toString().indexOf('none-') == -1 && <div>
                                     {item.isCheck && <span className="icon-checked-wrap"><i className='icon-checked'></i></span>}
-                                    <p className='mem-name' title={item.memName}><span className='over-ellipsis'>{item.memName || item.memTel}</span></p>
+                                    <p className='mem-name' title={item.name}><span className='over-ellipsis'>{item.name || item.memTel}</span></p>
                                     <p className='dept-name' title={item.deptName}><span className='over-ellipsis'>{item.deptName}</span></p>
                                     <span className="icon-wrap" onClick={(e) => { this.memDetail(e, item) }}><i className='icon-detail'></i></span>
                                     {isShowEdit && curSelectGroup.id && curSelectGroup.id.toString().indexOf('temp-') == -1 && <span className='del-wrap' onClick={(e) => { this.memDelete(e, item) }}><i className="icon-delete"></i></span>}
@@ -146,11 +146,11 @@ class Member extends Component {
                     onClick={() => this.memClick(item)}
                 >
                     <div id={`mem-${item.orgMemId}`}
-                        className={`mem-item-in ${item.id == 'mem-add' ? 'none-add' : ''} ${item.id.toString().indexOf('none-') > -1 ? 'mem-none' : ''}${getTelStatus(item.memTel) == 'callst_offline' ? 'btn-offline':''}${getTelStatus(item.memTel) == 'callst_waitring' ? 'btn-waiting' : ''}${getTelStatus(item.memTel) == 'callst_ring' ? 'btn-ring' : ''}${getTelStatus(item.memTel) == 'callst_transfering' ? 'btn-transfering' : ''}${getTelStatus(item.memTel) == 'callst_transfer' ? 'btn-transfer' : ''}${getTelStatus(item.memTel) == 'callst_monitorring' ? 'btn-monitorRing' : ''}${getTelStatus(item.memTel) == 'callst_hold' ? 'btn-music' : ''}${getTelStatus(item.memTel) == 'callst_monitor' ? 'btn-monitor' : ''}${getTelStatus(item.memTel) == 'callst_breakin' ? 'btn-breakin' : ''}${getTelStatus(item.memTel) == 'callst_doubletalk' ? 'btn-doubletalk' : ''}${getTelStatus(item.memTel) == 'callst_monitoranswer' ? 'btn-monitoranswer' : ''}${getTelStatus(item.memTel) == 'callst_answer' ? 'btn-answer' : ''}${getTelStatus(item.memTel) == 'callst_meet' ? 'btn-meet' : ''} `}>
+                        className={`mem-item-in ${item.id == 'mem-add' ? 'none-add' : ''} ${item.id.toString().indexOf('none-') > -1 ? 'mem-none' : ''}${getTelStatus(item.memTel) == 'callst_offline' ? 'btn-offline' : ''}${getTelStatus(item.memTel) == 'callst_waitring' ? 'btn-waiting' : ''}${getTelStatus(item.memTel) == 'callst_ring' ? 'btn-ring' : ''}${getTelStatus(item.memTel) == 'callst_transfering' ? 'btn-transfering' : ''}${getTelStatus(item.memTel) == 'callst_transfer' ? 'btn-transfer' : ''}${getTelStatus(item.memTel) == 'callst_monitorring' ? 'btn-monitorRing' : ''}${getTelStatus(item.memTel) == 'callst_hold' ? 'btn-music' : ''}${getTelStatus(item.memTel) == 'callst_monitor' ? 'btn-monitor' : ''}${getTelStatus(item.memTel) == 'callst_breakin' ? 'btn-breakin' : ''}${getTelStatus(item.memTel) == 'callst_doubletalk' ? 'btn-doubletalk' : ''}${getTelStatus(item.memTel) == 'callst_monitoranswer' ? 'btn-monitoranswer' : ''}${getTelStatus(item.memTel) == 'callst_answer' ? 'btn-answer' : ''}${getTelStatus(item.memTel) == 'callst_meet' ? 'btn-meet' : ''} `}>
                         {
                             item.id.toString().indexOf('none-') == -1 && <div>
                                 {item.isCheck && <span className="icon-checked-wrap"><i className='icon-checked'></i></span>}
-                                <p className='mem-name' title={item.memName}><span className='over-ellipsis'>{item.memName || item.memTel}</span></p>
+                                <p className='mem-name' title={item.name}><span className='over-ellipsis'>{item.name || item.memTel}</span></p>
                                 <p className='dept-name' title={item.deptName}><span className='over-ellipsis'>{item.deptName}</span></p>
                                 <span className="icon-wrap" onClick={(e) => { this.memDetail(e, item) }}><i className='icon-detail'></i></span>
                                 {isShowEdit && curSelectGroup.id && curSelectGroup.id.toString().indexOf('temp-') == -1 && <span className='del-wrap' onClick={(e) => { this.memDelete(e, item) }}><i className="icon-delete"></i></span>}

@@ -5,7 +5,7 @@
  * @version: V0.0.0.1
  * @LastEditTime: 2021-08-31 15:33:36
  */
-import { Table,Modal, message } from "antd";
+import { Table, Modal, message } from "antd";
 import React, { Component } from "react";
 import { setIsRollCall } from "../../../../../reducer/audio-handle-reducer";
 import store from "../../../../../store";
@@ -20,7 +20,7 @@ function PresentTable(props) {
                 <p className="collasp-info">共发送{record.calleds.length}人(应答{record.succNum}人，未应答{record.failNum}人)</p>
                 {
                     record.groupRecords && record.groupRecords.map((item, index) => {
-                        return (<span key={`present-${index}`}  className={`rec-mem over-ellipsis ${item.notifyResult == 200 ? '' : 'fail-mem'}`}>{item.memName}</span>)
+                        return (<span key={`present-${index}`} className={`rec-mem over-ellipsis ${item.notifyResult == 200 ? '' : 'fail-mem'}`}>{item.name}</span>)
                     })
                 }
 
@@ -41,11 +41,11 @@ function PresentTable(props) {
         }
 
     }
-    const reStartPresent = (e,record) => {
+    const reStartPresent = (e, record) => {
         confirm({
             title: '是否对失败成员重新发起点名？',
             content: '',
-            
+
             onCancel() {
                 console.log("取消重新选呼");
             },
@@ -53,33 +53,33 @@ function PresentTable(props) {
                 restartOk(record)
             },
         })
-        
+
 
     }
     const restartOk = (record) => {
         let failList = [];
-        record.groupRecords.map((item)=>{
-            if(item.notifyResult != 200){
+        record.groupRecords.map((item) => {
+            if (item.notifyResult != 200) {
                 let findTel = false;
-                failList.map((list)=>{
-                    if(list == item.called){
+                failList.map((list) => {
+                    if (list == item.called) {
                         findTel = true;
                         return;
                     }
                 })
-                if(!findTel){
+                if (!findTel) {
                     failList.push(item.called)
                 }
             }
         })
-        if(failList.length == 0){
+        if (failList.length == 0) {
             message.error("当前没有失败成员！")
-        }else{
+        } else {
             dispatchManager.dispatcher.calls.rollCall(failList);
             store.dispatch(setIsRollCall(true));
             makeTempGroup(record.groupRecords);
         }
-        
+
     }
 
     const columns = [
@@ -100,7 +100,7 @@ function PresentTable(props) {
             dataIndex: "tmNotifys",
             key: "tmNotifys",
             width: '30%',
-            align:'center',
+            align: 'center',
         },
         {
             title: "操作",

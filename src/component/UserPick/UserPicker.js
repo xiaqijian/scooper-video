@@ -21,6 +21,7 @@ import {
 import "./UserPick.less";
 import PropTypes from "prop-types";
 import { scooper } from "./scooper.pinyin";
+import { meetapis } from '../../api/meetapis'
 
 const TabPane = Tabs.TabPane;
 const { TreeNode } = Tree;
@@ -52,9 +53,9 @@ export default class UserPicker extends React.Component {
         listOrgDept:
           "/scooper-core-rest/data/contacts/orgDeptManage/listOrgDept",
         listDeptByParent:
-          "/scooper-core-rest/data/contacts/orgDeptManage/listDeptByParent",
+          "/mpgw/contact/listDepartments",
         listOrgMember:
-          "/scooper-core-rest/data/contacts/orgMemberManage/listOrgMember",
+          "/mpgw/contact/listMembers",
         findOrgMemberByTel:
           "/scooper-core-rest/data/contacts/orgMemberManage/findOrgMemberByTel",
         listDispGroup:
@@ -124,13 +125,14 @@ export default class UserPicker extends React.Component {
   }
 
   //加载部门信息
-  loadDept(ip, token) {
+  async loadDept(ip, token) {
+
     let { api } = this.state;
-    let deptUrl = ip + api.listDeptByParent + "?token=" + token;
+    let deptUrl = api.listDeptByParent + "?token=" + token;
     let postData = new URLSearchParams();
     let deptParams = {
       //  token: token
-      deptType: 3,
+      parentId: 0,
     };
     for (let key in deptParams) {
       postData.append(key, deptParams[key]);
@@ -139,6 +141,7 @@ export default class UserPicker extends React.Component {
       .post(deptUrl, postData)
       .then((response) => {
         if (response.data.code === 0) {
+          console.log(response);
           this.setState({
             DeptData: response.data.data,
           });
@@ -161,7 +164,7 @@ export default class UserPicker extends React.Component {
       }
       let deptParams = {
         token: token,
-        id: treeNode.props.dataRef.id,
+        parentId: treeNode.props.dataRef.id,
       };
 
       let postData = new URLSearchParams();
@@ -192,12 +195,12 @@ export default class UserPicker extends React.Component {
     data.map((item) => {
       if (item.children) {
         return (
-          <TreeNode title={item.name} key={item.id} dataRef={item}>
+          <TreeNode title={item.deptName} key={item.id} dataRef={item}>
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode title={item.name} key={item.id} dataRef={item} />;
+      return <TreeNode title={item.deptName} key={item.id} dataRef={item} />;
     });
 
   //点击树节点 加载成员
@@ -237,7 +240,7 @@ export default class UserPicker extends React.Component {
     for (let key in params) {
       postData.append(key, params[key]);
     }
-    axios.post(ip + api.listOrgMember, postData).then((response) => {
+    axios.post(api.listOrgMember, postData).then((response) => {
       if (response.data.code == 0) {
         let list = response.data.data;
         this.setState({
@@ -302,7 +305,7 @@ export default class UserPicker extends React.Component {
       postData.append(key, params[key]);
     }
     axios
-      .post(ip + api.listOrgMember, postData)
+      .post(api.listOrgMember, postData)
       .then((response) => {
         if (response.data.code === 0) {
           var memData = response.data.data;
@@ -723,9 +726,8 @@ export default class UserPicker extends React.Component {
       >
         <div className="selectBox">
           <div
-            className={`ele-divider content-bg ${
-              mode === 1 ? "selectLeft" : "selectLeftSingle"
-            }`}
+            className={`ele-divider content-bg ${mode === 1 ? "selectLeft" : "selectLeftSingle"
+              }`}
           >
             <AutoComplete
               className={"skin-select-auto-complete"}

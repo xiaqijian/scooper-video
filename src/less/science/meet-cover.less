@@ -2,6 +2,7 @@
 .big-meet-wrap,
 .demo-content {
   background-color: transparent;
+
   .desk-wrap {
     .desk-detail {
       .desk-detail-wrap {
@@ -11,51 +12,58 @@
       }
     }
   }
+
   .desk-detail .desk-detail-wrap .meet-table {
     background-color: @calling-bg;
   }
 }
+
 .memDetail-wrap {
   .meet-oper {
     background-color: @dail-bg;
+
     li:hover {
       color: @white-color;
     }
   }
 }
+
 .meet-wrap {
   li {
     color: @font-color;
+
     &:hover {
-      background: linear-gradient(
-        90deg,
-        rgba(255, 190, 0, 0.8) 0%,
-        rgba(255, 190, 0, 0) 100%
-      );
+      background: linear-gradient(90deg,
+          rgba(255, 190, 0, 0.8) 0%,
+          rgba(255, 190, 0, 0) 100%);
+
       .icon-meet {
         background: url(../../image/science/meet/icon_meeting_sel.png) no-repeat;
       }
+
       .icon-prevMeet {
         background: url(../../image/science/meet/icon_linshi_sel.png) no-repeat;
       }
     }
   }
+
   .meet-sel {
     // background: #103f6b;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 190, 0, 0.8) 0%,
-      rgba(255, 190, 0, 0) 100%
-    );
+    background: linear-gradient(90deg,
+        rgba(255, 190, 0, 0.8) 0%,
+        rgba(255, 190, 0, 0) 100%);
     border: none;
+
     .icon-meet {
       background: url(../../image/science/meet/icon_meeting_sel.png) no-repeat;
     }
+
     .icon-prevMeet {
       background: url(../../image/science/meet/icon_linshi_sel.png) no-repeat;
     }
   }
 }
+
 .big-meet-wrap .desk-detail .meet-list-panel .mem-name-span {
   color: @main-color;
 }
@@ -66,35 +74,44 @@
     background-color: @mem-card-bg;
     color: @unimport-font;
     border-color: @normal-second-font;
+
     &::placeholder {
       color: @unimport-font;
     }
   }
+
   .ant-calendar-range-picker-input::placeholder,
   .ant-calendar-range-picker-separator {
     color: @unimport-font;
   }
-  .ant-form-item-label > label {
+
+  .ant-form-item-label>label {
     color: @main-color;
   }
+
   .ant-modal-footer {
     border-color: @ele-divider;
+
     .ant-btn {
       background: @btn-invalid;
       border-color: @btn-invalid;
+
       &:hover {
         color: @reversal-font;
       }
     }
+
     .ant-btn-primary {
       background: @main-color;
       color: @reversal-font;
     }
   }
+
   .meet-detail {
     color: @second-font;
   }
-  .meet-memName,
+
+  .meet-name,
   .meet-memTel {
     color: @second-font;
   }
@@ -104,24 +121,26 @@
 .meet-wrap li:hover .meet-num {
   color: @white-color;
 }
+
 .meet-wrap .meet-sel .meet-name,
 .meet-wrap .meet-sel .meet-num {
   color: @white-color;
 }
+
 .big-meet-wrap .big-title {
   .title-time .meet-time {
     color: #b3daf4;
   }
+
   .title-info .meet-name {
     color: @white-color;
   }
 }
+
 .memDetail-wrap .meet-oper li:hover {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 190, 0, 0.8) 0%,
-    rgba(255, 190, 0, 0) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 190, 0, 0.8) 0%,
+      rgba(255, 190, 0, 0) 100%);
 }
 
 .meet-operate button {
@@ -145,6 +164,7 @@
 .meet-desk-wrap .meet-desk-sel {
   border-color: #ffc000;
 }
+
 .meet-desk-wrap .desk-wrap:hover {
   border-color: #ffc000;
 }
@@ -153,6 +173,7 @@
   border: 1px solid #ffc00080;
   background-color: transparent;
 }
+
 .meet-wrap li .meet-symbol {
   border: 1px solid #ffc00080;
   background-color: transparent;
@@ -161,6 +182,7 @@
 .big-meet-wrap .desk-detail .msg-notify {
   color: @font-color;
 }
+
 .big-meet-wrap .desk-detail .desk-detail-wrap .meet-table {
   width: 43rem;
   margin-left: 12rem;
@@ -170,47 +192,32 @@
 .big-meet-wrap .desk-detail .desk-detail-wrap .meet-list-wrap .meet-chairman {
   color: #102d50;
 }
+
 .big-meet-wrap .desk-detail .desk-detail-wrap .meet-list-wrap .mem-name-span {
   width: 80%;
 }
+
 .big-meet-wrap .desk-detail .desk-detail-wrap .meet-list-wrap .meet-list-none {
   background-color: #194776;
 }
+
 .big-meet-wrap .desk-detail .desk-detail-wrap .meet-list-wrap .meet-list-add {
   background-color: #75c2f5;
 }
-.meet-desk-wrap
-  .desk-wrap
-  .desk-detail
-  .desk-detail-wrap
-  .meet-list-wrap
-  .meet-list-add {
+
+.meet-desk-wrap .desk-wrap .desk-detail .desk-detail-wrap .meet-list-wrap .meet-list-add {
   background-color: #75c2f5;
 }
-.meet-desk-wrap
-  .desk-wrap
-  .desk-detail
-  .desk-detail-wrap
-  .meet-list-wrap
-  .meet-list-none {
+
+.meet-desk-wrap .desk-wrap .desk-detail .desk-detail-wrap .meet-list-wrap .meet-list-none {
   background-color: #194776;
 }
 
-.meet-desk-wrap
-  .desk-wrap
-  .desk-detail
-  .desk-detail-wrap
-  .meet-list-wrap
-  .mem-name-span {
+.meet-desk-wrap .desk-wrap .desk-detail .desk-detail-wrap .meet-list-wrap .mem-name-span {
   width: 80%;
 }
 
-.meet-desk-wrap
-  .desk-wrap
-  .desk-detail
-  .desk-detail-wrap
-  .meet-list-wrap
-  .meet-chairman {
+.meet-desk-wrap .desk-wrap .desk-detail .desk-detail-wrap .meet-list-wrap .meet-chairman {
   color: #102d50;
 }
 

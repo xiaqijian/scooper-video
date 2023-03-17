@@ -20,12 +20,12 @@ class VideoManager extends Component {
     callInterval
     constructor(props) {
         super(props);
-        
+
     }
-    componentDidMount(){
-        window.configTime = setInterval(()=>{
+    componentDidMount() {
+        window.configTime = setInterval(() => {
             let { configData } = store.getState().loading;
-            if(JSON.stringify(configData) !== '{}'){
+            if (JSON.stringify(configData) !== '{}') {
                 clearInterval(window.configTime);
                 if (configData.set["disp.set.video.use"] == "true") {
                     window.require(window.video, ['jquery', 'video'], ($, Video) => {
@@ -37,7 +37,7 @@ class VideoManager extends Component {
                     return;
                 }
             }
-        },500)
+        }, 500)
     }
     initializa = ($, config, Video) => {
         let videoConf;
@@ -76,7 +76,7 @@ class VideoManager extends Component {
 
                 var videoArea = _this.isIE() ? '.video-area' : '.web-rtc-camera-content-dis';
                 _this.videoController = new Video($(videoArea), videoOpts);
-                console.log( _this.videoController);
+                console.log(_this.videoController);
                 window.scooper.videoManagers = {};
                 window.scooper.videoManagers.videoController = _this.videoController;
                 if (_this.videoController) {
@@ -110,20 +110,20 @@ class VideoManager extends Component {
         let curType;
         $(".web-rtc-video").removeClass('hide');
         let shankCall = store.getState().audioHandle.shankCall;
-        if(shankCall.subType == 'sub' && curId == shankCall.subTel){
+        if (shankCall.subType == 'sub' && curId == shankCall.subTel) {
             curType = 'sub'
-        }else if(shankCall.mainType == 'main' && curId == shankCall.mainTel){
+        } else if (shankCall.mainType == 'main' && curId == shankCall.mainTel) {
             curType = 'main'
         }
-        let memName = "";
+        let name = "";
         let time = "";
         let talkStatus = '';
         if (curType == 'main') {
-            memName = shankCall.mainMemName;
+            name = shankCall.mainMemName;
             time = shankCall.mainLong;
             talkStatus = shankCall.mainTalkStatus;
         } else {
-            memName = shankCall.subMemName;
+            name = shankCall.subMemName;
             time = shankCall.subLong;
             talkStatus = shankCall.subTalkStatus;
         }
@@ -133,7 +133,7 @@ class VideoManager extends Component {
             $(".talk-long").html(time)
         }, 1000)
         let temp = '<div class="video-info">' +
-            '<span>与' + memName + '视频通话中</span>' +
+            '<span>与' + name + '视频通话中</span>' +
             '<span class="talk-long">' + time + '</span>' +
             '</div>' +
             '<i class="video-zxh"></i>' +
@@ -145,16 +145,16 @@ class VideoManager extends Component {
         // 挂断按钮点击
         $('#hung-' + e.id).click((event) => {
             _this.videoController.close(e.index);
-            if(talkStatus == stsConst.DOUBLETALK){
-                if(window.scooper.dispatchRepeat && window.scooper.dispatchRepeat.dispatcher){
+            if (talkStatus == stsConst.DOUBLETALK) {
+                if (window.scooper.dispatchRepeat && window.scooper.dispatchRepeat.dispatcher) {
                     window.scooper.dispatchRepeat.dispatcher.calls.hungUp(e.id);
-                }else if(window.scooper.dispatchManager && window.scooper.dispatchManager.dispatcher){
+                } else if (window.scooper.dispatchManager && window.scooper.dispatchManager.dispatcher) {
                     window.scooper.dispatchManager.dispatcher.calls.hungUp(e.id);
                 }
-            }else if(talkStatus == stsConst.MONITORANSWER){
-                if(window.scooper.dispatchRepeat && window.scooper.dispatchRepeat.dispatcher){
+            } else if (talkStatus == stsConst.MONITORANSWER) {
+                if (window.scooper.dispatchRepeat && window.scooper.dispatchRepeat.dispatcher) {
                     window.scooper.dispatchRepeat.dispatcher.calls.tripleHungup(e.id);
-                }else if(window.scooper.dispatchManager && window.scooper.dispatchManager.dispatcher){
+                } else if (window.scooper.dispatchManager && window.scooper.dispatchManager.dispatcher) {
                     window.scooper.dispatchManager.dispatcher.calls.tripleHungup(e.id);
                 }
                 // window.scooper.dispatchManager.getCalls().tripleHungup(e.id);
@@ -162,7 +162,7 @@ class VideoManager extends Component {
             if (curType == 'main') {
                 store.dispatch(setIsShowMainZdh(false))
             } else {
-                store.dispatch(setIsShowSubZdh(false)) 
+                store.dispatch(setIsShowSubZdh(false))
             }
 
         })
@@ -191,8 +191,8 @@ class VideoManager extends Component {
     isIE = () => {
         return !!window.ActiveXObject || "ActiveXObject" in window;
     }
-    render(){
-        return(
+    render() {
+        return (
             null
         )
     }

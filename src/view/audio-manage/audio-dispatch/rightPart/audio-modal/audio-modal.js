@@ -4,30 +4,30 @@
  * @Date: 2020-06-29 16:54:47
  * @version: V0.0.0.1
  * @LastEditTime: 2022-04-06 16:28:27
- */ 
+ */
 import React, { Component } from "react";
 import { Modal, Button, } from 'antd';
 import { isEmpty } from 'lodash';
-import {connect} from 'react-redux';
-import {setShowTransferModal,setAudioTag} from '../../../../../reducer/callIn-handle-reduce';
-import {setTransferInfo,setIsShowSearchPanel,setIsShowPanel} from '../../../../../reducer/audio-handle-reducer'
+import { connect } from 'react-redux';
+import { setShowTransferModal, setAudioTag } from '../../../../../reducer/callIn-handle-reduce';
+import { setTransferInfo, setIsShowSearchPanel, setIsShowPanel } from '../../../../../reducer/audio-handle-reducer'
 import TransferPane from './transfer-panel'
 import dispatchManager from "../../../../../util/dispatch-manager";
 import { getDeptName } from "../../../../../util/method";
 
 @connect(
     state => state.callInHandle,
-    { setShowTransferModal,setAudioTag }
+    { setShowTransferModal, setAudioTag }
 )
 @connect(
     state => state.audioHandle,
-    {setTransferInfo,setIsShowSearchPanel,setIsShowPanel}
+    { setTransferInfo, setIsShowSearchPanel, setIsShowPanel }
 )
 class AudioModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            transferModal:false
+            transferModal: false
         }
     }
 
@@ -35,7 +35,7 @@ class AudioModal extends Component {
      * 关闭弹框
      */
     handleCancel = () => {
-        if(document.getElementById('transfer-input')){
+        if (document.getElementById('transfer-input')) {
             document.getElementById('transfer-input').blur();
         }
         this.props.setTransferInfo({});
@@ -44,7 +44,7 @@ class AudioModal extends Component {
         this.props.setShowTransferModal(false);
         this.props.setIsShowSearchPanel(false);
         this.props.setIsShowPanel(false);
-        if(window.transferFlagTime){
+        if (window.transferFlagTime) {
             clearInterval(window.transferFlagTime)
         }
         window.toTel = '';
@@ -60,7 +60,7 @@ class AudioModal extends Component {
     /**
      * 接听
      */
-    answer = data =>{
+    answer = data => {
         dispatchManager.dispatcher.calls.answer(data.tel);
         this.props.setTransferInfo({});
         this.props.hidePop("audioVisible");
@@ -70,7 +70,7 @@ class AudioModal extends Component {
      * 转接
      */
     transfer = (data) => {
-       this.props.setShowTransferModal(true)
+        this.props.setShowTransferModal(true)
     }
     /**
      * 返回通话面板
@@ -85,8 +85,8 @@ class AudioModal extends Component {
 
 
     render() {
-        const { visible, data,showTransferModal,isBack } = this.props;
-        let {transferModal} = this.state;
+        const { visible, data, showTransferModal, isBack } = this.props;
+        let { transferModal } = this.state;
         return (
             <Modal
                 className="audio-modal"
@@ -99,34 +99,34 @@ class AudioModal extends Component {
                 onCancel={this.handleCancel}
             >
                 {
-                    showTransferModal == false ? 
-                    <div>
-                        { data.type == 'audio' ?
-                            <div className='call-audio-wrap'>
-                                <i className='icon-callaudio'></i>
-                                <span className="audio-name over-ellipsis">{data.memName}</span>
-                                <span className="audio-dept over-ellipsis">{getDeptName(data.deptName,data.dutyName)}</span>
-                                <p>邀请您进行语音通话...</p>
+                    showTransferModal == false ?
+                        <div>
+                            {data.type == 'audio' ?
+                                <div className='call-audio-wrap'>
+                                    <i className='icon-callaudio'></i>
+                                    <span className="audio-name over-ellipsis">{data.name}</span>
+                                    <span className="audio-dept over-ellipsis">{getDeptName(data.deptName, data.dutyName)}</span>
+                                    <p>邀请您进行语音通话...</p>
+                                </div>
+                                :
+                                <div className='call-video-wrap'>
+                                    <i className='icon-callvideo'></i>
+                                    <span className="video-name over-ellipsis">{data.name}</span>
+                                    <span className="video-dept over-ellipsis">{getDeptName(data.deptName, data.dutyName)}</span>
+                                    <p className="video-p">邀请您进行视频通话...</p>
+                                </div>
+                            }
+                            <div className='call-btns none-transfer'>
+                                <Button className="btns icon-hungup" onClick={() => { this.hungUp(data) }}></Button>
+                                <Button className="btns icon-answer" onClick={() => { this.answer(data) }}></Button>
+                                {/* <Button className="btns icon-transfer" onClick={()=>this.transfer(data)}></Button> */}
                             </div>
-                            :
-                            <div className='call-video-wrap'>
-                                <i className='icon-callvideo'></i>
-                                <span className="video-name over-ellipsis">{data.memName}</span>
-                                <span className="video-dept over-ellipsis">{getDeptName(data.deptName,data.dutyName)}</span>
-                                <p className="video-p">邀请您进行视频通话...</p>
-                            </div>
-                        }
-                        <div className='call-btns none-transfer'>
-                            <Button className="btns icon-hungup" onClick={()=>{this.hungUp(data)}}></Button>
-                            <Button className="btns icon-answer" onClick={()=>{this.answer(data)}}></Button>
-                            {/* <Button className="btns icon-transfer" onClick={()=>this.transfer(data)}></Button> */}
                         </div>
-                    </div>
-                    :
-                    <TransferPane data={data} backAudioModal={this.backAudioModal} isBack={isBack} handleCancels={this.handleCancel}/>
+                        :
+                        <TransferPane data={data} backAudioModal={this.backAudioModal} isBack={isBack} handleCancels={this.handleCancel} />
                     // :<div className="tansfer-modal" onClick={()=>this.backAudioModal()}>fanhui转接面板</div>
                 }
-                
+
             </Modal>
 
         );

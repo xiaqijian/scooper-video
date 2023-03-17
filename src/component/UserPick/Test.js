@@ -9,7 +9,7 @@ import { formatMessage } from 'umi/locale';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import zhCN from '../../../node_modules/antd/lib/locale-provider/zh_CN';
-import { Layout,Icon,Button,message,Form,Input,Modal } from 'antd';
+import { Layout, Icon, Button, message, Form, Input, Modal } from 'antd';
 import UserPicker from './UserPicker'
 
 
@@ -22,12 +22,12 @@ const token = formatMessage({ id: 'token' });
 //let token = localStorage.getItem('token');
 
 @Form.create()
-export default class Test extends React.Component{
-  constructor(props){
+export default class Test extends React.Component {
+  constructor(props) {
     super(props);
 
     this.state = {
-      modalVisible:false,
+      modalVisible: false,
       mode: 0,              //选择器模式 0-单人 1-多人
 
       singleData: [],
@@ -36,12 +36,12 @@ export default class Test extends React.Component{
     }
   }
 
-  componentDidMount(){
+  componentDidMount() {
     //this.tokenJudge();
   }
 
   //判断token可用
-  tokenJudge(){
+  tokenJudge() {
     let params = {
       token: token
     };
@@ -50,35 +50,35 @@ export default class Test extends React.Component{
     for (let key in params) {
       postData.append(key, params[key]);
     }
-    axios.post(coreIp+'/system/authManage/tokenVerify',postData)
+    axios.post(coreIp + '/system/authManage/tokenVerify', postData)
       .then((response) => {
-        if(response.data.code === 0){
+        if (response.data.code === 0) {
           //console.log(response.data);
-        }else{
+        } else {
           message.error(response.data.message);
         }
       })
       .catch(function (error) {
-          console.log(error);
-        }
+        console.log(error);
+      }
       );
   }
 
   //单人添加按钮
-  addSinglePerson(){
-    let {singleData} = this.state;
+  addSinglePerson() {
+    let { singleData } = this.state;
     this.setState({
-      modalVisible:true,
+      modalVisible: true,
       mode: 0,
       defaultMemData: singleData
     })
   }
 
   //多人添加按钮
-  addMultiPerson(){
-    let {multiData} = this.state;
+  addMultiPerson() {
+    let { multiData } = this.state;
     this.setState({
-      modalVisible:true,
+      modalVisible: true,
       mode: 1,
       defaultMemData: multiData
     })
@@ -86,12 +86,12 @@ export default class Test extends React.Component{
 
   //获取人员选择器 人员
   getMemData = (memData) => {
-    let {mode} = this.state;
-    if(mode === 1){
+    let { mode } = this.state;
+    if (mode === 1) {
       this.setState({
         multiData: memData
       });
-    }else{
+    } else {
       this.setState({
         singleData: memData
       });
@@ -102,14 +102,14 @@ export default class Test extends React.Component{
   };
 
 
-  render(){
+  render() {
     let { modalVisible, mode, singleData, multiData, defaultMemData } = this.state;
     const { getFieldDecorator } = this.props.form;
 
     let multiMem = [];
-    if(multiData){
-      multiData.map((item)=>{
-        multiMem.push(item.memName)
+    if (multiData) {
+      multiData.map((item) => {
+        multiMem.push(item.name)
       });
     }
 
@@ -117,11 +117,11 @@ export default class Test extends React.Component{
     let userPickerParams = {
       visible: modalVisible,
       mode: mode,
-      ip:'http://192.168.106.67:8080',
-      token:token,
+      ip: 'http://192.168.106.67:8080',
+      token: token,
       deptType: 'all',
       limit: 5,
-      defaultMemData:defaultMemData
+      defaultMemData: defaultMemData
     };
 
     const formItemLayout = {
@@ -136,45 +136,45 @@ export default class Test extends React.Component{
     };
 
     const userPickerForm = () => {
-      return(
-        <Form style={{width:'60%'}}>
+      return (
+        <Form style={{ width: '60%' }}>
           <FormItem
             {...formItemLayout}
             label="单人选择器">
-            {getFieldDecorator('single',{initialValue:singleData[0]?singleData[0].memName:''})
-            ( <TextArea placeholder="请输入人员..." autosize readOnly/>)}
+            {getFieldDecorator('single', { initialValue: singleData[0] ? singleData[0].name : '' })
+              (<TextArea placeholder="请输入人员..." autosize readOnly />)}
           </FormItem>
           <Button type="primary" shape="circle" icon="plus"
-                  style={{position:'absolute',left:'56%',top:'22px'}}
-                  onClick={this.addSinglePerson.bind(this)}
+            style={{ position: 'absolute', left: '56%', top: '22px' }}
+            onClick={this.addSinglePerson.bind(this)}
           />
           <FormItem
             {...formItemLayout}
             label="多人选择器">
-            {getFieldDecorator('multi',{initialValue:multiMem.join(',')})
-            (
-              <TextArea
-                placeholder="请输入人员..."
-                autosize={{ minRows: 6, maxRows: 6 }}
-                readOnly
-              />
-            )}
+            {getFieldDecorator('multi', { initialValue: multiMem.join(',') })
+              (
+                <TextArea
+                  placeholder="请输入人员..."
+                  autosize={{ minRows: 6, maxRows: 6 }}
+                  readOnly
+                />
+              )}
           </FormItem>
           <Button type="primary" shape="circle" icon="plus"
-                  style={{position:'absolute',left:'56%',top:'10%'}}
-                  onClick={this.addMultiPerson.bind(this)}
+            style={{ position: 'absolute', left: '56%', top: '10%' }}
+            onClick={this.addMultiPerson.bind(this)}
           />
         </Form>
       )
     };
 
 
-    return(
+    return (
       <Layout style={{ padding: '0 24px 24px' }}>
-        <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280,position:'relative'}}>
+        <Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280, position: 'relative' }}>
           {userPickerForm()}
         </Content>
-        <UserPicker {...userPickerParams} memData={memData => this.getMemData(memData)}/>
+        <UserPicker {...userPickerParams} memData={memData => this.getMemData(memData)} />
       </Layout>
     )
   }

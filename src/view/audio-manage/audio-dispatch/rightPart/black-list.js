@@ -4,37 +4,37 @@
  * @Date: 2020-07-03 16:58:59
  * @version: V0.0.0.1
  * @LastEditTime: 2021-04-02 11:23:25
- */ 
+ */
 import React, { Component } from "react";
 import { Button, Badge, Input, DatePicker, Divider, message } from "antd";
 import BlackTable from './black-table';
 import AddMember from '../../../../component/add-member'
-import {blackUserPickTitle} from '../../../../config/constants'
-import {connect} from 'react-redux';
-import {setBlackListData,setShowContent} from '../../../../reducer/callRecord-handle-reduce';
-import {setMemTelMapCache} from '../../../../reducer/audio-handle-reducer'
+import { blackUserPickTitle } from '../../../../config/constants'
+import { connect } from 'react-redux';
+import { setBlackListData, setShowContent } from '../../../../reducer/callRecord-handle-reduce';
+import { setMemTelMapCache } from '../../../../reducer/audio-handle-reducer'
 import dispatchManager from "../../../../util/dispatch-manager";
 import { apis } from "../../../../util/apis";
 import $, { param } from 'jquery'
 import { hideTel } from "../../../../util/method";
 
-const {Search} = Input
+const { Search } = Input
 
 @connect(
-    state=> state.callRecordHandle,
-    {setBlackListData,setShowContent}
+    state => state.callRecordHandle,
+    { setBlackListData, setShowContent }
 )
 @connect(
     state => state.audioHandle,
-    {setMemTelMapCache}
+    { setMemTelMapCache }
 )
 class BlackList extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            modalVisible:false,
-            choseMemList:[],      //人员选择器 最终选择的人员数据
+            modalVisible: false,
+            choseMemList: [],      //人员选择器 最终选择的人员数据
         }
 
     }
@@ -42,7 +42,7 @@ class BlackList extends Component {
     /**
      * 显示人员选择框
      */
-    showMemChose(){
+    showMemChose() {
         this.setState({
             modalVisible: true,
         })
@@ -58,15 +58,15 @@ class BlackList extends Component {
             choseMemList: memData
         })
         let telsArr = [];
-        if(memData.length > 0){
-            memData.map((item)=>{
+        if (memData.length > 0) {
+            memData.map((item) => {
                 telsArr.push(item.memTel)
             })
         }
         let tels = telsArr.join(",");
         let params = {
-            telType:0,
-            tels    
+            telType: 0,
+            tels
         }
         this.addBlack(params);
     };
@@ -75,22 +75,22 @@ class BlackList extends Component {
      * 加载黑名单数据
      */
     loadBlackList = async () => {
-        let {memTelMapCache} = this.props;
+        let { memTelMapCache } = this.props;
         let params = {
-            telType:0
+            telType: 0
         }
         let data = await apis.disp.listBlack(params);
-        data && data.list.length>0 && data.list.map((item)=>{
+        data && data.list.length > 0 && data.list.map((item) => {
             item.key = item.id;
             item.hideTel = hideTel(item.tel);
-            item.memName = memTelMapCache[item.tel] ? memTelMapCache[item.tel].memName:hideTel(item.tel)
+            item.name = memTelMapCache[item.tel] ? memTelMapCache[item.tel].name : hideTel(item.tel)
         })
         this.props.setBlackListData(data.list);
     }
 
     /**
      * 关闭黑名单
-     */  
+     */
     closeBlackList = () => {
         this.props.setShowContent('callRecord')
     }
@@ -100,20 +100,20 @@ class BlackList extends Component {
      */
     addBlackByTel = async () => {
         let tel = $(".num-add input").val();
-        if(tel){
+        if (tel) {
             let params = {
-                telType:0,
-                tels:tel
+                telType: 0,
+                tels: tel
             }
             this.addBlack(params);
-        }else{
+        } else {
             message.error("请输入号码");
             return;
         }
     }
     addBlack = async (params) => {
         let data = await apis.disp.addBlacks(params);
-        if(data.code == 0){
+        if (data.code == 0) {
             message.success("添加成功");
             this.loadBlackList();
         }
@@ -122,17 +122,17 @@ class BlackList extends Component {
      * 搜索黑名单
      */
     searchBlack = async (value) => {
-        let {memTelMapCache} = this.props;
-        let data = await apis.disp.listBlack({searchKey:value})
-        if(data){
-            data.list.map((item)=>{
+        let { memTelMapCache } = this.props;
+        let data = await apis.disp.listBlack({ searchKey: value })
+        if (data) {
+            data.list.map((item) => {
                 item.key = item.id;
                 item.hideTel = hideTel(item.tel);
-                item.memName = memTelMapCache[item.tel] ? memTelMapCache[item.tel].memName:hideTel(item.tel);
+                item.name = memTelMapCache[item.tel] ? memTelMapCache[item.tel].name : hideTel(item.tel);
             })
             this.props.setBlackListData(data.list);
         }
-        
+
     }
 
     componentDidMount() {
@@ -141,18 +141,18 @@ class BlackList extends Component {
 
 
     render() {
-        const {modalVisible} = this.state;
+        const { modalVisible } = this.state;
         return (
             <div className='black-wrap'>
                 <div className="call-header">
                     <i className="icon-blackList"></i>
                     <span className="title">黑名单管理</span>
-                    <Button className='close-black' onClick={()=>{this.closeBlackList()}}></Button>
+                    <Button className='close-black' onClick={() => { this.closeBlackList() }}></Button>
                 </div>
                 <div className="add-wrap">
                     <p className="add-span">添加黑名单人员：</p>
                     <div className='add-type'>
-                        <Button type="primary" className='core-add' onClick={()=>this.showMemChose()}>通讯录选择</Button>
+                        <Button type="primary" className='core-add' onClick={() => this.showMemChose()}>通讯录选择</Button>
                         <Input
                             className="num-add"
                             placeholder="请输入号码进行添加"
@@ -161,8 +161,8 @@ class BlackList extends Component {
                             }
                         />
                     </div>
-                </div>  
-                <Search   
+                </div>
+                <Search
                     placeholder="请输入名字或号码进行搜索"
                     className="black-search"
                     onSearch={value => this.searchBlack(value)}
@@ -170,9 +170,9 @@ class BlackList extends Component {
                 />
                 <BlackTable loadBlackList={this.loadBlackList} />
 
-                <AddMember modalVisible = {modalVisible} getMemData = {(mems)=>this.getMemData(mems)} title={blackUserPickTitle} />
-                
-            </div> 
+                <AddMember modalVisible={modalVisible} getMemData={(mems) => this.getMemData(mems)} title={blackUserPickTitle} />
+
+            </div>
 
         );
     }

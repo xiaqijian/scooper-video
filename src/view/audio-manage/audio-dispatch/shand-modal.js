@@ -42,13 +42,13 @@ class ShandModal extends Component {
     /**
      * 接听
      */
-    answer = () =>{
+    answer = () => {
         window.scooper.dispatchManager.dispatcher.calls.shandleAnswer();
         this.props.hidePop();
     }
 
     render() {
-        let {shandInfo,visible } = this.props;
+        let { shandInfo, visible } = this.props;
         return (
             <Modal
                 className="audio-modal shand-modal"
@@ -63,14 +63,14 @@ class ShandModal extends Component {
                     {shandInfo.type == 'audio' ?
                         <div className='call-audio-wrap'>
                             <i className='icon-callaudio'></i>
-                            <span className="audio-name over-ellipsis">{shandInfo.memName}</span>
+                            <span className="audio-name over-ellipsis">{shandInfo.name}</span>
                             <span className="audio-dept over-ellipsis">{shandInfo.deptName}</span>
                             <p>邀请您进行语音通话...</p>
                         </div>
                         :
                         <div className='call-video-wrap'>
                             <i className='icon-callvideo'></i>
-                            <span className="video-name over-ellipsis">{shandInfo.memName}</span>
+                            <span className="video-name over-ellipsis">{shandInfo.name}</span>
                             <span className="video-dept over-ellipsis">{shandInfo.deptName}</span>
                             <p className="video-p">邀请您进行视频通话...</p>
                         </div>

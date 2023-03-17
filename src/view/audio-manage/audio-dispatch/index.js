@@ -46,7 +46,7 @@ class AudioDispatch extends Component {
 
     return (
       <div style={{ height: "100%" }}>
-        <Spin size="large" tip="加载中" spinning={loading}>
+        <Spin size="large" tip="加载中" spinning={false}>
           <div
             className={`audio-wrap ${
               window.top.style == "iframe" ? "" : "audio-not-iframe"

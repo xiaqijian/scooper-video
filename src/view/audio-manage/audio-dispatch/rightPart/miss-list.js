@@ -9,7 +9,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import InfiniteScroll from 'react-infinite-scroller'
-import { setCurSelectMissItem,setCallInMissCount } from '../../../../reducer/callRecord-handle-reduce';
+import { setCurSelectMissItem, setCallInMissCount } from '../../../../reducer/callRecord-handle-reduce';
 import { message } from "antd";
 import { apis } from "../../../../util/apis";
 import dispatchManager from "../../../../util/dispatch-manager";
@@ -18,7 +18,7 @@ import { hideTel, loadCallInMiss } from "../../../../util/method";
 
 @connect(
     state => state.callRecordHandle,
-    { setCurSelectMissItem,setCallInMissCount}
+    { setCurSelectMissItem, setCallInMissCount }
 )
 class MissList extends Component {
     constructor(props) {
@@ -38,16 +38,16 @@ class MissList extends Component {
 
 
     fetchRecordData = () => {
-        let {callInMissData,searchParam} = this.props;
-        if(callInMissData.hasNextPage){
+        let { callInMissData, searchParam } = this.props;
+        if (callInMissData.hasNextPage) {
             let param = {
-                pageNum:callInMissData.pageNum + 1,
-                pageSize:10,
-                searchKey:searchParam.searchKey,
-                timeMin:searchParam.timeMin,
-                timeMax:searchParam.timeMax
+                pageNum: callInMissData.pageNum + 1,
+                pageSize: 10,
+                searchKey: searchParam.searchKey,
+                timeMin: searchParam.timeMin,
+                timeMax: searchParam.timeMax
             };
-            loadCallInMiss(param,'update');
+            loadCallInMiss(param, 'update');
         }
     }
 
@@ -67,7 +67,7 @@ class MissList extends Component {
      * 加入黑名单
      */
     addBlack = async (item) => {
-        let data = await apis.disp.addBlacks({tels:item.tel});
+        let data = await apis.disp.addBlacks({ tels: item.tel });
         if (data.code == 0) {
             message.success("添加成功");
         }
@@ -77,21 +77,21 @@ class MissList extends Component {
      */
     readAllCount = async () => {
         let data = await apis.disp.readALLCallInMiss();
-        if(data.code == 0){
+        if (data.code == 0) {
             this.props.setCallInMissCount('');
         }
-        
+
     }
     /**
      * 获得title
      */
     getTitle = (item) => {
         let title = '';
-        if(item.memName){
-            title = item.memName + "-"
+        if (item.name) {
+            title = item.name + "-"
         }
-        if(item.tel){
-            title += hideTel(item.tel) 
+        if (item.tel) {
+            title += hideTel(item.tel)
         }
         return title
     }
@@ -102,10 +102,10 @@ class MissList extends Component {
 
 
     render() {
-        let { callInMissList,curSelectMissItem,isShowDate} = this.props;
+        let { callInMissList, curSelectMissItem, isShowDate } = this.props;
         let { hasMore } = this.state;
         return (
-            <div className={`record-list-wrap ${isShowDate == true ? '' :'record-height'}`}>
+            <div className={`record-list-wrap ${isShowDate == true ? '' : 'record-height'}`}>
                 <ul>
                     <InfiniteScroll
                         pageStart={0}
@@ -117,14 +117,14 @@ class MissList extends Component {
                         useWindow={false}>
                         {callInMissList && callInMissList.map((item, index) => {
                             return (
-                                <li className={`record-list ${item.recId == curSelectMissItem.recId ?'onsel':''}`} key={"miss"+item.recId} onClick={() => { this.clickLists(item) }}>
+                                <li className={`record-list ${item.recId == curSelectMissItem.recId ? 'onsel' : ''}`} key={"miss" + item.recId} onClick={() => { this.clickLists(item) }}>
                                     <i className={`icon-record  ${(item.callType == 'incallin' || item.callType == 'callin' || item.callType == 'incall') ? 'icon-callin' : ''}${(item.callType == 'incallout' || item.callType == 'callout') ? 'icon-callout' : ''} ${item.isCallInMiss == 1 ? 'icon-callmiss' : ''}`}></i>
-                                    <span 
-                                        className={`record-name ${item.isCallInMiss == 1 ? 'record-miss-name' : ''}`} 
+                                    <span
+                                        className={`record-name ${item.isCallInMiss == 1 ? 'record-miss-name' : ''}`}
                                         title={this.getTitle(item)}>
-                                        {item.memName || hideTel(item.tel)}
+                                        {item.name || hideTel(item.tel)}
                                     </span>
-                                    <span className={`record-date ${item.isCallInMiss == 1 ? 'record-miss-date' : ''}`}>{item.tmCallT.substring(0,16)}</span>
+                                    <span className={`record-date ${item.isCallInMiss == 1 ? 'record-miss-date' : ''}`}>{item.tmCallT.substring(0, 16)}</span>
                                     {item.callLen && <p className="call-length">{item.callLen}</p>}
                                 </li>
                             )
@@ -134,10 +134,10 @@ class MissList extends Component {
                 </ul>
                 {!isEmpty(curSelectMissItem) &&
                     <div className='icon-operates'>
-                        <i className="icon-call" title="呼叫" onClick={()=>{this.makeCall(curSelectMissItem)}}></i>
-                        <i className="icon-meet" title="加入会议" onClick={()=>{this.joinMeet(curSelectMissItem)}}></i>
+                        <i className="icon-call" title="呼叫" onClick={() => { this.makeCall(curSelectMissItem) }}></i>
+                        <i className="icon-meet" title="加入会议" onClick={() => { this.joinMeet(curSelectMissItem) }}></i>
                         <i className={`icon-radio-dis`} title="暂无录音"></i>
-                        <i className="icon-black" title="加入黑名单" onClick={()=>{this.addBlack(curSelectMissItem)}}></i>
+                        <i className="icon-black" title="加入黑名单" onClick={() => { this.addBlack(curSelectMissItem) }}></i>
                     </div>
                 }
             </div>

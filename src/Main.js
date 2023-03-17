@@ -172,7 +172,8 @@ class NavPage extends PureComponent {
         <Spin
           size="large"
           className={"global-spin2 test"}
-          spinning={this.props.loading}
+          // spinning={this.props.loading}
+          spinning={false}
         >
           <PageRoute url={url} />
         </Spin>

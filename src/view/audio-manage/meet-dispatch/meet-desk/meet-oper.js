@@ -23,9 +23,9 @@ class MeetOper extends Component {
    * 设置主持人
    */
   setChairMember = (item) => {
-    if (item && item.meetId && (item.tel || item.memTel)) {
+    if (item && item.id && (item.tel || item.memTel)) {
       window.scooper.meetManager.meetsObj.changeMemberToChairman(
-        item.meetId,
+        item.id,
         item.tel || item.memTel
       );
       this.props.hideMemDetail();
@@ -35,9 +35,9 @@ class MeetOper extends Component {
    * 禁言
    */
   noSpeak = (item) => {
-    if (item && item.meetId && (item.tel || item.memTel)) {
+    if (item && item.id && (item.tel || item.memTel)) {
       window.scooper.meetManager.meetsObj.changeMemberLevel(
-        item.meetId,
+        item.id,
         item.tel || item.memTel,
         "audience"
       );
@@ -48,9 +48,9 @@ class MeetOper extends Component {
    * 发言
    */
   canSpeak = (item) => {
-    if (item && item.meetId && (item.tel || item.memTel)) {
+    if (item && item.id && (item.tel || item.memTel)) {
       window.scooper.meetManager.meetsObj.changeMemberLevel(
-        item.meetId,
+        item.id,
         item.tel || item.memTel,
         "speak"
       );
@@ -61,9 +61,9 @@ class MeetOper extends Component {
    * 单独通话
    */
   singlCall = (item) => {
-    if (item && item.meetId && (item.tel || item.memTel)) {
+    if (item && item.id && (item.tel || item.memTel)) {
       window.scooper.meetManager.meetsObj.privateTalk(
-        item.meetId,
+        item.id,
         item.tel || item.memTel
       );
       this.props.hideMemDetail();
@@ -73,9 +73,9 @@ class MeetOper extends Component {
    * 取回通话
    */
   backToMeet = (item) => {
-    if (item && item.meetId && (item.tel || item.memTel)) {
+    if (item && item.id && (item.tel || item.memTel)) {
       window.scooper.meetManager.meetsObj.backToMeet(
-        item.meetId,
+        item.id,
         item.tel || item.memTel
       );
       this.props.hideMemDetail();
@@ -85,9 +85,9 @@ class MeetOper extends Component {
    * 移除会场
    */
   removeMeet = (item) => {
-    if (item && item.meetId && (item.tel || item.memTel)) {
+    if (item && item.id && (item.tel || item.memTel)) {
       window.scooper.meetManager.meetsObj.kickMember(
-        item.meetId,
+        item.id,
         item.tel || item.memTel
       );
       this.props.hideMemDetail();
@@ -108,39 +108,38 @@ class MeetOper extends Component {
    * 重新呼叫
    */
   reJoinMeet = (mem, meet) => {
-    let meetId = meet.meetId;
+    let id = meet.id;
     let tel = mem && (mem.tel || mem.memTel);
-    if (tel && meetId) {
-      window.scooper.meetManager.meetsObj.joinMember(meetId, tel);
+    if (tel && id) {
+      window.scooper.meetManager.meetsObj.joinMember(id, tel);
     }
     this.props.hideMemDetail();
   };
 
-  componentWillMount() {}
+  componentWillMount() { }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   render() {
     let { curMeetMem, curMeet } = this.props;
     return (
       <div
-        className={`memDetail-wrap ${
-          curMeetMem.status == "fail" ? "memDetail-fail" : ""
-        }`}
+        className={`memDetail-wrap ${curMeetMem.status == "fail" ? "memDetail-fail" : ""
+          }`}
       >
         <div className="curMeetMem-info">
           <span
             className="mem-info-name over-ellipsis"
-            title={curMeetMem.memName}
+            title={curMeetMem.name}
           >
-            {curMeetMem.memName}
+            {curMeetMem.name}
           </span>
           <i className="icon-close" onClick={this.props.hideMemDetail}></i>
           <span className="mem-info-dept">{curMeetMem.deptName || ""}</span>
         </div>
         {curMeetMem.status == "reject" ||
-        curMeetMem.status == "quit" ||
-        curMeetMem.status == "unresponse" ? (
+          curMeetMem.status == "quit" ||
+          curMeetMem.status == "unresponse" ? (
           <ul className="meet-oper">
             <li
               onClick={() => {
@@ -166,14 +165,14 @@ class MeetOper extends Component {
             )}
             {(curMeetMem.level == "audience" ||
               curMeetMem.level == "handup") && (
-              <li
-                onClick={() => {
-                  this.canSpeak(curMeetMem);
-                }}
-              >
-                发言
-              </li>
-            )}
+                <li
+                  onClick={() => {
+                    this.canSpeak(curMeetMem);
+                  }}
+                >
+                  发言
+                </li>
+              )}
             {curMeetMem.level != "audience" && curMeetMem.level != "handup" && (
               <li
                 onClick={() => {

@@ -29,10 +29,10 @@ class BigDesk extends Component {
     //生成空位置函数
     restSpan() {
         let doms = []
-        for (let i = 0; i < 26 - this.props.curMeet.meetMem.length; i++) {
-            if(i == 26-this.props.curMeet.meetMem.length - 1){
+        for (let i = 0; i < 26 - this.props.curMeet.attendees.length; i++) {
+            if (i == 26 - this.props.curMeet.attendees.length - 1) {
                 doms.push(<span key={`empty_seat-${i}`} className="meet-list meet-list-none meet-list-add" onClick={this.showAddMem}></span>)
-            }else{
+            } else {
                 doms.push(<span key={`empty_seat-${i}`} className="meet-list meet-list-none"></span>)
             }
         }
@@ -66,29 +66,29 @@ class BigDesk extends Component {
      */
     getMemData = (memData) => {
         let { curMeet } = this.props;
-        let meetId = curMeet.meetId;
+        let id = curMeet.id;
         let joinMembersArray = [];
-        memData.map((item)=>{
+        memData.map((item) => {
             joinMembersArray.push(item.memTel)
         })
-        if (memData.length > 0 && curMeet.meetAttr != 'MEET_RESERVE') {
+        if (memData.length > 0 && curMeet.conferenceTimeType != 'EDIT_CONFERENCE') {
             // 向立即会议中拉人
-            window.scooper.meetManager.meetsObj.joinMembers(meetId,joinMembersArray)
+            window.scooper.meetManager.meetsObj.joinMembers(id, joinMembersArray)
         }
-        if (memData.length > 0 && curMeet.meetAttr == 'MEET_RESERVE') {
+        if (memData.length > 0 && curMeet.conferenceTimeType == 'EDIT_CONFERENCE') {
             // 向预约会议中拉人 相当于编辑 预约会议
             let params = {
-                meetId: curMeet.meetId,
-                meetName: curMeet.meetName,
-                meetAccess: curMeet.meetAccess,
-                meetAttr: curMeet.meetAttr,
+                id: curMeet.id,
+                subject: curMeet.subject,
+                accessCode: curMeet.accessCode,
+                conferenceTimeType: curMeet.conferenceTimeType,
                 timeBegin: curMeet.timeBegin,
                 timeEnd: curMeet.timeEnd,
-                passwdSpeaker: curMeet.passwdSpeaker,
-                passwdAudience: curMeet.passwdAudience
+                chairmanPassword: curMeet.chairmanPassword,
+                guestPassword: curMeet.guestPassword
             }
             let paramMem = [];
-            curMeet.meetMem.map((da) => {
+            curMeet.attendees.map((da) => {
                 paramMem.push((da.tel || da.memTel) + ',speak');
             })
             memData.map((mem) => {
@@ -112,8 +112,8 @@ class BigDesk extends Component {
      */
     editMeetBypre = (params, resultCallback) => {
         let meetMembers = params.meetMembers ? params.meetMembers.join(";") : '';
-        meetManager.meetsObj.editMeet(params.meetId, params.meetName, resultCallback, params.meetAccess, params.meetAttr,
-            params.timeBegin, params.timeEnd, params.passwdSpeaker, params.passwdAudience, meetMembers)
+        meetManager.meetsObj.editMeet(params.id, params.subject, resultCallback, params.accessCode, params.conferenceTimeType,
+            params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
 
     }
     /**
@@ -149,7 +149,7 @@ class BigDesk extends Component {
         const { isShowMemDetai, curMeetMem, addModalVisible, meetDetailVisible } = this.state;
         let curMeetOpLogs;
         allMeetOpLogs.map((item) => {
-            if (item.meetId == curMeet.meetId) {
+            if (item.id == curMeet.id) {
                 curMeetOpLogs = item.logs;
             }
         })
@@ -171,14 +171,14 @@ class BigDesk extends Component {
                 </div>
                 <div className='desk-detail-wrap'>
                     <div className='meet-table'>
-                        {curMeet.meetAttr != 'MEET_RESERVE' &&
+                        {curMeet.conferenceTimeType != 'EDIT_CONFERENCE' &&
                             <div className='meet-info'>
-                                <span className='meet-info-num'>会议号：{curMeet.meetAccess || curMeet.meetName || curMeet.meetId}
+                                <span className='meet-info-num'>会议号：{curMeet.accessCode || curMeet.subject || curMeet.id}
                                     <i className='meet-info-icon' onClick={this.showMeetDetail}></i>
                                 </span>
                             </div>
                         }
-                        {curMeet.meetAttr == 'MEET_RESERVE' &&
+                        {curMeet.conferenceTimeType == 'EDIT_CONFERENCE' &&
                             <div className="meet-info-pre">
                                 <div className='pre-wrap'>
                                     <span className='pre-title'>预约会议</span>
@@ -190,18 +190,18 @@ class BigDesk extends Component {
                         }
                     </div>
                     <div className='meet-list-wrap'>
-                        {curMeet.meetMem.map((val, index) => {
+                        {curMeet.attendees.map((val, index) => {
                             if (index == 25) {
                                 return (
-                                    <span key={`meetMem-add`}
+                                    <span key={`attendees-add`}
                                         className={`meet-list meet-list-add`}></span>
                                 )
                             }
                             return (
-                                <span key={`meetMem-${index}`}
-                                    title={val.memName}
-                                    className={`meet-list ${val.level == 'private' ? 'mem-talk' : ''} ${(val.chair == true && curMeet.meetAttr != 'MEET_RESERVE') ? 'meet-chairman' : ''} ${val.status == 'calling' ? 'mem-calling' : ''} ${(val.status == 'reject'||val.status == 'unresponse') ? 'mem-reject' : ''}${val.level == 'handup' ? 'mem-hands' : ''} ${val.level == 'audience' ? 'mem-jy' : ''} ${val.status == 'quit' ? 'mem-quit' : ''}`}
-                                    onClick={() => this.showMemDetail(val)}><span className="mem-name-span over-ellipsis">{val.memName}</span></span>
+                                <span key={`attendees-${index}`}
+                                    title={val.name}
+                                    className={`meet-list ${val.level == 'private' ? 'mem-talk' : ''} ${(val.chair == true && curMeet.conferenceTimeType != 'EDIT_CONFERENCE') ? 'meet-chairman' : ''} ${val.status == 'calling' ? 'mem-calling' : ''} ${(val.status == 'reject' || val.status == 'unresponse') ? 'mem-reject' : ''}${val.level == 'handup' ? 'mem-hands' : ''} ${val.level == 'audience' ? 'mem-jy' : ''} ${val.status == 'quit' ? 'mem-quit' : ''}`}
+                                    onClick={() => this.showMemDetail(val)}><span className="mem-name-span over-ellipsis">{val.name}</span></span>
                             )
                         })
                         }

@@ -5,7 +5,7 @@
  * @version: V0.0.0.1
  * @LastEditTime: 2021-07-23 13:50:38
  */
-import { Table,Modal,message } from "antd";
+import { Table, Modal, message } from "antd";
 import React, { Component } from "react";
 import { setBoardCast, setIsSelectCall } from "../../../../../reducer/audio-handle-reducer";
 import store from "../../../../../store";
@@ -19,7 +19,7 @@ function BoardTable(props) {
                 <p className="collasp-info">共发送{record.calleds.length}人(应答{record.succNum}人，未应答{record.failNum}人)</p>
                 {
                     record.groupRecords && record.groupRecords.map((item, index) => {
-                        return (<span key={`board-${index}`} className={`rec-mem over-ellipsis ${item.notifyResult == 200 ? '' : 'fail-mem'}`}>{item.memName}</span>)
+                        return (<span key={`board-${index}`} className={`rec-mem over-ellipsis ${item.notifyResult == 200 ? '' : 'fail-mem'}`}>{item.name}</span>)
                     })
                 }
             </div>
@@ -40,11 +40,11 @@ function BoardTable(props) {
 
     }
 
-    const reStartBoard = (e,record) => {
+    const reStartBoard = (e, record) => {
         confirm({
             title: '是否对失败成员重新发起广播？',
             content: '',
-            
+
             onCancel() {
                 console.log("取消重新选呼");
             },
@@ -55,27 +55,27 @@ function BoardTable(props) {
     }
     const restartOk = (record) => {
         let failList = [];
-        record.groupRecords.map((item)=>{
-            if(item.notifyResult != 200){
+        record.groupRecords.map((item) => {
+            if (item.notifyResult != 200) {
                 let findTel = false;
-                failList.map((list)=>{
-                    if(list == item.called){
+                failList.map((list) => {
+                    if (list == item.called) {
                         findTel = true;
                         return;
                     }
                 })
-                if(!findTel){
+                if (!findTel) {
                     failList.push(item.called)
                 }
             }
         })
-        if(failList.length == 0){
+        if (failList.length == 0) {
             message.error("当前没有失败成员！")
-        }else{
+        } else {
             store.dispatch(setIsSelectCall("3"));
             store.dispatch(setBoardCast("2"));
-            dispatchManager.dispatcher.calls.selectCall(failList,'',false,true,(data)=>{
-                if(data.code == 0){
+            dispatchManager.dispatcher.calls.selectCall(failList, '', false, true, (data) => {
+                if (data.code == 0) {
                     props.setCurMeetId(data)
                 }
             });
@@ -100,7 +100,7 @@ function BoardTable(props) {
             dataIndex: "tmNotifys",
             key: "tmNotifys",
             width: '30%',
-            align:'center',
+            align: 'center',
         },
         {
             title: "操作",

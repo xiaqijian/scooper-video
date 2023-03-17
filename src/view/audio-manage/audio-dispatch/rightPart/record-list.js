@@ -93,8 +93,8 @@ class RecordList extends Component {
                 + '?token=' + getToken()
                 + '&businessId=' + item.businessid
                 + '&fileType=0';
-                elemIF.style.display = 'none';
-                document.body.appendChild(elemIF);
+            elemIF.style.display = 'none';
+            document.body.appendChild(elemIF);
         })
     }
     /**
@@ -111,11 +111,11 @@ class RecordList extends Component {
      */
     getTitle = (item) => {
         let title = '';
-        if(item.memName){
-            title = item.memName + "-"
+        if (item.name) {
+            title = item.name + "-"
         }
-        if(item.tel){
-            title += hideTel(item.tel) 
+        if (item.tel) {
+            title += hideTel(item.tel)
         }
         return title
     }
@@ -142,10 +142,10 @@ class RecordList extends Component {
                             return (
                                 <li className={`record-list ${item.recId == curSelectItem.recId ? 'onsel' : ''}`} key={'all-' + index} onClick={() => { this.clickList(item) }}>
                                     <i className={`icon-record  ${(item.callType == 'incallin' || item.callType == 'callin' || item.callType == 'incall') ? 'icon-callin' : ''}${(item.callType == 'incallout' || item.callType == 'callout') ? 'icon-callout' : ''} ${item.isCallInMiss == 1 ? 'icon-callmiss' : ''}`}></i>
-                                    <span 
-                                        className={`record-name ${item.isCallInMiss == 1 ? 'record-miss-name' : ''}`} 
+                                    <span
+                                        className={`record-name ${item.isCallInMiss == 1 ? 'record-miss-name' : ''}`}
                                         title={this.getTitle(item)}>
-                                        {item.memName || hideTel(item.tel)}
+                                        {item.name || hideTel(item.tel)}
                                     </span>
                                     <span className={`record-date ${item.isCallInMiss == 1 ? 'record-miss-date' : ''}`}>{item.tmCallT.substring(0, 16)}</span>
                                     {item.callLen && <p className="call-length">{item.callLen}</p>}

@@ -44,7 +44,7 @@ class DeskDetail extends Component {
   restSpan() {
     let doms = [];
     let { curMeets } = this.props;
-    if (curMeets.meetId.toString().indexOf("none-") >= 0) {
+    if (curMeets.id.toString().indexOf("none-") >= 0) {
       // 空(仅仅是为了填充)
       for (let i = 0; i < 12; i++) {
         doms.push(
@@ -55,7 +55,7 @@ class DeskDetail extends Component {
         );
       }
     } else {
-      if (curMeets.meetMem && curMeets.meetMem.length == 0) {
+      if (curMeets.attendees && curMeets.attendees.length == 0) {
         for (let i = 0; i < 12; i++) {
           doms.push(
             <span
@@ -63,26 +63,24 @@ class DeskDetail extends Component {
               onClick={() => {
                 this.addMeetMem(i);
               }}
-              className={`meet-list meet-list-none ${
-                i == 11 ? "meet-list-add" : ""
-              }`}
+              className={`meet-list meet-list-none ${i == 11 ? "meet-list-add" : ""
+                }`}
             ></span>
           );
         }
-      } else if (curMeets.meetMem && curMeets.meetMem.length > 0) {
-        for (let i = 0; i < 12 - curMeets.meetMem.length; i++) {
+      } else if (curMeets.attendees && curMeets.attendees.length > 0) {
+        for (let i = 0; i < 12 - curMeets.attendees.length; i++) {
           doms.push(
             <span
               key={`empty_seat-${i}`}
               onClick={() => {
                 this.addMeetMem(i);
               }}
-              className={`meet-list meet-list-none ${
-                i == 12 - curMeets.meetMem.length - 1 &&
-                curMeets.meetMem.length > 0
-                  ? "meet-list-add"
-                  : ""
-              }`}
+              className={`meet-list meet-list-none ${i == 12 - curMeets.attendees.length - 1 &&
+                curMeets.attendees.length > 0
+                ? "meet-list-add"
+                : ""
+                }`}
             ></span>
           );
         }
@@ -94,9 +92,8 @@ class DeskDetail extends Component {
               onClick={() => {
                 this.addMeetMem(i);
               }}
-              className={`meet-list meet-list-none ${
-                i == 11 ? "meet-list-add" : ""
-              }`}
+              className={`meet-list meet-list-none ${i == 11 ? "meet-list-add" : ""
+                }`}
             ></span>
           );
         }
@@ -129,7 +126,7 @@ class DeskDetail extends Component {
     // })
     if (index + 1) {
       // 有空的
-      if (index == 12 - this.props.curMeets.meetMem.length - 1) {
+      if (index == 12 - this.props.curMeets.attendees.length - 1) {
         this.setState({
           memModalVisible: true,
         });
@@ -147,29 +144,29 @@ class DeskDetail extends Component {
    */
   getMemData = (memData) => {
     let { curMeets } = this.props;
-    let meetId = curMeets.meetId;
+    let id = curMeets.id;
     let joinMembersArray = [];
     memData.map((item) => {
       joinMembersArray.push(item.memTel);
     });
-    if (memData.length > 0 && curMeets.meetAttr != "MEET_RESERVE") {
+    if (memData.length > 0 && curMeets.conferenceTimeType != "EDIT_CONFERENCE") {
       // 向立即会议中拉人
-      window.scooper.meetManager.meetsObj.joinMembers(meetId, joinMembersArray);
+      window.scooper.meetManager.meetsObj.joinMembers(id, joinMembersArray);
     }
-    if (memData.length > 0 && curMeets.meetAttr == "MEET_RESERVE") {
+    if (memData.length > 0 && curMeets.conferenceTimeType == "EDIT_CONFERENCE") {
       // 向预约会议中拉人 相当于编辑 预约会议
       let params = {
-        meetId: curMeets.meetId,
-        meetName: curMeets.meetName,
-        meetAccess: curMeets.meetAccess,
-        meetAttr: curMeets.meetAttr,
+        id: curMeets.id,
+        subject: curMeets.subject,
+        accessCode: curMeets.accessCode,
+        conferenceTimeType: curMeets.conferenceTimeType,
         timeBegin: curMeets.timeBegin,
         timeEnd: curMeets.timeEnd,
-        passwdSpeaker: curMeets.passwdSpeaker,
-        passwdAudience: curMeets.passwdAudience,
+        chairmanPassword: curMeets.chairmanPassword,
+        guestPassword: curMeets.guestPassword,
       };
       let paramMem = [];
-      curMeets.meetMem.map((da) => {
+      curMeets.attendees.map((da) => {
         paramMem.push((da.tel || da.memTel) + ",speak");
       });
       memData.map((mem) => {
@@ -194,15 +191,15 @@ class DeskDetail extends Component {
   editMeetBypre = (params, resultCallback) => {
     let meetMembers = params.meetMembers ? params.meetMembers.join(";") : "";
     meetManager.meetsObj.editMeet(
-      params.meetId,
-      params.meetName,
+      params.id,
+      params.subject,
       resultCallback,
-      params.meetAccess,
-      params.meetAttr,
+      params.accessCode,
+      params.conferenceTimeType,
       params.timeBegin,
       params.timeEnd,
-      params.passwdSpeaker,
-      params.passwdAudience,
+      params.chairmanPassword,
+      params.guestPassword,
       meetMembers
     );
   };
@@ -231,18 +228,18 @@ class DeskDetail extends Component {
    * 手柄入会
    */
   operJoinMeet = (curMeet) => {
-    let meetId = curMeet.meetId;
+    let id = curMeet.id;
     let operTel = window.scooper.dispatchManager.accountDetail.mainTel;
-    window.scooper.meetManager.meetsObj.joinMember(meetId, operTel);
+    window.scooper.meetManager.meetsObj.joinMember(id, operTel);
   };
-  componentDidMount() {}
+  componentDidMount() { }
 
   render() {
     let { curMeets, allMeetOpLogs } = this.props;
     let { meetDetailVisible } = this.state;
     let curMeetOpLogs;
     allMeetOpLogs.map((item) => {
-      if (item.meetId == curMeets.meetId) {
+      if (item.id == curMeets.id) {
         curMeetOpLogs = item.logs;
       }
     });
@@ -250,7 +247,7 @@ class DeskDetail extends Component {
     return (
       <div className="desk-detail">
         {/* 显示入会日志 */}
-        {curMeets.meetId.indexOf("none") < 0 &&
+        {curMeets.id.indexOf("none") < 0 &&
           curMeetOpLogs &&
           curMeetOpLogs.length > 0 && (
             <div className="meet-msg">
@@ -264,8 +261,8 @@ class DeskDetail extends Component {
               </span>
             </div>
           )}
-        {curMeets.meetId.indexOf("none") < 0 &&
-          curMeets.meetAttr != "MEET_RESERVE" && (
+        {curMeets.id.indexOf("none") < 0 &&
+          curMeets.conferenceTimeType != "EDIT_CONFERENCE" && (
             <Button
               type="primary"
               ghost
@@ -280,18 +277,17 @@ class DeskDetail extends Component {
 
         <div className="desk-detail-wrap">
           <div
-            className={`meet-table ${
-              curMeets.meetId.indexOf("none") < 0 ? "" : "meet-all-none"
-            }`}
+            className={`meet-table ${curMeets.id.indexOf("none") < 0 ? "" : "meet-all-none"
+              }`}
           >
-            {curMeets.meetAttr != "MEET_RESERVE" &&
-              curMeets.meetId.indexOf("none") < 0 && (
+            {curMeets.conferenceTimeType != "EDIT_CONFERENCE" &&
+              curMeets.id.indexOf("none") < 0 && (
                 <div className="meet-info">
                   <span className="meet-info-num">
                     会议号：
-                    {curMeets.meetAccess ||
-                      curMeets.meetName ||
-                      curMeets.meetId}
+                    {curMeets.accessCode ||
+                      curMeets.subject ||
+                      curMeets.id}
                     <i
                       className="meet-info-icon"
                       onClick={() => {
@@ -301,8 +297,8 @@ class DeskDetail extends Component {
                   </span>
                 </div>
               )}
-            {curMeets.meetAttr == "MEET_RESERVE" &&
-              curMeets.meetId.indexOf("none") < 0 && (
+            {curMeets.conferenceTimeType == "EDIT_CONFERENCE" &&
+              curMeets.id.indexOf("none") < 0 && (
                 <div className="meet-info-pre">
                   <div className="pre-wrap">
                     <span className="pre-title">预约会议</span>
@@ -320,16 +316,16 @@ class DeskDetail extends Component {
               )}
           </div>
           <div className="meet-list-wrap">
-            {curMeets.meetMem &&
-              curMeets.meetMem.length > 0 &&
-              curMeets.meetMem.map((val, index) => {
+            {curMeets.attendees &&
+              curMeets.attendees.length > 0 &&
+              curMeets.attendees.map((val, index) => {
                 if (index > 11) {
                   return "";
                 }
                 if (index == 11) {
                   return (
                     <span
-                      key={`meetMem-add`}
+                      key={`attendees-add`}
                       onClick={() => {
                         this.addMeetMem("");
                       }}
@@ -337,10 +333,10 @@ class DeskDetail extends Component {
                     ></span>
                   );
                 }
-                if (index == 10 && curMeets.meetMem.length > 10) {
+                if (index == 10 && curMeets.attendees.length > 10) {
                   return (
                     <span
-                      key="meetMem-emph"
+                      key="attendees-emph"
                       onClick={this.props.showBigClick}
                       className={`meet-list meet-list-emph`}
                     ></span>
@@ -348,27 +344,22 @@ class DeskDetail extends Component {
                 }
                 return (
                   <span
-                    key={`meetMem-${index}`}
-                    title={val.memName}
-                    className={`meet-list ${
-                      val.level == "private" ? "mem-talk" : ""
-                    } ${
-                      val.chair && curMeets.meetAttr != "MEET_RESERVE"
+                    key={`attendees-${index}`}
+                    title={val.name}
+                    className={`meet-list ${val.level == "private" ? "mem-talk" : ""
+                      } ${val.chair && curMeets.conferenceTimeType != "EDIT_CONFERENCE"
                         ? "meet-chairman"
                         : ""
-                    } ${val.status == "calling" ? "mem-calling" : ""}${
-                      val.level == "handup" ? "mem-hands" : ""
-                    } ${
-                      val.status == "reject" || val.status == "unresponse"
+                      } ${val.status == "calling" ? "mem-calling" : ""}${val.level == "handup" ? "mem-hands" : ""
+                      } ${val.status == "reject" || val.status == "unresponse"
                         ? "mem-reject"
                         : ""
-                    } ${val.level == "audience" ? "mem-jy" : ""} ${
-                      val.status == "quit" ? "mem-quit" : ""
-                    }`}
+                      } ${val.level == "audience" ? "mem-jy" : ""} ${val.status == "quit" ? "mem-quit" : ""
+                      }`}
                     onClick={() => this.showMemDetail(val)}
                   >
                     <span className="mem-name-span over-ellipsis">
-                      {val.memName}
+                      {val.name}
                     </span>
                   </span>
                 );

@@ -12,7 +12,7 @@ import { Input, message } from "antd";
 
 import { setMeetDetailList } from '../../../../reducer/meet-handle-reduce';
 
-const {Search} = Input
+const { Search } = Input
 
 @connect(
     state => state.meetHandle,
@@ -29,15 +29,15 @@ class MeetSearch extends Component {
 
     }
     onChange = (e) => {
-        
+
 
     }
-    
+
     onSearch = (val) => {
-        let {curMeet} = this.props;
+        let { curMeet } = this.props;
         let searchResult = [];
-        curMeet.meetMem.map((mem)=>{
-            if(mem.memName.toString().indexOf(val)>-1){
+        curMeet.attendees.map((mem) => {
+            if (mem.name.toString().indexOf(val) > -1) {
                 searchResult.push(mem);
             }
         })

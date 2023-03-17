@@ -125,12 +125,12 @@ class MeetListen {
       (evt) => {
         let msg = evt.msg;
         devMode && console.log("收到会场成员记录全部清除通知：", msg);
-        if (msg.meetId) {
+        if (msg.id) {
           let { meetDetailList } = store.getState().meetHandle;
           if (msg.type == "delAll") {
             meetDetailList.map((item) => {
-              if (item.meetId == msg.meetId && !item.locked) {
-                item.meetMem = [];
+              if (item.id == msg.id && !item.locked) {
+                item.attendees = [];
               }
             });
             fillMeetDetailList([...meetDetailList]);
@@ -146,32 +146,32 @@ class MeetListen {
     devMode && console.log("收到会场成员记录变化通知：", msg);
     let { meetDetailList } = store.getState().meetHandle;
     let { memTelMapCache } = store.getState().audioHandle;
-    if (msg.meetId) {
+    if (msg.id) {
       meetDetailList.map((item) => {
-        if (item.meetId == msg.meetId) {
+        if (item.id == msg.id) {
           //更新status
-          item.meetMem &&
-            item.meetMem.map((mem, i) => {
+          item.attendees &&
+            item.attendees.map((mem, i) => {
               if (mem.tel == msg.tel) {
                 mem.status = msg.status;
               }
             });
-          if (item.meetMem.length == 0 && msg.status == "calling") {
+          if (item.attendees.length == 0 && msg.status == "calling") {
             let param = {
-              meetId: item.meetId,
+              id: item.id,
               status: msg.status,
               tel: msg.tel,
-              memName:
-                (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].memName) ||
+              name:
+                (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].name) ||
                 msg.tel,
               deptName:
                 (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].deptName) ||
                 "",
             };
-            item.meetMem.push(param);
+            item.attendees.push(param);
           }
           let newName =
-            (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].memName) ||
+            (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].name) ||
             msg.tel;
           let opMsg = "";
           if (msg.status == "reject" || msg.status == "unresponse") {
@@ -179,7 +179,7 @@ class MeetListen {
           } else if (msg.status == "calling") {
             opMsg = "正在呼叫" + newName;
           }
-          this.addOpLog(msg.meetId, opMsg);
+          this.addOpLog(msg.id, opMsg);
         }
       });
       fillMeetDetailList([...meetDetailList]);
@@ -196,18 +196,18 @@ class MeetListen {
     if (msg.type == "level") {
       //等级发生变化
       meetDetailList.map((item) => {
-        if (item.meetId == msg.meetId) {
-          item.meetMem &&
-            item.meetMem.map((mem, i) => {
+        if (item.id == msg.id) {
+          item.attendees &&
+            item.attendees.map((mem, i) => {
               if (mem.tel == msg.tel) {
                 if (msg.level != "chairman") {
                   mem.level = level;
                 }
 
                 let opMsg =
-                  mem.memName ||
+                  mem.name ||
                   (memTelMapCache[msg.tel] &&
-                    memTelMapCache[msg.tel].memName) ||
+                    memTelMapCache[msg.tel].name) ||
                   msg.tel;
                 if (level == "handup") {
                   opMsg += "举手发言";
@@ -219,7 +219,7 @@ class MeetListen {
                   level == "speak" && (opMsg += "可发言");
                   level == "private" && (opMsg += "单独通话");
                 }
-                this.addOpLog(msg.meetId, opMsg);
+                this.addOpLog(msg.id, opMsg);
               } else if (msg.level == "chairman") {
                 mem.chair = false; //清除上一个主持人状态
               }
@@ -230,33 +230,33 @@ class MeetListen {
     } else if (msg.type == "leave") {
       //离开会场
       meetDetailList.map((item) => {
-        if (item.meetId == msg.meetId) {
-          item.meetMem &&
-            item.meetMem.map((mem, i) => {
+        if (item.id == msg.id) {
+          item.attendees &&
+            item.attendees.map((mem, i) => {
               if (mem.tel == msg.tel) {
                 mem.status = "quit";
               }
             });
         }
       });
-      // const items = meetDetailList.find(meet => meet.meetId  == msg.meetId);
+      // const items = meetDetailList.find(meet => meet.id  == msg.id);
       // 填充会议列表
       fillMeetDetailList([...meetDetailList]);
       let opMsg =
-        (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].memName) || msg.tel;
+        (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].name) || msg.tel;
       opMsg += "离开会场";
-      this.addOpLog(msg.meetId, opMsg);
+      this.addOpLog(msg.id, opMsg);
     } else if (msg.type == "join") {
       meetDetailList.map((item) => {
-        if (item.meetId == msg.meetId) {
+        if (item.id == msg.id) {
           let findMeetMember = false;
           let mem = {
             tel: msg.tel,
             level: level || "",
           };
-          item.meetMem = item.meetMem || [];
-          item.meetMem &&
-            item.meetMem.map((member, i) => {
+          item.attendees = item.attendees || [];
+          item.attendees &&
+            item.attendees.map((member, i) => {
               if (member.tel == msg.tel) {
                 findMeetMember = true;
                 member.level = level;
@@ -265,30 +265,30 @@ class MeetListen {
             });
           if (!findMeetMember) {
             mem.level = level;
-            mem.meetId = msg.meetId;
-            mem.memName =
-              (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].memName) ||
+            mem.id = msg.id;
+            mem.name =
+              (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].name) ||
               msg.tel;
             mem.deptName =
               (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].deptName) ||
               "";
-            item.meetMem.push(mem);
+            item.attendees.push(mem);
           }
           let newName =
-            (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].memName) ||
+            (memTelMapCache[msg.tel] && memTelMapCache[msg.tel].name) ||
             msg.tel;
           let opMsg = newName + "加入会场";
-          this.addOpLog(msg.meetId, opMsg);
+          this.addOpLog(msg.id, opMsg);
         }
       });
-      // const items = meetDetailList.find(meet => meet.meetId  == msg.meetId);
+      // const items = meetDetailList.find(meet => meet.id  == msg.id);
       fillMeetDetailList([...meetDetailList]);
     }
   };
   /**
    * 添加日志
    */
-  addOpLog = (meetId, opMsg) => {
+  addOpLog = (id, opMsg) => {
     let { allMeetOpLogs } = store.getState().meetHandle;
     if (!opMsg) return;
     let time = timeUtil.getTime();
@@ -298,7 +298,7 @@ class MeetListen {
     };
     let findMeet = false;
     allMeetOpLogs.map((item) => {
-      if (item.meetId == meetId) {
+      if (item.id == id) {
         findMeet = true;
         item.logs.unshift(log);
       }
@@ -306,7 +306,7 @@ class MeetListen {
     // 该会场操作记录为空，新建该会场的操作记录
     if (!findMeet) {
       let meetOplogs = {
-        meetId: meetId, //
+        id: id, //
         logs: [],
       };
       meetOplogs.logs.unshift(log);
@@ -316,20 +316,20 @@ class MeetListen {
   };
   /**
    * 监听会场状态变化通知
-   * {"playvoice":false,"meetId":"1008","destroy":false,"recording":false,"meetName":"默认","locked":false}
+   * {"playvoice":false,"id":"1008","destroy":false,"recording":false,"subject":"默认","locked":false}
    */
   meetStatusChanged = (msg) => {
     let { meetDetailList } = store.getState().meetHandle;
     let { memTelMapCache } = store.getState().audioHandle;
     devMode && console.log("收到会场状态变化通知：", msg);
-    if (msg.meetAttr == "MEET_RESERVE" || msg.meetType == "MEET_RESERVE") {
+    if (msg.conferenceTimeType == "EDIT_CONFERENCE" || msg.meetType == "EDIT_CONFERENCE") {
       // 预约会议
       meetDetailList.map((item, index) => {
-        if (item.meetId == msg.id) {
-          item.meetName = msg.meetName;
-          item.meetAccess = msg.meetAccess;
-          item.passwdAudience = msg.passwdAudience;
-          item.passwdSpeaker = msg.passwdSpeaker;
+        if (item.id == msg.id) {
+          item.subject = msg.subject;
+          item.accessCode = msg.accessCode;
+          item.guestPassword = msg.guestPassword;
+          item.chairmanPassword = msg.chairmanPassword;
           item.timeBegin = msg.timeBegin;
           item.timeEnd = msg.timeEnd;
           let memberArr = [];
@@ -338,7 +338,7 @@ class MeetListen {
               if (!mem.tel) {
                 let param = {
                   tel: mem,
-                  meetId: item.meetId,
+                  id: item.id,
                 };
                 memberArr.push(param);
               } else {
@@ -348,40 +348,40 @@ class MeetListen {
           }
           memberArr = uniqueArr(memberArr); //去重
           memberArr.map((realMem) => {
-            realMem.memName =
+            realMem.name =
               (memTelMapCache[realMem.tel] &&
-                memTelMapCache[realMem.tel].memName) ||
+                memTelMapCache[realMem.tel].name) ||
               realMem.tel;
             realMem.deptName =
               (memTelMapCache[realMem.tel] &&
                 memTelMapCache[realMem.tel].deptName) ||
               "";
           });
-          item.meetMem = memberArr;
+          item.attendees = memberArr;
         }
       });
-      const items = meetDetailList.find((meet) => meet.meetId == msg.id);
+      const items = meetDetailList.find((meet) => meet.id == msg.id);
       fillMeetDetailList(meetDetailList, items);
     } else {
       //预约会议转立即会议
       var findReserveMeet = false;
       meetDetailList.map((meet, i) => {
         if (
-          meet.meetId &&
-          meet.meetId == msg.id &&
-          meet.meetAttr == "MEET_RESERVE"
+          meet.id &&
+          meet.id == msg.id &&
+          meet.conferenceTimeType == "EDIT_CONFERENCE"
         ) {
           //预约会议转立即会议
 
           findReserveMeet = true;
-          meet.meetAttr = "MEET_INSTANT";
+          meet.conferenceTimeType = "INSTANT_CONFERENCE";
           let memberArr = [];
           if (msg.members.length > 0) {
             msg.members.map((mem) => {
               if (!mem.tel) {
                 let param = {
                   tel: mem,
-                  meetId: meet.meetId,
+                  id: meet.id,
                 };
                 memberArr.push(param);
               } else {
@@ -391,16 +391,16 @@ class MeetListen {
           }
           memberArr = uniqueArr(memberArr); //去重
           memberArr.map((realMem) => {
-            realMem.memName =
+            realMem.name =
               (memTelMapCache[realMem.tel] &&
-                memTelMapCache[realMem.tel].memName) ||
+                memTelMapCache[realMem.tel].name) ||
               realMem.tel;
             realMem.deptName =
               (memTelMapCache[realMem.tel] &&
                 memTelMapCache[realMem.tel].deptName) ||
               "";
           });
-          meet.meetMem = memberArr;
+          meet.attendees = memberArr;
         }
         fillMeetDetailList([...meetDetailList]);
       });
@@ -408,8 +408,8 @@ class MeetListen {
       if (findReserveMeet) return;
       // 立即会议
       meetDetailList.map((meet) => {
-        if (meet.meetId == msg.id) {
-          meet.meetName = msg.meetName || msg.name || meet.meetName;
+        if (meet.id == msg.id) {
+          meet.subject = msg.subject || msg.name || meet.subject;
           let opMsg;
           if (meet.recording != msg.recording) {
             opMsg = "会场" + (msg.recording ? "开始录音" : "结束录音");
@@ -420,26 +420,26 @@ class MeetListen {
           if (meet.locked != msg.locked) {
             opMsg = "会场" + (msg.locked ? "锁定" : "解锁");
           }
-          this.addOpLog(meet.meetId, opMsg);
+          this.addOpLog(meet.id, opMsg);
           meet.recording = msg.recording;
           meet.playvoice = msg.playvoice;
           meet.locked = msg.locked;
           meet.chairman = msg.chairman;
-          meet.meetAccess = msg.meetAccess;
-          meet.passwdAudience = msg.passwdAudience;
-          meet.passwdSpeaker = msg.passwdSpeaker;
+          meet.accessCode = msg.accessCode;
+          meet.guestPassword = msg.guestPassword;
+          meet.chairmanPassword = msg.chairmanPassword;
           meet.timeBegin = meet.timeBegin || msg.timeBegin;
           meet.timeEnd = meet.timeEnd || msg.timeEnd;
         }
       });
-      const items = meetDetailList.find((meet) => meet.meetId == msg.id);
+      const items = meetDetailList.find((meet) => meet.id == msg.id);
       fillMeetDetailList(meetDetailList, items);
     }
   };
 
   /**
    * 会场列表变化通知
-   * {type:'add'/'remove' meet:{id:'',meetName:''...}}
+   * {type:'add'/'remove' meet:{id:'',subject:''...}}
    */
   meetListChanged = (msg) => {
     let { meetDetailList } = store.getState().meetHandle;
@@ -448,7 +448,7 @@ class MeetListen {
       this.addMeet(msg.meet.id);
     } else if (msg.type == "remove") {
       meetDetailList.map((item, index) => {
-        if (item.meetId == msg.meet.id) {
+        if (item.id == msg.meet.id) {
           if (item.meetSymbol == "main") {
             // 删除的是主会场，更新主会场到默认会场
             const items = meetDetailList.find(
@@ -465,20 +465,20 @@ class MeetListen {
   /**
    * 新建会场
    */
-  addMeet = (meetId) => {
+  addMeet = (id) => {
     let { meetDetailList } = store.getState().meetHandle;
     let { memTelMapCache } = store.getState().audioHandle;
-    if (!meetId) return;
+    if (!id) return;
     window.scooper.meetManager &&
-      window.scooper.meetManager.meetsObj.getMeet(meetId, (meetInfo) => {
+      window.scooper.meetManager.meetsObj.getMeet(id, (meetInfo) => {
         devMode && console.log(meetInfo);
         if (!meetInfo) return;
-        meetInfo.meetId = meetInfo.meetId || meetInfo.id;
-        meetInfo.meetName = meetInfo.meetName || meetInfo.name;
+        meetInfo.id = meetInfo.id || meetInfo.id;
+        meetInfo.subject = meetInfo.subject || meetInfo.name;
         meetInfo.meetSymbol = "";
         meetInfo.timeLength = "";
         if (
-          meetInfo.meetId ==
+          meetInfo.id ==
           window.scooper.dispatchManager.accountDetail.accUsername
         ) {
           // 默认会场
@@ -486,21 +486,21 @@ class MeetListen {
           meetInfo.meetSymbol = "main";
 
           // item.isSetMain = 1;
-          meetInfo.meetAccess = meetInfo.meetId; //meetInfo.meetAccess为空
+          meetInfo.accessCode = meetInfo.id; //meetInfo.meetAccess为空
         } else if (
-          meetInfo.meetId == meetInfo.meetName ||
-          meetInfo.meetCreateId == meetInfo.meetName
+          meetInfo.id == meetInfo.subject ||
+          meetInfo.meetCreateId == meetInfo.subject
         ) {
           // 其他操作员的默认会场
-          meetInfo.meetAccess = meetInfo.meetId;
+          meetInfo.accessCode = meetInfo.id;
         }
         if (meetInfo.members.length > 0) {
           // 与会人员
           meetInfo.members = uniqueArr(meetInfo.members); //去重
 
           meetInfo.members.map((mem) => {
-            mem.memName =
-              (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].memName) ||
+            mem.name =
+              (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].name) ||
               mem.tel;
             mem.deptName =
               (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].deptName) ||
@@ -509,16 +509,16 @@ class MeetListen {
               mem.chair = true;
             }
           });
-          meetInfo.meetMem = meetInfo.members;
+          meetInfo.attendees = meetInfo.members;
         } else {
-          meetInfo.meetMem = [];
+          meetInfo.attendees = [];
         }
-        const findMeet = meetDetailList.find((meet) => meet.meetId == meetId);
+        const findMeet = meetDetailList.find((meet) => meet.id == id);
 
         if (findMeet) return; //找到了
         let findMeetList = false;
         meetDetailList.some((element, i) => {
-          if (element.meetId.toString().indexOf("none-") >= 0) {
+          if (element.id.toString().indexOf("none-") >= 0) {
             meetDetailList[i] = meetInfo;
             findMeetList = true;
             return true;
@@ -527,10 +527,10 @@ class MeetListen {
         if (
           !findMeetList &&
           meetDetailList.length >= 4 &&
-          meetDetailList[3].meetId.toString().indexOf("none-") < 0 &&
-          meetDetailList[2].meetId.toString().indexOf("none-") < 0 &&
-          meetDetailList[1].meetId.toString().indexOf("none-") < 0 &&
-          meetDetailList[0].meetId.toString().indexOf("none-") < 0
+          meetDetailList[3].id.toString().indexOf("none-") < 0 &&
+          meetDetailList[2].id.toString().indexOf("none-") < 0 &&
+          meetDetailList[1].id.toString().indexOf("none-") < 0 &&
+          meetDetailList[0].id.toString().indexOf("none-") < 0
         ) {
           meetDetailList.push(meetInfo);
         }
@@ -545,9 +545,9 @@ class MeetListen {
     let { meetDetailList } = store.getState().meetHandle;
     meetDetailList.map((item) => {
       // 立即会议 计算会议时长
-      if (item.meetAttr != "MEET_RESERVE") {
+      if (item.conferenceTimeType != "EDIT_CONFERENCE") {
         //  (操作员和其他操作员的默认会场不显示会议时长)
-        // if((item.meetCreateId == 'default' || item.meetId == item.meetName || item.meetCreateId == item.meetName) && item.meetMem && item.meetMem.length == 0){
+        // if((item.meetCreateId == 'default' || item.id == item.subject || item.meetCreateId == item.subject) && item.attendees && item.attendees.length == 0){
         //     return ;
         // }
         let date = timeUtil.transDateByDateStr(item.timeBegin);

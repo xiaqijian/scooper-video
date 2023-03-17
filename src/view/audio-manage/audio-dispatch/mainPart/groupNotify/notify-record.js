@@ -43,8 +43,8 @@ class NotifyRecord extends Component {
                 item.memNames = ""
                 if (item.calleds.length > 0) {
                     item.calleds.forEach((cal) => {
-                        if (memTelMapCache[cal] && memTelMapCache[cal].memName != undefined) {
-                            item.memNames += memTelMapCache[cal].memName + "、"
+                        if (memTelMapCache[cal] && memTelMapCache[cal].name != undefined) {
+                            item.memNames += memTelMapCache[cal].name + "、"
                         } else {
                             item.memNames = cal + "、"
                         }
@@ -54,7 +54,7 @@ class NotifyRecord extends Component {
                 if (item.notifyRecordList.length > 0) {
                     item.notifyRecordList.forEach((notify) => {
                         if (memTelMapCache[notify.called]) {
-                            notify.calledName = memTelMapCache[notify.called].memName
+                            notify.calledName = memTelMapCache[notify.called].name
                         } else {
                             notify.calledName = notify.called
                         }
@@ -87,17 +87,17 @@ class NotifyRecord extends Component {
      * 筛选查询
      */
     onSearchClick = async (data) => {
-        let {memTelMapCache} = this.props;
+        let { memTelMapCache } = this.props;
         let params
-        if(!data || data == null){
+        if (!data || data == null) {
             // params = {
             //     groupType:3,
             // }
-        }else{
+        } else {
             params = {
-                searchKey:data.searchKey,
-                timeMin:data.timeMin,
-                timeMax:data.timeMax,
+                searchKey: data.searchKey,
+                timeMin: data.timeMin,
+                timeMax: data.timeMax,
             }
         }
         console.log(params)

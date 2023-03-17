@@ -12,6 +12,7 @@ import {
   setCurMeet,
 } from "../../../../reducer/meet-handle-reduce";
 import { fillMeetDetailList } from "../../../../util/meet-method";
+import { meetapis } from "../../../../api/meetapis";
 import DeskDetail from "./desk-detail";
 import MeetOperate from "../meet-operate";
 import BigMeet from "../big-meet";
@@ -25,33 +26,44 @@ class MeetDesk extends Component {
       curSelectMeet: {}, //当前选中的会议
     };
   }
-  componentDidMount() {}
+  componentDidMount() { }
   /**
    * 会议桌点击
    */
-  deskItemClick = (list) => {
-    if (list.meetId.indexOf("none-") == -1) {
+  deskItemClick = async (list) => {
+    if (list.id.indexOf("none-") == -1) {
       // this.props.setCurMeet(list)
+      const { id } = list
+      let res = await meetapis.meetManagePrefix.getMeetInfo({ conferenceId: id })
+      console.log(res);
+
       let { meetDetailList } = this.props;
       meetDetailList.map((item, index) => {
-        if (item.meetId == list.meetId) {
+        if (item.id == list.id) {
           item.isSetMain = 1;
         } else {
           item.isSetMain = 2;
         }
       });
       list.isSetMain = 1;
+      list.attendees = res.data.attendees || [];
       fillMeetDetailList(meetDetailList, list);
     }
   };
   /**
    * 显示大会议桌
    */
-  showBig = (item) => {
-    if (item.meetId.toString().indexOf("none-") == -1) {
+  showBig = async (item) => {
+    const { id } = item;
+    if (!id) {
+      return
+    }
+    if (item.id.toString().indexOf("none-") == -1) {
       this.setState({
         isShowBigMeet: !this.state.isShowBigMeet,
-        curSelectMeet: item,
+        curSelectMeet: {
+          ...item,
+        },
       });
     }
   };
@@ -81,48 +93,45 @@ class MeetDesk extends Component {
                 meetDetailList.map((item, index) => {
                   return (
                     <div
-                      id={`meet-${item.meetId}`}
+                      id={`meet-${item.id}`}
                       onClick={() => {
                         this.deskItemClick(item);
                       }}
-                      className={`desk-wrap ${
-                        curMeet.meetId == item.meetId ? "meet-desk-sel" : ""
-                      } `}
+                      className={`desk-wrap ${curMeet.id == item.id ? "meet-desk-sel" : ""
+                        } `}
                       key={`desk-${index}`}
                     >
                       <div className="desk-title">
                         {item.meetSymbol == "main" && (
                           <span className="meet-symbol">主会场</span>
                         )}
-                        {item.meetId.indexOf("none") < 0 && (
-                          <span className="desk-name">
-                            {item.meetName || item.meetId}
-                          </span>
-                        )}
-                        {item.meetMem &&
-                          item.meetMem.length > 0 &&
-                          item.meetAttr != "MEET_RESERVE" && (
+                        <span className="desk-name">
+                          {item.subject || item.id}
+                        </span>
+                        {item.attendees &&
+                          item.attendees.length > 0 &&
+                          item.conferenceTimeType != "EDIT_CONFERENCE" && (
                             <span className="desk-name">
-                              ({item.meetMem.length}人)
+                              ({item.attendees.length}人)
                             </span>
                           )}
-                        {item.meetMem &&
-                          item.meetMem.length > 0 &&
-                          item.meetAttr == "MEET_RESERVE" && (
+                        {item.attendees &&
+                          item.attendees.length > 0 &&
+                          item.conferenceTimeType == "EDIT_CONFERENCE" && (
                             <span className="desk-name">
-                              (预约{item.meetMem.length}人)
+                              (预约{item.attendees.length}人)
                             </span>
                           )}
-                        {((item.meetAttr &&
-                          item.meetAttr != undefined &&
-                          item.meetAttr != "MEET_RESERVE") ||
+                        {((item.conferenceTimeType &&
+                          item.conferenceTimeType != undefined &&
+                          item.conferenceTimeType != "EDIT_CONFERENCE") ||
                           !(
                             item.meetCreateId == "default" ||
-                            item.meetId == item.meetName ||
-                            item.meetCreateId == item.meetName
+                            item.id == item.subject ||
+                            item.meetCreateId == item.subject
                           )) && (
-                          <span className="desk-time">{item.timeLength}</span>
-                        )}
+                            <span className="desk-time">{item.timeLength}</span>
+                          )}
                         {item.recording && <i className="icon-ly"></i>}
                         {item.playvoice && <i className="icon-fy"></i>}
                         {item.locked && <i className="icon-sd"></i>}

@@ -6,7 +6,7 @@
  */
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
-const url = "http://192.168.130.204:9998";
+const url = "https://59.203.26.163:9999";
 module.exports = function (app) {
   app.use(
     createProxyMiddleware("/dispatch-web", {
@@ -45,6 +45,16 @@ module.exports = function (app) {
       changeOrigin: true,
       pathRewrite: {
         "^/scooper-mits-conf": "/scooper-mits-conf",
+      },
+    })
+  );
+  app.use(
+    createProxyMiddleware("/mpgw", {
+      target: url,
+      secure: false,
+      changeOrigin: true,
+      pathRewrite: {
+        "^/mpgw": "/mpgw",
       },
     })
   );

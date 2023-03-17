@@ -8,36 +8,36 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Input, Select, message } from 'antd';
-import {setMeetDetailList,setCurMeet} from '../../../../reducer/meet-handle-reduce'
+import { setMeetDetailList, setCurMeet } from '../../../../reducer/meet-handle-reduce'
 import { debounce, isEmpty, uniqBy } from 'lodash';
 
 const { Option, OptGroup } = Select;
 
 @connect(
     state => state.meetHandle,
-    {setMeetDetailList,setCurMeet}
+    { setMeetDetailList, setCurMeet }
 )
 class SearchBox extends PureComponent {
     state = {
-       resultData:[],
-       searchVal:'',
-       memTotal:''
+        resultData: [],
+        searchVal: '',
+        memTotal: ''
     }
     /**
      * 搜索部门和人员（防抖）
      */
     fetchUser = debounce(searchVal => {
         if (!searchVal || !searchVal.trim()) return;
-        let {meetDetailList} = this.props;
+        let { meetDetailList } = this.props;
         let searchResultList = [];
-        meetDetailList.map((item)=>{
-            if((item.meetName && item.meetName.indexOf(searchVal)>-1 )|| 
-            (item.meetId && item.meetId.toString().indexOf(searchVal)>-1 && item.meetId.toString().indexOf('none-')==-1)){
+        meetDetailList.map((item) => {
+            if ((item.subject && item.subject.indexOf(searchVal) > -1) ||
+                (item.id && item.id.toString().indexOf(searchVal) > -1 && item.id.toString().indexOf('none-') == -1)) {
                 searchResultList.push(item);
             }
         })
         this.setState({
-            resultData:searchResultList,
+            resultData: searchResultList,
             searchVal
         })
     }, 800)
@@ -46,12 +46,12 @@ class SearchBox extends PureComponent {
      * 选中某条部门或人员，
      */
     handleChange = async (value, record) => {
-        let {meetDetailList} = this.props;
+        let { meetDetailList } = this.props;
         this.setState({
-            resultData:[],
+            resultData: [],
             searchVal: undefined,
         });
-        const curMeet = meetDetailList.find(meet => meet.meetId  == record.key);
+        const curMeet = meetDetailList.find(meet => meet.id == record.key);
         this.props.setCurMeet(curMeet)
     }
     /**
@@ -66,23 +66,23 @@ class SearchBox extends PureComponent {
             });
         }
     }
-    showMoreMember = () => {  
-        
+    showMoreMember = () => {
+
     }
     setSearchValColor(origValue, searchValue, nember) {
         if (origValue == null) {
             origValue = ''
         }
-        let skin =  window.scooper.configs.skin;
+        let skin = window.scooper.configs.skin;
         const index = (origValue += "").indexOf(searchValue);
         const beforeStr = origValue.substr(0, index);
         const afterStr = origValue.substr(index + searchValue.length);
         const realStr = searchValue && index > -1 ? (
             <span id="name">
                 {beforeStr}
-                {skin=='science' && <span style={{ color: '#fff' }}>{searchValue}</span>}
-                {(skin=='light') && <span style={{ color: '#0080FF' }}>{searchValue}</span>}
-                {skin=='dark' && <span style={{ color: '#FFA600' }}>{searchValue}</span>}
+                {skin == 'science' && <span style={{ color: '#fff' }}>{searchValue}</span>}
+                {(skin == 'light') && <span style={{ color: '#0080FF' }}>{searchValue}</span>}
+                {skin == 'dark' && <span style={{ color: '#FFA600' }}>{searchValue}</span>}
                 {afterStr}
             </span>
         ) : <span id="name">{origValue}</span>;
@@ -91,12 +91,12 @@ class SearchBox extends PureComponent {
 
 
     render() {
-        const { resultData,searchVal,memTotal} = this.state;
+        const { resultData, searchVal, memTotal } = this.state;
         return (
             <Select
                 showSearch
                 className="search-user"
-                dropdownClassName={`search-meet-dropdown ${window.top.style == 'iframe' ? 'dropdown-iframe-modal':''}`}
+                dropdownClassName={`search-meet-dropdown ${window.top.style == 'iframe' ? 'dropdown-iframe-modal' : ''}`}
                 placeholder="搜索会议名称"
                 notFoundContent="无搜索结果"
                 filterOption={false}
@@ -112,12 +112,12 @@ class SearchBox extends PureComponent {
             >
                 {!isEmpty(resultData) &&
                     <OptGroup key="会议">
-                    {resultData.map(mem => (
-                        <Option key={mem.meetId} >
-                            <i className={`${mem.meetAttr == 'MEET_RESERVE' ? 'icon-prevMeet' : 'icon-meet'}`}></i>
-                            <span className='meet-name over-ellipsis'>{this.setSearchValColor(mem.meetName||mem.meetId,searchVal)}</span>
-                        </Option>
-                    ))}
+                        {resultData.map(mem => (
+                            <Option key={mem.id} >
+                                <i className={`${mem.conferenceTimeType == 'EDIT_CONFERENCE' ? 'icon-prevMeet' : 'icon-meet'}`}></i>
+                                <span className='meet-name over-ellipsis'>{this.setSearchValColor(mem.subject || mem.id, searchVal)}</span>
+                            </Option>
+                        ))}
                     </OptGroup>
                 }
             </Select>

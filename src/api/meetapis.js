@@ -17,32 +17,38 @@ const mpgwPrefix = "/mpgw"; //中台会议接口
 export let meetapis = {
   // 会议管理
   meetManagePrefix: getServices(`${mpgwPrefix}`, getToken, {
-     // 查询正在召开和待召开的会议列表
-     reservedMeets: {
-       url: "/mpgw/meet/reservedMeets",
-       type: "get",
-       getResp: true
+    // 查询正在召开和待召开的会议列表
+    reservedMeets: {
+      url: "/meet/reservedMeets?token=123456&pageNum=0&pageSize=10&username=zhzx&regionCode=340000",
+      type: "get",
+      getResp: true
+    },
+    // 历史会议列表
+    historyMeets: {
+      url: "/meet/historyMeets?token=123456&pageNum=0&pageSize=10&username=zhzx&regionCode=340000",
+      type: "get",
+      getResp: true
     },
     // 查找会议详情
     getMeetInfo: {
-      url: "/mpgw/meet/getMeetInfo",
+      url: "/meet/getMeetInfo?&username=zhzx&regionCode=340000",
       type: "get",
       getResp: true
     },
     // 创建会议
     create: {
-      url: "/mpgw/meet/create",
+      url: "/meet/create",
       type: "post",
       getResp: true
     },
     // 结束会议
     endMeet: {
-      url: "/mpgw/meet/endMeet",
+      url: "/meet/endMeet",
       type: "post",
     },
     // 删除会议
     deleteMeet: {
-      url: "/mpgw/meet/deleteMeet",
+      url: "/meet/deleteMeet",
       type: "delete",
       getResp: true
     },
@@ -51,12 +57,12 @@ export let meetapis = {
   meetOperatePrefix: getServices(`${mpgwPrefix}`, getToken, {
     // 会议控制
     setMeetOperate: {
-      url: "/mpgw/meet/setMeetOperate",
+      url: "/meet/setMeetOperate",
       type: "post",
     },
     // 添加与会人
     joinAttendees: {
-      url: "/mpgw/meet/joinAttendees",
+      url: "/meet/joinAttendees",
       type: "post",
     },
   }),
@@ -64,12 +70,18 @@ export let meetapis = {
   contactPrefix: getServices(`${mpgwPrefix}`, getToken, {
     // 查询通讯录组织机构列表
     queryDepartments: {
-      url: "/mpgw/contact/queryDepartments",
+      url: "/contact/queryDepartments",
       type: "post",
+    },
+    listDepartments: {
+      url: "/contact/listDepartments?username=zhzx&regionCode=340000",
+      type: "post",
+      getResp: true
+
     },
     // 查询通讯录成员
     queryMembers: {
-      url: "/mpgw/contact/queryMembers",
+      url: "/contact/queryMembers",
       type: "post",
     },
   }),

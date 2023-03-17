@@ -5,13 +5,13 @@
  * @version: V0.0.0.1
  * @LastEditTime: 2021-05-26 14:54:44
  */
-import { Table,Modal,message } from "antd";
+import { Table, Modal, message } from "antd";
 import React, { Component } from "react";
 import { setIsGroupTurn } from "../../../../../reducer/audio-handle-reducer";
 import store from "../../../../../store";
 import dispatchManager from "../../../../../util/dispatch-manager";
 
-const {confirm} = Modal
+const { confirm } = Modal
 function PollTable(props) {
     let pollRecordList = props.pollRecordList;
 
@@ -21,7 +21,7 @@ function PollTable(props) {
                 <p className="collasp-info">共发送{record.calleds.length}人(应答{record.succNum}人，未应答{record.failNum}人)</p>
                 {
                     record.groupRecords && record.groupRecords.map((item, index) => {
-                        return (<span className={`rec-mem over-ellipsis ${item.notifyResult == 200 ? '' : 'fail-mem'}`}>{item.memName}</span>)
+                        return (<span className={`rec-mem over-ellipsis ${item.notifyResult == 200 ? '' : 'fail-mem'}`}>{item.name}</span>)
                     })
                 }
 
@@ -74,13 +74,13 @@ function PollTable(props) {
                 }
             }
         })
-        if(failList.length == 0){
+        if (failList.length == 0) {
             message.error("当前没有失败成员！")
-        }else{
+        } else {
             dispatchManager.dispatcher.calls.groupTurn(failList, false);
             store.dispatch(setIsGroupTurn(true));
         }
-        
+
     }
     const columns = [
         {
@@ -93,7 +93,7 @@ function PollTable(props) {
             title: "轮呼成员",
             dataIndex: "memNames",
             key: "memNames",
-            textAlign:'center',
+            textAlign: 'center',
             ellipsis: true,
         },
         {
@@ -101,7 +101,7 @@ function PollTable(props) {
             dataIndex: "tmNotifys",
             key: "tmNotifys",
             width: '30%',
-            align:'center',
+            align: 'center',
         },
         {
             title: "操作",
@@ -111,7 +111,7 @@ function PollTable(props) {
             width: '10%',
             render: (text, record) => {
                 return (
-                    <i title="重新轮询"  className='icon-restart' onClick={e => reStart(e, record)}></i>
+                    <i title="重新轮询" className='icon-restart' onClick={e => reStart(e, record)}></i>
                 );
             }
         }

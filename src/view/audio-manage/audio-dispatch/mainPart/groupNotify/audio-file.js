@@ -7,7 +7,7 @@
  */
 import React, { Component } from "react";
 import { uniqBy } from 'lodash';
-import { Button, Input, Form, Row, Col, message, Upload, Select, notification,Popconfirm } from "antd";
+import { Button, Input, Form, Row, Col, message, Upload, Select, notification, Popconfirm } from "antd";
 import { setShowRecordInfo, setAudioList, setCurSelectAudio } from '../../../../../reducer/audio-handle-reducer';
 import AddMember from "../../../../../component/add-member";
 import { groupNotifyTitle, stsConst } from "../../../../../config/constants";
@@ -128,7 +128,7 @@ class AudioFile extends Component {
     modalOk = () => {
         let { audioName, audioTime } = this.state;
         let { audioList } = this.props;
-        if(!audioName){
+        if (!audioName) {
             message.error("请输入文件名")
             return;
         }
@@ -166,8 +166,8 @@ class AudioFile extends Component {
                         key: 'updateAudio',
                         duration: 0
                     })
-                } else{
-                    if(window.timeIndex && time != 0){
+                } else {
+                    if (window.timeIndex && time != 0) {
                         this.recordEnd('nohungUp');
                         clearInterval(window.timeIndex);
                     }
@@ -192,15 +192,15 @@ class AudioFile extends Component {
         console.log(nohungup)
         let { audioName, title } = this.state;
         let tel = dispatchManager.accountDetail.activeHandler;
-        if(nohungup && nohungup == 'nohungUp'){
-            
-        }else{
+        if (nohungup && nohungup == 'nohungUp') {
+
+        } else {
             dispatchManager.dispatcher.calls.notifyRecordOP(tel, audioName, 'finish');
             // 结束录制后会变成保持状态，直接挂断
-            if(getTelStatus(tel) == stsConst.CALLHOLD){
+            if (getTelStatus(tel) == stsConst.CALLHOLD) {
                 dispatchManager.dispatcher.calls.hungUp(tel);
             }
-            
+
         }
         this.setState({
             audioTime: ''
@@ -256,7 +256,7 @@ class AudioFile extends Component {
         })
     }
 
-    
+
     /**
      * 删除录音
      */
@@ -385,7 +385,7 @@ class AudioFile extends Component {
 
     render() {
         let { loopList, isCheck, isDel, modalVisible, isStartRecord, recordTag, audioTime } = this.state;
-        const { audioList, recMems, curSelectAudio, loopTime,addAudioVisible } = this.props
+        const { audioList, recMems, curSelectAudio, loopTime, addAudioVisible } = this.props
         const { getFieldDecorator } = this.props.form;
         const props = {
             name: 'file',
@@ -431,13 +431,13 @@ class AudioFile extends Component {
                                                     <span className='item-length'>{item.callLength}</span>
                                                     <span className='icon-wrap'>
                                                         <i className='icon-play' onClick={() => { this.playAudio(item) }}></i>
-                                                        <Popconfirm 
+                                                        <Popconfirm
                                                             title="确定删除此条录音文件吗?"
-                                                            onConfirm={()=>{this.deleteAudio(item)}}
+                                                            onConfirm={() => { this.deleteAudio(item) }}
                                                         >
                                                             <i className='icon-delete'></i>
                                                         </Popconfirm>
-                                                       
+
                                                     </span>
                                                 </li>
                                             )
@@ -472,7 +472,7 @@ class AudioFile extends Component {
                             recMems && recMems.map((item, index) => {
                                 return (
                                     <div className="rec-mem-wrap" key={item.orgMemId}>
-                                        <span className='rec-mem'>{item.memName}</span>
+                                        <span className='rec-mem'>{item.name}</span>
                                         {isDel == true && <i className="icon-delte" onClick={() => this.delRecMems(item)}></i>}
                                     </div>
                                 )

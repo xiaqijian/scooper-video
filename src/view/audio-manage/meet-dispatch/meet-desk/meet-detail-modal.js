@@ -8,12 +8,12 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setAddMeetVisible,setEditRecord } from '../../../../reducer/meet-handle-reduce';
+import { setAddMeetVisible, setEditRecord } from '../../../../reducer/meet-handle-reduce';
 import { Modal } from "antd";
 
 @connect(
     state => state.meetHandle,
-    { setAddMeetVisible,setEditRecord }
+    { setAddMeetVisible, setEditRecord }
 )
 class MeetDetail extends Component {
     constructor(props) {
@@ -28,7 +28,7 @@ class MeetDetail extends Component {
      */
     handleCancel = () => {
         let none = {}
-        this.props.setEditRecord({...none});
+        this.props.setEditRecord({ ...none });
         this.props.hidePop("meetDetailVisible");
     };
     /**
@@ -47,10 +47,10 @@ class MeetDetail extends Component {
     }
 
     render() {
-        let { data,visible }= this.props;
+        let { data, visible } = this.props;
         return (
             <Modal
-                title= "会议详情"
+                title="会议详情"
                 className="meet-detail-modal"
                 style={{ width: '22rem' }}
                 visible={visible}
@@ -61,40 +61,40 @@ class MeetDetail extends Component {
                 <div className='meet-detail'>
                     <div className='meet-name'>
                         <span className='meet-name-label'>会议名称：</span>
-                        <span className='meet-name-info'>{data.meetName || data.name || data.meetId}</span>
+                        <span className='meet-name-info'>{data.subject || data.name || data.id}</span>
                     </div>
-                    {data.meetAccess && 
-                    <div className='meet-access'>
-                        <span className='meet-access-label'>会场号：</span>
-                        <span className='meet-access-info'>{data.meetAccess}</span>
-                    </div>
+                    {data.accessCode &&
+                        <div className='meet-access'>
+                            <span className='meet-access-label'>会场号：</span>
+                            <span className='meet-access-info'>{data.accessCode}</span>
+                        </div>
 
                     }
-                    
-                    <div className='meet-passwdSpeaker'>
-                        <span className='meet-passwdSpeaker-label'>成员密码：</span>
-                        <span className='meet-passwdSpeaker-info'>{data.passwdSpeaker}</span>
+
+                    <div className='meet-chairmanPassword'>
+                        <span className='meet-chairmanPassword-label'>主席密码：</span>
+                        <span className='meet-chairmanPassword-info'>{data.chairmanPassword}</span>
                     </div>
-                    <div className='meet-passwdAudience'>
-                        <span className='meet-passwdAudience-label'>听众密码：</span>
-                        <span className='meet-passwdAudience-info'>{data.passwdAudience}</span>
+                    <div className='meet-guestPassword'>
+                        <span className='meet-guestPassword-label'>听众密码：</span>
+                        <span className='meet-guestPassword-info'>{data.guestPassword}</span>
                     </div>
                     <div className='meet-type'>
                         <span className='meet-type-label'>会议类型：</span>
-                        <span className='meet-type-info'>{data.meetAttr == 'MEET_RESERVE' ? '预约会议':'立即会议'}</span>
+                        <span className='meet-type-info'>{data.conferenceTimeType == 'EDIT_CONFERENCE' ? '预约会议' : '立即会议'}</span>
                     </div>
-                    {data.meetAttr == 'MEET_RESERVE' && <div className='meet-type'>
+                    {data.conferenceTimeType == 'EDIT_CONFERENCE' && <div className='meet-type'>
                         <span className='meet-time-label'>预约时间：</span>
                         <span className='meet-time-info'>{data.timeBegin}</span>
                     </div>}
-                    {data.meetMem && data.meetMem.length>0 && <div className='meet-mem'>
+                    {data.attendees && data.attendees.length > 0 && <div className='meet-mem'>
                         <span className='meet-mem-label'>参会人员：</span>
-                        <div className='meet-mem-info over-ellipsis' title={data.meetMem.map((item)=>{return item.memName || item.memTel || item.tel })}>
-                        {data.meetMem.map((item,index)=>{
-                            return (
-                            <span key={`detail-${index}`}>{item.memName || item.memTel || item.tel || ''}{index== data.meetMem.length-1 ? '' :'、'}</span>
-                            )
-                        })}
+                        <div className='meet-mem-info over-ellipsis' title={data.attendees.map((item) => { return item.name || item.memTel || item.tel })}>
+                            {data.attendees.map((item, index) => {
+                                return (
+                                    <span key={`detail-${index}`}>{item.name || item.memTel || item.tel || ''}{index == data.attendees.length - 1 ? '' : '、'}</span>
+                                )
+                            })}
                         </div>
                     </div>
                     }

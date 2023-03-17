@@ -244,10 +244,10 @@ class SingleCall extends Component {
         console.log(this.props)
         //当前在群组的tab页面，且 群组选中的组里边有当前人员
         if (defaultKey == 1) {
-            if( curSelectGroup && curSelectGroup.id && curSelectGroup.id.toString().indexOf('temp-')>-1){   //当前选中的是临时组
-                this.searchGroup('temp',orgMemId,deptId)
-            }else{
-                this.searchGroup('',orgMemId,deptId);    //普通群组
+            if (curSelectGroup && curSelectGroup.id && curSelectGroup.id.toString().indexOf('temp-') > -1) {   //当前选中的是临时组
+                this.searchGroup('temp', orgMemId, deptId)
+            } else {
+                this.searchGroup('', orgMemId, deptId);    //普通群组
             }
         } else {
             this.searchCore(deptId, orgMemId)   //通讯录模块
@@ -368,9 +368,9 @@ class SingleCall extends Component {
                         <div className='main-operate main-talk' onClick={this.operClick}>
                             {shankCall.mainCallType == 'audio' && <i className='calling-audio'></i>}
                             {shankCall.mainCallType == 'video' && <i className='calling-video'></i>}
-                            <span className='talk-memName over-ellipsis'>{shankCall.mainMemName}</span>
+                            <span className='talk-name over-ellipsis'>{shankCall.mainMemName}</span>
                             <span className='talk-dutyName over-ellipsis'>{shankCall.mainDutyName}</span>
-                            {isShowMainZdh && shankCall.mainCallType == 'video' && <i className='icon-zdh' onClick={(e) => { this.showVideo(e,shankCall) }}></i>}
+                            {isShowMainZdh && shankCall.mainCallType == 'video' && <i className='icon-zdh' onClick={(e) => { this.showVideo(e, shankCall) }}></i>}
                             <span className='talk-time'>{shankCall.mainLong}</span>
                         </div>
                         :
@@ -384,9 +384,9 @@ class SingleCall extends Component {
                     {isSubTalk ?
                         <div className='sub-operate sub-talk' onClick={this.subClick}>
                             <Button className={`dial-box ${isDailClick ? 'dial-box-sel' : ''}`} onClick={(e) => this.showDailOpen(e)}></Button>
-                            <span className='talk-memName over-ellipsis'>{shankCall.subMemName}</span>
+                            <span className='talk-name over-ellipsis'>{shankCall.subMemName}</span>
                             <span className='talk-dutyName over-ellipsis'>{shankCall.subDutyName}</span>
-                            {isShowSubZdh && shankCall.subCallType == 'video' && <i className='icon-zdh' onClick={(e) => { this.showSubVideo(e,shankCall) }}></i>}
+                            {isShowSubZdh && shankCall.subCallType == 'video' && <i className='icon-zdh' onClick={(e) => { this.showSubVideo(e, shankCall) }}></i>}
                             <span className='talk-time'>{shankCall.subLong}</span>
                             {shankCall.subCallType == 'audio' && <i className='calling-audio'></i>}
                             {shankCall.subCallType == 'video' && <i className='calling-video'></i>}
@@ -452,9 +452,9 @@ class SingleCall extends Component {
                     }
 
                     {(curSelectMem.memTel && getTelStatus(curSelectMem.memTel) == 'callst_hold') ?
-                        <Button 
-                            className="btn-keep-take" 
-                            disabled={((accountDetail.mainTel && curSelectMem.memTel == accountDetail.mainTel) ||(accountDetail.viceTel && curSelectMem.memTel == accountDetail.viceTel))?true:false } 
+                        <Button
+                            className="btn-keep-take"
+                            disabled={((accountDetail.mainTel && curSelectMem.memTel == accountDetail.mainTel) || (accountDetail.viceTel && curSelectMem.memTel == accountDetail.viceTel)) ? true : false}
                             onClick={(e) => { this.unhold(e, curSelectMem.memTel) }}>
                             <i className='icon-keep'></i>取回
                         </Button>

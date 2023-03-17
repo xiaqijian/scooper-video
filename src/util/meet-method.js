@@ -9,6 +9,7 @@ import { setCurMeet, setMeetDetailList } from "../reducer/meet-handle-reduce";
 import { uniqueArr } from "./method";
 import store from "../store";
 import dispatchManager from "./dispatch-manager";
+import { meetapis } from '../api/meetapis'
 
 export const joinMeet = (tel) => {
   let { meetDetailList } = store.getState().meetHandle;
@@ -16,13 +17,13 @@ export const joinMeet = (tel) => {
   meetDetailList.map((item) => {
     if (item.meetSymbol == "main") {
       findSymbol = true;
-      dispatchManager.dispatcher.meets.joinMember(item.meetId, tel);
+      dispatchManager.dispatcher.meets.joinMember(item.id, tel);
       return;
     }
   });
   if (!findSymbol) {
-    let meetId = dispatchManager.accountDetail.accUsername;
-    dispatchManager.dispatcher.meets.joinMember(meetId, tel);
+    let id = dispatchManager.accountDetail.accUsername;
+    dispatchManager.dispatcher.meets.joinMember(id, tel);
   }
 };
 /**
@@ -31,21 +32,23 @@ export const joinMeet = (tel) => {
 export const getMainMeetId = () => {
   let { meetDetailList } = store.getState().meetHandle;
   let findSymbol = false;
-  let meetId;
+  let id;
   meetDetailList.map((item) => {
     if (item.meetSymbol == "main") {
       findSymbol = true;
-      meetId = item.meetId;
+      id = item.id;
       return;
     }
   });
   if (!findSymbol) {
-    meetId = dispatchManager.accountDetail.accUsername;
+    id = dispatchManager.accountDetail.accUsername;
   }
 
-  return meetId;
+  return id;
 };
-export const loadMeetList = () => {
+export const loadMeetList = async () => {
+  // let res = await meetapis.meetManagePrefix.reservedMeets();
+  // console.log('查询正在召开和待召开的会议列表', res);
   let { memTelMapCache } = store.getState().audioHandle;
   console.log("memTelMapCache", memTelMapCache);
   window.scooper.meetManager &&
@@ -57,8 +60,8 @@ export const loadMeetList = () => {
           item.members = uniqueArr(item.members);
           if (item.members.length > 0) {
             item.members.map((mem) => {
-              mem.memName =
-                (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].memName) ||
+              mem.name =
+                (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].name) ||
                 mem.tel;
               mem.deptName =
                 (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].deptName) ||
@@ -68,7 +71,7 @@ export const loadMeetList = () => {
               }
             });
           }
-          item.meetMem = item.members || [];
+          item.attendees = item.members || [];
           if (item.meetCreateId == "default") {
             item.meetSymbol = "main";
             item.isSetMain = 1;
@@ -89,7 +92,7 @@ export const fillMeetDetailList = (list, curMeet) => {
   if (sortList.length < 4) {
     // 不足4个时 填充会议列表
     for (var i = sortList.length; i < 4; i++) {
-      fillList.push({ meetId: "none-" + i, members: [], meetMem: [] });
+      fillList.push({ id: "none-" + i, members: [], attendees: [] });
     }
     store.dispatch(setMeetDetailList([...sortList, ...fillList]));
     meetList = [...sortList, ...fillList];
@@ -105,16 +108,16 @@ export const fillMeetDetailList = (list, curMeet) => {
 export const setMain = (list, curMeet) => {
   list.map((li) => {
     if (
-      li.meetId == curMeet.meetId &&
+      li.id == curMeet.id &&
       li.meetSymbol != "main" &&
-      li.meetAttr != "MEET_RESERVE"
+      li.conferenceTimeType != "EDIT_CONFERENCE"
     ) {
       li.isSetMain = 1;
     } else {
       li.isSetMain = 2;
     }
   });
-  let id = "meet-" + curMeet.meetId;
+  let id = "meet-" + curMeet.id;
   let curDom = document.getElementById(id);
   curDom && curDom.scrollIntoView(false);
 };
@@ -135,22 +138,22 @@ export const sortMeetList = (list) => {
       if (list[i].meetCreateId == "default") {
         curDefault.push(list[i]);
       } else if (
-        list[i].meetId.toString().indexOf("none-") == -1 &&
-        (list[i].meetId == list[i].meetName ||
-          list[i].meetCreateId == list[i].meetName)
+        list[i].id.toString().indexOf("none-") == -1 &&
+        (list[i].id == list[i].subject ||
+          list[i].meetCreateId == list[i].subject)
       ) {
         otherDefault.push(list[i]);
       } else if (
-        list[i].meetId.toString().indexOf("none-") == -1 &&
-        list[i].meetAttr !== "MEET_RESERVE"
+        list[i].id.toString().indexOf("none-") == -1 &&
+        list[i].conferenceTimeType !== "EDIT_CONFERENCE"
       ) {
         ordInstant.push(list[i]);
       } else if (
-        list[i].meetId.toString().indexOf("none-") == -1 &&
-        list[i].meetAttr == "MEET_RESERVE"
+        list[i].id.toString().indexOf("none-") == -1 &&
+        list[i].conferenceTimeType == "EDIT_CONFERENCE"
       ) {
         ordReserve.push(list[i]);
-      } else if (list[i].meetId.toString().indexOf("none-") >= 0) {
+      } else if (list[i].id.toString().indexOf("none-") >= 0) {
         noneList.push(list[i]);
       }
     }

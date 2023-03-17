@@ -242,13 +242,13 @@ class DispatchManager extends EventDispatcher {
   updateRecord = (memTelMapCache) => {
     let { recordListData } = store.getState().callRecordHandle;
     window.clearInterval(window.updateInter);
-    // if (recordListData && recordListData.length > 0 && recordListData[0].memName) {
+    // if (recordListData && recordListData.length > 0 && recordListData[0].name) {
     //     window.clearInterval(window.updateInter)
     //     return;
     // }
     recordListData.map((item) => {
-      item.memName =
-        memTelMapCache[item.tel] && memTelMapCache[item.tel].memName;
+      item.name =
+        memTelMapCache[item.tel] && memTelMapCache[item.tel].name;
     });
     store.dispatch(setRecordListData([...recordListData]));
     let list = [...recordListData];
@@ -367,8 +367,8 @@ class DispatchMeets {
    * 加入会议
    */
   joinMeetMember(tel) {
-    let meetId = this.dispatchManager.accountDetail.accUsername;
-    this.getMeets().joinMember(meetId, tel);
+    let id = this.dispatchManager.accountDetail.accUsername;
+    this.getMeets().joinMember(id, tel);
   }
   /**
    * 获取scooper.dispatch.meets对象
@@ -514,18 +514,18 @@ class DispatchCalls {
   /**
    * 取消选呼/组呼/广播
    */
-  stopSelectCall(meetId) {
-    this.getCalls().selectCancel(meetId);
+  stopSelectCall(id) {
+    this.getCalls().selectCancel(id);
   }
   /**
    * 选呼/组呼
    * @param {*} tels 号码数组
-   * @param {*} meetId 会议号
+   * @param {*} id 会议号
    * @param {*} autoAnswer 是否自动应答 boolean 默认false
    * @param {*} allAudience 是否禁言入会 boolean  默认 false
    */
-  selectCall(tels, meetId, autoAnswer, allAudience, fn) {
-    this.getCalls().selectCall(tels, meetId, autoAnswer, allAudience, fn);
+  selectCall(tels, id, autoAnswer, allAudience, fn) {
+    this.getCalls().selectCall(tels, id, autoAnswer, allAudience, fn);
   }
   /**
    * 组呼通知 通知音操作
@@ -673,8 +673,8 @@ class DispatchListen {
           let data = msg.data;
           let toTel =
             data.descJson &&
-            data.descJson.TransToTel &&
-            data.descJson.TransToTel != undefined
+              data.descJson.TransToTel &&
+              data.descJson.TransToTel != undefined
               ? data.descJson.TransToTel
               : data.call_number;
           window.toTel = toTel;
@@ -739,10 +739,10 @@ class DispatchListen {
         shandInfo.type = "audio";
       }
       if (memInfo) {
-        shandInfo.memName = memInfo.memName;
+        shandInfo.name = memInfo.name;
         shandInfo.deptName = memInfo.deptName;
       } else {
-        shandInfo.memName = msg.telNumber;
+        shandInfo.name = msg.telNumber;
         shandInfo.deptName = "";
       }
       store.dispatch(setShandInfo(shandInfo));
@@ -864,13 +864,13 @@ class DispatchListen {
       timeStamp: msg.data.time,
       waitTime: timeUtil.calTimeStamp(msg.data.time),
       memLevel: msg.data.usrLevel,
-      memName: tel,
+      name: tel,
       deptName: "",
       dutyName: "",
     };
     let memInfo = allMemData[tel];
     if (memInfo) {
-      callInMem.memName = memInfo.memName || tel;
+      callInMem.name = memInfo.name || tel;
       callInMem.deptName = memInfo.deptName || "";
       callInMem.dutyName = memInfo.dutyName || "";
     }
@@ -925,13 +925,13 @@ class DispatchListen {
       tel: tel,
       timeStamp: msg.telStatus.timeStamp,
       waitTime: timeUtil.calTimeStamp(msg.telStatus.timeStamp),
-      memName: tel,
+      name: tel,
       deptName: "",
       dutyName: "",
     };
     let memInfo = allMemData[tel];
     if (memInfo) {
-      keeplistMem.memName = memInfo.memName || tel;
+      keeplistMem.name = memInfo.name || tel;
       keeplistMem.deptName = memInfo.deptName || "";
       keeplistMem.dutyName = memInfo.dutyName || "";
     }
@@ -986,7 +986,7 @@ class DispatchListen {
     let conNumber = msg.conNumber || msg.handleNumber; //通话号码
     // let shankCall = {};  //手柄呼叫记录
     let callType = "";
-    if (msg.meetId) return;
+    if (msg.id) return;
     if (
       !(
         msg.status == stsConst.DOUBLETALK ||
@@ -1030,7 +1030,7 @@ class DispatchListen {
       store.dispatch(setAudioTag(2));
       if (curType == "main") {
         shankCall.mainTalkStatus = msg.status;
-        shankCall.mainMemName = (memInfo && memInfo.memName) || tel;
+        shankCall.mainMemName = (memInfo && memInfo.name) || tel;
         shankCall.maindeptName = (memInfo && memInfo.deptName) || "";
         shankCall.mainDutyName = (memInfo && memInfo.dutyName) || "";
         shankCall.mainTel = tel;
@@ -1047,7 +1047,7 @@ class DispatchListen {
         }
       } else if (curType == "sub") {
         shankCall.subTalkStatus = msg.status;
-        shankCall.subMemName = (memInfo && memInfo.memName) || tel;
+        shankCall.subMemName = (memInfo && memInfo.name) || tel;
         shankCall.subdeptName = (memInfo && memInfo.deptName) || "";
         shankCall.subDutyName = (memInfo && memInfo.dutyName) || "";
         shankCall.subDeptId = memInfo && memInfo.deptId;
@@ -1314,6 +1314,6 @@ class DispatchListen {
 window.scooper = window.scooper || {};
 const dispatchManager =
   (window.top.scooper.dispatchManager =
-  window.scooper.dispatchManager =
+    window.scooper.dispatchManager =
     new DispatchManager());
 export default dispatchManager;

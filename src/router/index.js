@@ -59,7 +59,7 @@ class AppRouter extends Component {
     if (this.props.location.pathname === "/") {
       this.props.history.push("/login");
     }
-    this.loadConfig();
+    // this.loadConfig();
   }
   render() {
     return (

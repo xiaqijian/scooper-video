@@ -63,15 +63,15 @@ class AddMeetModal extends Component {
     meetTypeChange = (e) => {
         let { data } = this.props;
         const val = e.target.value;
-        if (data.meetId) {
+        if (data.id) {
             // 编辑
-            if (val == 'MEET_RESERVE') {
-                curData.meetAttr = 'MEET_RESERVE'
+            if (val == 'EDIT_CONFERENCE') {
+                curData.conferenceTimeType = 'EDIT_CONFERENCE'
             } else {
-                curData.meetAttr = 'MEET_INSTANT'
+                curData.conferenceTimeType = 'INSTANT_CONFERENCE'
             }
         } else {
-            if (val == 'MEET_RESERVE') {
+            if (val == 'EDIT_CONFERENCE') {
                 this.setState({
                     isShowDatePicker: true
                 })
@@ -96,11 +96,11 @@ class AddMeetModal extends Component {
      */
     getMemData = (memData) => {
         let { data } = this.props;
-        if (data.meetId) {
+        if (data.id) {
             // 编辑情况
             if (memData.length > 0) {
-                curData.meetMem = memData;
-                // curData.meetMem = curData.meetMem.concat(memData)
+                curData.attendees = memData;
+                // curData.attendees = curData.attendees.concat(memData)
             }
         } else {
             // 新增情况
@@ -155,24 +155,24 @@ class AddMeetModal extends Component {
         _this.props.form.validateFields((err, values) => {
             if (!err) {
                 let params = {
-                    meetAccess: values.meetAccess,
-                    meetAttr: values.meetAttr,
-                    meetName: values.meetName,
-                    passwdAudience: values.passwdAudience,
-                    passwdSpeaker: values.passwdSpeaker,
+                    accessCode: values.accessCode,
+                    conferenceTimeType: values.conferenceTimeType,
+                    subject: values.subject,
+                    guestPassword: values.guestPassword,
+                    chairmanPassword: values.chairmanPassword,
                     timeBegin: timeBegin,
                     timeEnd: timeEnd,
                 }
 
-                if (data.meetId) {
+                if (data.id) {
                     // 编辑
                     let paramMem = [];
-                    curData.meetMem.map((da) => {
+                    curData.attendees.map((da) => {
                         paramMem.push((da.tel || da.memTel) + ',speak');
                     })
 
                     params.meetMembers = paramMem;
-                    params.meetId = data.meetId;
+                    params.id = data.id;
                     if (!params.timeBegin) {
                         params.timeBegin = curData.timeBegin
                     }
@@ -187,9 +187,9 @@ class AddMeetModal extends Component {
                             let none = {}
                             _this.props.setEditRecord({ ...none });
                             _this.props.hidePop('addMeetVisible');
-                            if (params.meetAttr != 'MEET_RESERVE') {
+                            if (params.conferenceTimeType != 'EDIT_CONFERENCE') {
                                 addMeetMem.map((item) => {
-                                    meetManager.meetsObj.joinMember(res.data.meetId, item.memTel)
+                                    meetManager.meetsObj.joinMember(res.data.id, item.memTel)
                                 })
                             }
                         }
@@ -208,9 +208,9 @@ class AddMeetModal extends Component {
                             let none = {}
                             _this.props.setEditRecord({ ...none });
                             _this.props.hidePop('addMeetVisible');
-                            if (params.meetAttr != 'MEET_RESERVE') {
+                            if (params.conferenceTimeType != 'EDIT_CONFERENCE') {
                                 addMeetMem.map((item) => {
-                                    meetManager.meetsObj.joinMember(res.data.meetId, item.memTel)
+                                    meetManager.meetsObj.joinMember(res.data.id, item.memTel)
                                 })
                             }
                         }
@@ -224,17 +224,17 @@ class AddMeetModal extends Component {
      */
     addMeet = (params, resultCallback) => {
         let meetMembers = params.meetMembers ? params.meetMembers.join(";") : '';
-        meetManager.meetsObj.createMeetDetail(params.meetName, '', resultCallback, params.meetAccess, params.meetAttr,
-            params.timeBegin, params.timeEnd, params.passwdSpeaker, params.passwdAudience, meetMembers)
+        meetManager.meetsObj.createMeetDetail(params.subject, '', resultCallback, params.accessCode, params.conferenceTimeType,
+            params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
     }
     /**
      * 编辑时删除人员
      */
     editDele = (item) => {
         let { data } = this.props;
-        curData.meetMem.map((mem, index) => {
+        curData.attendees.map((mem, index) => {
             if (mem.tel == item.tel) {
-                curData.meetMem.splice(index, 1);
+                curData.attendees.splice(index, 1);
             }
         })
     }
@@ -243,8 +243,8 @@ class AddMeetModal extends Component {
      */
     editOk = (params, resultCallback) => {
         let meetMembers = params.meetMembers ? params.meetMembers.join(";") : '';
-        meetManager.meetsObj.editMeet(params.meetId, params.meetName, resultCallback, params.meetAccess, params.meetAttr,
-            params.timeBegin, params.timeEnd, params.passwdSpeaker, params.passwdAudience, meetMembers)
+        meetManager.meetsObj.editMeet(params.id, params.subject, resultCallback, params.accessCode, params.conferenceTimeType,
+            params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
 
     }
 
@@ -254,8 +254,8 @@ class AddMeetModal extends Component {
     componentWillMount() {
         let { data, memTelMapCache } = this.props;
         curData = JSON.parse(JSON.stringify(data));
-        if (curData.meetMem) {
-            curData.meetMem.map((item) => {
+        if (curData.attendees) {
+            curData.attendees.map((item) => {
                 if (item.tel || item.memTel) {
                     let tel = item.tel || item.memTel;
                     item.orgMemId = memTelMapCache[tel] ? memTelMapCache[tel].id : '';
@@ -272,7 +272,7 @@ class AddMeetModal extends Component {
 
         return (
             <Modal
-                title={data.meetId ? '编辑会议' : '新建会议'}
+                title={data.id ? '编辑会议' : '新建会议'}
                 className="add-meet-modal"
                 style={{ width: '22rem' }}
                 visible={visible}
@@ -281,34 +281,34 @@ class AddMeetModal extends Component {
             >
                 <Form className='add-meet' {...formItemLayout} >
                     <Form.Item label="会场名称">
-                        {getFieldDecorator("meetName", {
-                            initialValue: data.meetName || data.name || data.meetId || "",
+                        {getFieldDecorator("subject", {
+                            initialValue: data.subject || data.name || data.id || "",
                             rules: [
                                 { required: true, message: "请输入会议名称!" }
                             ]
                         })(<Input autoComplete="off"
-                            disabled={(data.meetId && (data.meetCreated == 'default' || data.meetId == data.meetName || data.meetCreated == data.meetName)) ? true : ''} />)}
+                            disabled={(data.id && (data.meetCreated == 'default' || data.id == data.subject || data.meetCreated == data.subject)) ? true : ''} />)}
                     </Form.Item>
-                    {data.meetId ?
+                    {data.id ?
                         // 编辑会场
-                        data.meetAccess && <Form.Item label="会场号">
-                            {getFieldDecorator("meetAccess", {
-                                initialValue: data.meetAccess,
+                        data.accessCode && <Form.Item label="会场号">
+                            {getFieldDecorator("accessCode", {
+                                initialValue: data.accessCode,
                                 rules: [
-                                    !(data.meetId && (data.meetCreated == 'default' || data.meetId == data.meetName || data.meetCreated == data.meetName)) && { pattern: /^[0-9]*$/, message: "请输入数字" },
+                                    !(data.id && (data.meetCreated == 'default' || data.id == data.subject || data.meetCreated == data.subject)) && { pattern: /^[0-9]*$/, message: "请输入数字" },
                                     { required: true, message: "请输入会场号！" }
                                 ]
                             })(<Input
-                                disabled={(data.meetId && (data.meetCreated == 'default' || data.meetId == data.meetName || data.meetCreated == data.meetName)) ? true : ''}
+                                disabled={(data.id && (data.meetCreated == 'default' || data.id == data.subject || data.meetCreated == data.subject)) ? true : ''}
                                 autoComplete="off" />)}
                         </Form.Item>
                         :
                         // 新建会场
                         <Form.Item label="会场号">
-                            {getFieldDecorator("meetAccess", {
+                            {getFieldDecorator("accessCode", {
                                 initialValue: '',
                                 rules: [
-                                    !(data.meetId && (data.meetCreated == 'default' || data.meetId == data.meetName || data.meetCreated == data.meetName)) && { pattern: /^[0-9]*$/, message: "请输入数字" },
+                                    !(data.id && (data.meetCreated == 'default' || data.id == data.subject || data.meetCreated == data.subject)) && { pattern: /^[0-9]*$/, message: "请输入数字" },
                                     { required: true, message: "请输入会场号！" }
                                 ]
                             })(<Input autoComplete="off" />)}
@@ -316,33 +316,33 @@ class AddMeetModal extends Component {
 
                     }
 
-                    <Form.Item label="成员密码">
-                        {getFieldDecorator("passwdSpeaker", {
-                            initialValue: data.passwdSpeaker || "",
+                    <Form.Item label="主席密码">
+                        {getFieldDecorator("chairmanPassword", {
+                            initialValue: data.chairmanPassword || "",
                             rules: [
                                 { pattern: /^[0-9]*$/, message: "请输入数字" }
                             ]
                         })(<Input autoComplete="off" />)}
                     </Form.Item>
-                    <Form.Item label="听众密码">
-                        {getFieldDecorator("passwdAudience", {
-                            initialValue: data.passwdAudience || "",
+                    <Form.Item label="来宾密码">
+                        {getFieldDecorator("guestPassword", {
+                            initialValue: data.guestPassword || "",
                             rules: [
                                 { pattern: /^[0-9]*$/, message: "请输入数字" }
                             ]
                         })(<Input autoComplete="off" />)}
                     </Form.Item>
                     <Form.Item label="会场类型">
-                        {getFieldDecorator('meetAttr', {
-                            initialValue: data.meetAttr || 'MEET_INSTANT',
+                        {getFieldDecorator('conferenceTimeType', {
+                            initialValue: data.conferenceTimeType || 'INSTANT_CONFERENCE',
                         })
                             (<Radio.Group onChange={this.meetTypeChange} >
-                                <Radio value="MEET_INSTANT" disabled={(data.meetId && data.meetAttr != 'MEET_RESERVE' ? true : '')}>立即会议</Radio>
-                                <Radio value="MEET_RESERVE" disabled={(data.meetId && data.meetAttr != 'MEET_RESERVE' ? true : '')}>预约会议</Radio>
+                                <Radio value="INSTANT_CONFERENCE" disabled={(data.id && data.conferenceTimeType != 'EDIT_CONFERENCE' ? true : '')}>立即会议</Radio>
+                                <Radio value="EDIT_CONFERENCE" disabled={(data.id && data.conferenceTimeType != 'EDIT_CONFERENCE' ? true : '')}>预约会议</Radio>
                             </Radio.Group>
                             )}
                     </Form.Item>
-                    {(isShowDatePicker || curData.meetAttr == 'MEET_RESERVE') &&
+                    {(isShowDatePicker || curData.conferenceTimeType == 'EDIT_CONFERENCE') &&
                         <Form.Item label="预约时间">
                             {getFieldDecorator('meetTime', {
                                 initialValue: (curData.timeBegin && [moment(curData.timeBegin, "YYYY-MM-DD HH:mm:ss"),
@@ -351,7 +351,7 @@ class AddMeetModal extends Component {
                                 (<RangePicker showTime format="YYYY-MM-DD HH:mm:ss" onChange={this.timeOk} />)}
                         </Form.Item>
                     }
-                    {!data.meetId && <Form.Item label="参会人员">
+                    {!data.id && <Form.Item label="参会人员">
 
                         <div className='add-meet-mem'>
                             <span
@@ -362,7 +362,7 @@ class AddMeetModal extends Component {
                                 {addMeetMem && addMeetMem.map((item, index) => {
                                     return (
                                         <li key={`addMem-${index}`}>
-                                            <span className='meet-memName over-ellipsis'>{item.memName}</span>
+                                            <span className='meet-name over-ellipsis'>{item.name}</span>
                                             <span className='meet-memTel over-ellipsis'>{item.memTel}</span>
                                             <i className='meet-mem-del' onClick={() => { this.delMeetMem(item) }}></i>
                                         </li>
@@ -372,22 +372,22 @@ class AddMeetModal extends Component {
                             </ul>
                         </div>
                     </Form.Item>}
-                    {data.meetMem &&
+                    {data.attendees &&
                         <Form.Item label="参会人员">
                             <div className='add-meet-mem'>
-                                {data.meetAttr == 'MEET_RESERVE' &&
+                                {data.conferenceTimeType == 'EDIT_CONFERENCE' &&
                                     <span
                                         className='add-meet-icon-wrap'
                                         onClick={() => { this.showAddMember() }}>
                                         <i className='add-meet-icon'></i>添加</span>
                                 }
-                                <ul className={`${(data.meetId && data.meetAttr == 'MEET_RESERVE') ? '' : 'no-edit'}`}>
-                                    {curData.meetMem.length > 0 && curData.meetMem.map((item, index) => {
+                                <ul className={`${(data.id && data.conferenceTimeType == 'EDIT_CONFERENCE') ? '' : 'no-edit'}`}>
+                                    {curData.attendees.length > 0 && curData.attendees.map((item, index) => {
                                         return (
                                             <li key={`addMem-${index}`}>
-                                                <span className='meet-memName over-ellipsis'>{item.memName || item.meetMem}</span>
+                                                <span className='meet-name over-ellipsis'>{item.name || item.attendees}</span>
                                                 <span className='meet-memTel over-ellipsis'>{item.tel || item.memTel}</span>
-                                                {(data.meetId && data.meetAttr == 'MEET_RESERVE') ?
+                                                {(data.id && data.conferenceTimeType == 'EDIT_CONFERENCE') ?
                                                     <i className='meet-mem-del' onClick={() => { this.editDele(item) }}></i> : ''
                                                 }
                                             </li>
@@ -400,15 +400,15 @@ class AddMeetModal extends Component {
                     }
                 </Form>
                 {/* 编辑会议 */}
-                {data.meetId &&
+                {data.id &&
                     <AddMember
                         modalVisible={addMeetMemVisible}
-                        chosedMem={(data.meetId && data.meetAttr == 'MEET_RESERVE') ? curData.meetMem : ''}
+                        chosedMem={(data.id && data.conferenceTimeType == 'EDIT_CONFERENCE') ? curData.attendees : ''}
                         getMemData={(mems) => this.getMemData(mems)}
                         title="请编辑参会人员" />
                 }
                 {/* 新建会议 */}
-                {!data.meetId &&
+                {!data.id &&
                     <AddMember
                         modalVisible={addMeetMemVisible}
                         chosedMem={addMeetMem}

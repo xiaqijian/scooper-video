@@ -87,28 +87,28 @@ class MemberList extends Component {
 
     componentWillReceiveProps(nextProps) {//componentWillReceiveProps方法中第一个参数代表即将传入的新的Props
         if (this.props.memMapCache !== nextProps.memMapCache) {
-            setCurMemList(nextProps.memMapCache, 'memName');
+            setCurMemList(nextProps.memMapCache, 'name');
             fillMem();
         }
     }
 
     // 点击人员
     memClick = (item) => {
-        let {configData} = this.props;
+        let { configData } = this.props;
         let _this = this;
-        if(Object.keys(configData).length !== 0 && configData.set["disp.set.doubleClickCall"] == 'true'){
+        if (Object.keys(configData).length !== 0 && configData.set["disp.set.doubleClickCall"] == 'true') {
             memCount += 1;
-            setTimeout(()=>{
-                if(memCount == 1){
+            setTimeout(() => {
+                if (memCount == 1) {
                     // 单击
                     _this.memOnlyClick(item);
-                }else if(memCount == 2){
+                } else if (memCount == 2) {
                     // 双击
                     _this.memDoubleClick(item);
-                } 
+                }
                 memCount = 0;
-            },300)
-        }else{
+            }, 300)
+        } else {
             _this.memOnlyClick(item)
         }
     }
@@ -177,9 +177,9 @@ class MemberList extends Component {
      * 双击人员
      */
     memDoubleClick = (item) => {
-        if(item.memTel){
+        if (item.memTel) {
             let businessId = dispatchManager.accountDetail.operatorId + "_" + timeUtil.getTimeStamp();
-            dispatchManager.dispatcher.calls.makeCall(item.memTel,businessId);
+            dispatchManager.dispatcher.calls.makeCall(item.memTel, businessId);
         }
     }
     /**
@@ -266,7 +266,7 @@ class MemberList extends Component {
         if (mem.memJkTel) {
             length = length + 1
         }
-        if ((mem.memMsgTel && mem.devCodeZfy) ||mem.memMsgTel) {
+        if ((mem.memMsgTel && mem.devCodeZfy) || mem.memMsgTel) {
             length = length + 1
         }
         this.getMainTel(mem);
@@ -345,7 +345,7 @@ class MemberList extends Component {
                         temp.isDel = false;
                         temp.isCheck = true;
                     })
-                }else{
+                } else {
                     // 全不选临时组
                     tempList = JSON.parse(sessionStorage.getItem('tempMemList'));
                     tempList.map((temp, index) => {
@@ -364,7 +364,7 @@ class MemberList extends Component {
                     item.isDel = false;
                     item.isCheck = true;
                     let deptName = ((memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].deptName)) ? memMapCache[item.orgMemId].deptName : '');
-                    item.deptName = getDeptName(deptName,item.dutyName);
+                    item.deptName = getDeptName(deptName, item.dutyName);
                     item.sourceType = 'group';
                     item.devCodeZfy = ((memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].devCodeZfy)) ? memMapCache[item.orgMemId].devCodeZfy : '');
                     item.devCodeJx = ((memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].devCodeJx)) ? memMapCache[item.orgMemId].devCodeJx : '');
@@ -381,7 +381,7 @@ class MemberList extends Component {
             allCoreData = await apis.core.listOrgMember({ deptId: curSelectCore.id });
             allCoreData.map((item) => {
                 item.orgMemId = item.id;
-                item.deptName = getDeptName(item.deptName,item.dutyName);
+                item.deptName = getDeptName(item.deptName, item.dutyName);
                 if (item.orgMemId == curSelectMem.orgMemId) {
                     item.onSel = true
                 }
@@ -548,7 +548,7 @@ class MemberList extends Component {
                 mem.isDel = true;
                 mem.onSel = false
             });
-            memList.unshift({ isDel: false, isCheck: false, id: 'mem-add', centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', memName: "", deptName: '', memTel: '', memType: '', memMobile: '', })
+            memList.unshift({ isDel: false, isCheck: false, id: 'mem-add', centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', name: "", deptName: '', memTel: '', memType: '', memMobile: '', })
             if (realMemListLen < 20) {
                 memList.splice(memList.length - 1, 1)
             }
@@ -575,7 +575,7 @@ class MemberList extends Component {
         this.props.setRealMemListLen(count);
         if (memList.length < 20) {
             for (var i = memList.length; i < 20; i++) {
-                memList.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', memName: "", deptName: '', memTel: '', memType: '', memMobile: '', })
+                memList.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', name: "", deptName: '', memTel: '', memType: '', memMobile: '', })
             }
         } else {
             let fillLength = 5 - (memList.length % 5)
@@ -584,7 +584,7 @@ class MemberList extends Component {
             } else {
                 // 填充fillLength个
                 for (var i = 0; i < fillLength; i++) {
-                    memList.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', memName: "", deptName: '', memTel: '', memType: '', memMobile: '', })
+                    memList.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', name: "", deptName: '', memTel: '', memType: '', memMobile: '', })
                 }
                 if (memList.length > 0) {
                     memList.map((item, index) => {
@@ -664,7 +664,7 @@ class MemberList extends Component {
         }
     }
     render() {
-        let { isCheckAll, isShowEdit, memList, curSelectMem, makeTemp, checkedList, curSelectGroup, defaultKey, isShowCheck, curSelectCore, realMemListLen,configData } = this.props;
+        let { isCheckAll, isShowEdit, memList, curSelectMem, makeTemp, checkedList, curSelectGroup, defaultKey, isShowCheck, curSelectCore, realMemListLen, configData } = this.props;
         let { memModalVisible, memDetailVisible, showAll, checkListEdit, mainSymbol, hasMore } = this.state;
         return (
             <div className='mem-list-wrap'>
@@ -724,9 +724,9 @@ class MemberList extends Component {
                 </div>
                 {
                     !isEmpty(curSelectMem) &&
-                    <div className={`cur-select ${window.top.style == 'iframe' ? 'cur-iframe-list':''}`}>
+                    <div className={`cur-select ${window.top.style == 'iframe' ? 'cur-iframe-list' : ''}`}>
                         <i className="icon-cur-select"></i>
-                        <span className="select-name" title={curSelectMem.memName}>{curSelectMem.memName}</span>
+                        <span className="select-name" title={curSelectMem.name}>{curSelectMem.name}</span>
                         <span className="select-deptName over-ellipsis" title={curSelectMem.deptName}>{curSelectMem.deptName}</span>
                         <span className="select-status">【{TEL_STATUS_VAL[getTelStatus(curSelectMem.memTel)] || sessionStorage.getItem('defaultTelStatusDesc')}】</span>
                         <span className="select-tel">电话：{hideTel(curSelectMem.memTel)}</span>
@@ -734,7 +734,7 @@ class MemberList extends Component {
                 }
                 {
                     checkedList.length > 0 &&
-                    <div className={`check-list ${window.top.style == 'iframe' ? 'check-iframe-list':''}`}>
+                    <div className={`check-list ${window.top.style == 'iframe' ? 'check-iframe-list' : ''}`}>
                         <span className="check-length">已选择({checkedList.length})：</span>
 
                         <div className="check-list-item">
@@ -742,7 +742,7 @@ class MemberList extends Component {
                             {!showAll && checkedList.slice(0, 10).map((item, index) => {
                                 return (
                                     <div className='check-wrap' key={`check-${index}`}>
-                                        <span className="check-memname over-ellipsis" title={item.memName}>{item.memName}</span>
+                                        <span className="check-memname over-ellipsis" title={item.name}>{item.name}</span>
                                         {checkListEdit && <i className="checklist-del" onClick={() => { this.deleteChecked(item) }}></i>}
                                     </div>
                                 )
@@ -750,7 +750,7 @@ class MemberList extends Component {
                             {showAll && checkedList.map((item, index) => {
                                 return (
                                     <div className='check-wrap' key={`chec-all-${index}`}>
-                                        <span className="check-memname over-ellipsis" title={item.memName}>{item.memName}</span>
+                                        <span className="check-memname over-ellipsis" title={item.name}>{item.name}</span>
                                         {checkListEdit && <i className="checklist-del" onClick={() => { this.deleteChecked(item) }}></i>}
                                     </div>
                                 )

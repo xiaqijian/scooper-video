@@ -31,27 +31,27 @@ class BigMeet extends Component {
         let { curSelectMeet } = this.props;
         return (
             curSelectMeet ?
-            <div className="big-meet-wrap">
-                <div className='big-title'>
-                    <div className='title-info'>
-                        <span className='meet-name'>{curSelectMeet.meetName}({curSelectMeet.meetMem.length}人)</span>
-                        {curSelectMeet.meetSymbol == 'main' && <span className='meet-symbol'>主会场</span>}
-                        <i className='icon-zxh' onClick={this.props.onClick}></i>
+                <div className="big-meet-wrap">
+                    <div className='big-title'>
+                        <div className='title-info'>
+                            <span className='meet-name'>{curSelectMeet.subject}({curSelectMeet.attendees.length}人)</span>
+                            {curSelectMeet.meetSymbol == 'main' && <span className='meet-symbol'>主会场</span>}
+                            <i className='icon-zxh' onClick={this.props.onClick}></i>
+                        </div>
+                        <div className='title-time'>
+                            <i className='icon-time'></i>
+                            {curSelectMeet.conferenceTimeType == 'EDIT_CONFERENCE' ?
+                                <span className='meet-time'>{curSelectMeet.timeBegin}</span>
+                                :
+                                !((curSelectMeet.meetCreateId == 'default') || ((curSelectMeet.id == curSelectMeet.subject || curSelectMeet.meetCreateId == curSelectMeet.subject))) &&
+                                <span className='meet-time'>{curSelectMeet.timeLength}</span>
+                            }
+                        </div>
                     </div>
-                    <div className='title-time'>
-                        <i className='icon-time'></i>
-                        {curSelectMeet.meetAttr == 'MEET_RESERVE' ?
-                        <span className='meet-time'>{curSelectMeet.timeBegin}</span>
-                        :
-                        !((curSelectMeet.meetCreateId == 'default') || ((curSelectMeet.meetId == curSelectMeet.meetName || curSelectMeet.meetCreateId == curSelectMeet.meetName))) &&
-                        <span className='meet-time'>{curSelectMeet.timeLength}</span>
-                        }
-                    </div>
+                    {curSelectMeet.attendees && curSelectMeet.attendees.length < 25 && <BigDesk curMeet={curSelectMeet} />}
+                    {curSelectMeet.attendees && curSelectMeet.attendees.length >= 25 && <BigPanel curMeet={curSelectMeet} />}
                 </div>
-                {curSelectMeet.meetMem &&curSelectMeet.meetMem.length < 25 && <BigDesk curMeet={curSelectMeet}/>}
-                {curSelectMeet.meetMem && curSelectMeet.meetMem.length >= 25 && <BigPanel curMeet={curSelectMeet}/>}
-            </div>
-            :''
+                : ''
         );
     }
 }

@@ -19,7 +19,7 @@ function GroupNestedTable(props) {
                 <p className="collasp-info">共发送{record.calleds.length}人(应答{record.succNum}人，未应答{record.failNum}人)</p>
                 {
                     record.groupRecords && record.groupRecords.map((item, index) => {
-                        return (<span className={`rec-mem over-ellipsis ${item.notifyResult == 200 ? '' : 'fail-mem'}`} key={`recs-${index}`}>{item.memName}</span>)
+                        return (<span className={`rec-mem over-ellipsis ${item.notifyResult == 200 ? '' : 'fail-mem'}`} key={`recs-${index}`}>{item.name}</span>)
                     })
                 }
 
@@ -47,7 +47,7 @@ function GroupNestedTable(props) {
         confirm({
             title: '是否对失败成员重新发起选呼？',
             content: '',
-            
+
             onCancel() {
                 console.log("取消重新选呼");
             },
@@ -73,17 +73,17 @@ function GroupNestedTable(props) {
                 }
             }
         })
-        if(failList.length == 0){
+        if (failList.length == 0) {
             message.error("当前没有失败成员！")
-        }else{
-            
-            dispatchManager.dispatcher.calls.selectCall(failList,'','','',(data)=>{
-                if(data.code == 0){
+        } else {
+
+            dispatchManager.dispatcher.calls.selectCall(failList, '', '', '', (data) => {
+                if (data.code == 0) {
                     props.setCurMeetId(data)
                 }
             })
         }
-        
+
     }
 
     const columns = [

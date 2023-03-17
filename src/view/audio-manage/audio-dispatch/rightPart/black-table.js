@@ -4,17 +4,17 @@
  * @Date: 2020-07-03 18:20:16
  * @version: V0.0.0.1
  * @LastEditTime: 2021-04-02 11:23:55
- */ 
+ */
 import React, { Component } from "react";
 import { Button, Table, message } from "antd";
-import {connect} from 'react-redux';
-import {setBlackListData} from '../../../../reducer/callRecord-handle-reduce';
+import { connect } from 'react-redux';
+import { setBlackListData } from '../../../../reducer/callRecord-handle-reduce';
 import { apis } from "../../../../util/apis";
 
 
 @connect(
-    state=> state.callRecordHandle,
-    {setBlackListData}
+    state => state.callRecordHandle,
+    { setBlackListData }
 )
 class BlackTable extends Component {
     constructor(props) {
@@ -25,10 +25,10 @@ class BlackTable extends Component {
     /**
      * 删除
      */
-    onDelete = async (e,record) => {
-        let param = {id:record.id};
+    onDelete = async (e, record) => {
+        let param = { id: record.id };
         let data = await apis.disp.delBlack(param);
-        if(data.code == 0){
+        if (data.code == 0) {
             message.success("删除成功");
             this.props.loadBlackList();
         }
@@ -40,31 +40,31 @@ class BlackTable extends Component {
 
 
     render() {
-        let {blackListData} = this.props
+        let { blackListData } = this.props
         const columns = [
             {
-                title: "memName",
-                dataIndex: "memName",
-                key: "memName",
-                width:'40%',
-                ellipsis:true
+                title: "name",
+                dataIndex: "name",
+                key: "name",
+                width: '40%',
+                ellipsis: true
             },
             {
                 title: "号码",
                 dataIndex: "hideTel",
                 key: "hideTel",
-                width:'40%',
-                
+                width: '40%',
+
             },
             {
                 title: "操作",
                 dataIndex: "operate",
                 key: "operate",
-                width:'30%',
+                width: '30%',
                 align: "right",
                 render: (text, record) => {
                     return (
-                        <span className='black-delete' onClick={e => this.onDelete(e,record)}>
+                        <span className='black-delete' onClick={e => this.onDelete(e, record)}>
                             <i className="icon-delete"></i>
                             <span className='delete-span'>删除</span>
                         </span>
@@ -73,14 +73,14 @@ class BlackTable extends Component {
             }
         ];
         return (
-            
-        <Table
-            columns={columns}
-            showHeader={false}
-            pagination={false}
-            dataSource={blackListData}
-            className="black-table"
-        />
+
+            <Table
+                columns={columns}
+                showHeader={false}
+                pagination={false}
+                dataSource={blackListData}
+                className="black-table"
+            />
         );
     }
 }

@@ -21,6 +21,9 @@ import { Button, message } from "antd";
 import AddMeetModal from "./add-meet-modal";
 import meetManager from "../../../../util/meet-manager";
 import { fillMeetDetailList } from "../../../../util/meet-method";
+import { meetapis } from "../../../../api/meetapis";
+import store from "../../../../store";
+import moment from "moment";
 
 @connect((state) => state.audioHandle, {
   setMemTelMapCache,
@@ -36,7 +39,8 @@ class MeetNav extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // addMeetVisible: false
+      // addMeetVisible: false，
+      meetlist: []
     };
   }
 
@@ -49,8 +53,8 @@ class MeetNav extends Component {
           item.members = uniqueArr(item.members);
           if (item.members.length > 0) {
             item.members.map((mem) => {
-              mem.memName =
-                (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].memName) ||
+              mem.name =
+                (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].name) ||
                 mem.tel;
               mem.deptName =
                 (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].deptName) ||
@@ -60,7 +64,7 @@ class MeetNav extends Component {
               }
             });
           }
-          item.meetMem = item.members || [];
+          item.attendees = item.members || [];
           if (item.meetCreateId == "default") {
             item.meetSymbol = "main";
             item.isSetMain = 1;
@@ -81,19 +85,19 @@ class MeetNav extends Component {
         let res = data.data;
         meetDetailList.length > 0 &&
           meetDetailList.map((item) => {
-            let resMeetInfoArray = res[item.meetId];
-            if (item.meetId && resMeetInfoArray.length > 0) {
-              if (item.meetId == resMeetInfoArray[0].meetId) {
+            let resMeetInfoArray = res[item.id];
+            if (item.id && resMeetInfoArray.length > 0) {
+              if (item.id == resMeetInfoArray[0].id) {
                 resMeetInfoArray.forEach((element) => {
                   //要查 当前号码在 meetList对应的meetMem里边吗？ 在：修改状态，不在push进去
                   let findMeetMember = false;
                   let mem = {
                     tel: element.tel,
                   };
-                  item.meetMem = item.meetMem || [];
-                  item.meetMem &&
-                    item.meetMem.length > 0 &&
-                    item.meetMem.map((member, i) => {
+                  item.attendees = item.attendees || [];
+                  item.attendees &&
+                    item.attendees.length > 0 &&
+                    item.attendees.map((member, i) => {
                       if (member.tel == element.tel) {
                         findMeetMember = true;
                         member.status = element.status;
@@ -102,19 +106,19 @@ class MeetNav extends Component {
                     });
                   if (!findMeetMember) {
                     let param = {
-                      meetId: element.meetId,
+                      id: element.id,
                       status: element.status,
                       tel: element.tel,
-                      memName:
+                      name:
                         (memTelMapCache[element.tel] &&
-                          memTelMapCache[element.tel].memName) ||
+                          memTelMapCache[element.tel].name) ||
                         element.tel,
                       deptName:
                         (memTelMapCache[element.tel] &&
                           memTelMapCache[element.tel].deptName) ||
                         "",
                     };
-                    item.meetMem.push(param);
+                    item.attendees.push(param);
                   }
                 });
               }
@@ -142,22 +146,26 @@ class MeetNav extends Component {
   /**
    * 会议列表点击
    */
-  meetListClick = (listItem) => {
+  meetListClick = async (listItem) => {
     let { meetDetailList } = this.props;
+    const { id } = listItem;
+    let res = await meetapis.meetManagePrefix.getMeetInfo({ conferenceId: id })
+    console.log(res);
     meetDetailList.map((item, index) => {
-      if (item.meetId == listItem.meetId) {
+      if (item.id == listItem.id) {
         item.isSetMain = 1;
       } else {
         item.isSetMain = 2;
       }
     });
     listItem.isSetMain = 1;
+    listItem.attendees = res.data.attendees || [];
     fillMeetDetailList(meetDetailList, listItem);
   };
   setMainMeet = (listItem) => {
     let { meetDetailList } = this.props;
     meetDetailList.map((item, index) => {
-      if (item.meetId == listItem.meetId) {
+      if (item.id == listItem.id) {
         item.meetSymbol = "main";
       } else {
         item.meetSymbol = "";
@@ -167,74 +175,90 @@ class MeetNav extends Component {
     fillMeetDetailList(meetDetailList, listItem);
   };
   componentWillMount() {
+    this.getMeetList();
     // this.loadAllMeetList();
   }
+  getMeetList = async () => {
+    let res = await meetapis.meetManagePrefix.reservedMeets();
+    console.log(res, '查询正在召开和待召开的会议列表');
+    let meetDetailList = [...res.data.content];
+    meetDetailList.map((item) => {
 
+      item.timeBegin = moment.utc(item.scheduleStartTime).local().format('YYYY-MM-DD HH:mm:ss');
+
+    });
+    console.log(meetDetailList);
+    store.dispatch(setMeetDetailList([...meetDetailList]));
+    this.setState({
+      meetlist: meetDetailList
+    }, () => {
+
+    })
+    try {
+      this.meetListClick(meetDetailList[0])
+
+    } catch (error) {
+      console.log(error);
+    }
+    // this.initListMeetsRecord(res.data.content);
+
+  }
   render() {
+    const { meetlist } = this.state;
     let { allMeetList, meetDetailList, curMeet, addMeetVisible, editRecord } =
       this.props;
-    const meetDetailList1 = [
-      {
-        meetId: "11",
-        meetAttr: 11,
-        meetName: 11,
-        meetMem: [],
-        meetSymbol: "main",
-        isSetMain: 1,
-      },
-    ];
+    console.log(meetDetailList);
     return (
       <div className="meet-wrap">
         <SearchBox />
+        <button onClick={this.getMeetList}>好好</button>
         <ul>
-          {meetDetailList &&
-            meetDetailList.map((item, index) => {
-              if (item.meetId.indexOf("none") < 0) {
-                return (
-                  <li
-                    key={`meet-${index}`}
-                    className={`${
-                      curMeet.meetId == item.meetId ? "meet-sel" : ""
+          {meetlist &&
+            meetlist.map((item, index) => {
+
+              return (
+                <li
+                  key={`meet-${index}`}
+                  className={`${curMeet.id == item.id ? "meet-sel" : ""
                     }`}
-                    onClick={() => this.meetListClick(item)}
-                  >
-                    <i
-                      className={`${
-                        item.meetAttr == "MEET_RESERVE"
-                          ? "icon-prevMeet"
-                          : "icon-meet"
+                  onClick={() => this.meetListClick(item)}
+                >
+                  <i
+                    className={`${!item.active
+                      ? "icon-prevMeet"
+                      : "icon-meet"
                       }`}
-                    ></i>
-                    <span className="meet-name over-ellipsis">
-                      {item.meetName || item.meetId}
-                    </span>
-                    <span className="meet-num">
-                      {item.meetAttr == "MEET_RESERVE"
-                        ? "(预约" +
-                          (item.meetMem && item.meetMem.length) +
-                          "人)"
-                        : "(" +
-                          ((item.meetMem && item.meetMem.length) || 0) +
-                          "人)"}
-                    </span>
-                    {item.meetSymbol == "main" && (
-                      <span className="meet-symbol">主会场</span>
+                  ></i>
+                  <span className="meet-name over-ellipsis">
+                    {item.subject || item.id}
+                  </span>
+                  <span className="meet-num">
+                    {!item.active
+                      ? "(预约" +
+                      (item.attendees && item.attendees.length) +
+                      "人)"
+                      : "(" +
+                      ((item.attendees && item.attendees.length) || 0) +
+                      "人)"}
+                  </span>
+                  {item.meetSymbol == "main" && (
+                    <span className="meet-symbol">主会场</span>
+                  )}
+                  {item.isSetMain == 1 &&
+                    item.meetSymbol != "main" &&
+                    item.conferenceTimeType != "EDIT_CONFERENCE" && (
+                      <span
+                        className="main-meet"
+                        title="设置主会场"
+                        onClick={() => this.setMainMeet(item)}
+                      >
+                        <i className="icon-mainMeet"></i>
+                        <span className="main-meet-span">主会场</span>
+                      </span>
                     )}
-                    {item.isSetMain == 1 &&
-                      item.meetSymbol != "main" &&
-                      item.meetAttr != "MEET_RESERVE" && (
-                        <span
-                          className="main-meet"
-                          title="设置主会场"
-                          onClick={() => this.setMainMeet(item)}
-                        >
-                          <i className="icon-mainMeet"></i>
-                          <span className="main-meet-span">主会场</span>
-                        </span>
-                      )}
-                  </li>
-                );
-              }
+                </li>
+              );
+
             })}
         </ul>
         <Button

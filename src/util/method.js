@@ -9,7 +9,7 @@ import { singalBtnName, stsConst } from '../config/constants';
 import { apis } from './apis'
 import $ from 'jquery'
 import store from '../store';
-import { setRealMemListLen, setMemList, setGroupList, setGroupMemAll, setIsCheckAll, setCurSeleceMem, setGroupHasNextPage, setCoreMemAll, setCurSelectGroup, setAudioList,setMemMapCache } from '../reducer/audio-handle-reducer';
+import { setRealMemListLen, setMemList, setGroupList, setGroupMemAll, setIsCheckAll, setCurSeleceMem, setGroupHasNextPage, setCoreMemAll, setCurSelectGroup, setAudioList, setMemMapCache } from '../reducer/audio-handle-reducer';
 import { setRecordListData, setRecordAllData, setCurSelectItem, setCallInMissData, setCallInMissList, setCurSelectMissItem } from '../reducer/callRecord-handle-reduce';
 import timeUtil from './time-util'
 
@@ -65,15 +65,15 @@ export function getMemTypeByTel(tel) {
 /**
  * 隐藏手机号码中间4位
  */
-export function hideTel(tel){
+export function hideTel(tel) {
     let { configData } = store.getState().loading;
-    if(JSON.stringify(configData) !== '{}' && configData.set["disp.set.hide.mobile"] == "true"){
+    if (JSON.stringify(configData) !== '{}' && configData.set["disp.set.hide.mobile"] == "true") {
         let data = getMemTypeByTel(tel);
-        if(data && data.telType == 'memMobile'){
-            tel = tel.substring(0, 3)+"****"+tel.substr(tel.length-4);
+        if (data && data.telType == 'memMobile') {
+            tel = tel.substring(0, 3) + "****" + tel.substr(tel.length - 4);
         }
         return tel
-    }else{
+    } else {
         return tel
     }
 }
@@ -89,7 +89,7 @@ export function getBtnEnable(name, telStatus) {
             if (telStatus != stsConst.IDLE && telStatus != sessionStorage.getItem('defaultTelStatus')) return false;
             break;
         }
-        case singalBtnName.HUNGUP: { 
+        case singalBtnName.HUNGUP: {
             if (telStatus == stsConst.IDLE || telStatus == stsConst.OFFLINE || telStatus == sessionStorage.getItem('defaultTelStatus') || (telStatus.indexOf("monitor") >= 0 && telStatus != stsConst.MONITOR)) return false;
             break;
         }
@@ -172,27 +172,27 @@ export function setCurMemList(memMapCache, type) {
     let memList = store.getState().audioHandle.memList;
     memList.map((item) => {
         if (item.id.toString().indexOf('none') >= 0) return;
-        if (type == 'memName') {
+        if (type == 'name') {
             if (item.sourceType && item.sourceType == 'group') {
                 // 群组数据
-                item.memName = (memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].memName) ) ? memMapCache[item.orgMemId].memName : (item.memName || '')
+                item.name = (memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].name)) ? memMapCache[item.orgMemId].name : (item.name || '')
             } else {
                 // 通讯录数据
-                item.memName = (memMapCache[item.id] && isNotNull(memMapCache[item.id].memName) ) ? memMapCache[item.id].memName : (item.memName || '')
+                item.name = (memMapCache[item.id] && isNotNull(memMapCache[item.id].name)) ? memMapCache[item.id].name : (item.name || '')
             }
         } else if (type == 'deptName') {
             if (item.sourceType && item.sourceType == 'group') {
                 // 群组数据
                 let deptName = (memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].deptName)) ? memMapCache[item.orgMemId].deptName : '';
-                item.deptName = getDeptName(deptName,item.dutyName);
+                item.deptName = getDeptName(deptName, item.dutyName);
 
                 item.devCodeZfy = ((memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].devCodeZfy)) ? memMapCache[item.orgMemId].devCodeZfy : '');
                 item.devCodeJx = ((memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].devCodeJx)) ? memMapCache[item.orgMemId].devCodeJx : '');
                 item.devCodeJk = ((memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].devCodeJk)) ? memMapCache[item.orgMemId].devCodeJk : '');
             } else {
                 // 通讯录数据
-                let deptName = (memMapCache[item.id] && isNotNull(memMapCache[item.id].deptName)) ? memMapCache[item.id].deptName : '' ;
-                item.deptName = getDeptName(deptName,item.dutyName);
+                let deptName = (memMapCache[item.id] && isNotNull(memMapCache[item.id].deptName)) ? memMapCache[item.id].deptName : '';
+                item.deptName = getDeptName(deptName, item.dutyName);
             }
         }
     })
@@ -204,7 +204,7 @@ export function fillMem() {
     let memList = store.getState().audioHandle.memList;
     if (memList.length < 20) {
         for (var i = memList.length; i < 20; i++) {
-            memList.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', memName: "", deptName: '', memTel: '', memType: '', memMobile: '', })
+            memList.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', name: "", deptName: '', memTel: '', memType: '', memMobile: '', })
         }
     }
     store.dispatch(setMemList([...memList]));
@@ -250,11 +250,11 @@ export const loadGroupMember = async (id, currentPage, temp, orgMemId) => {
         tempMemList.map((temps) => {
             temps.isCheck = false;
             temps.onSel = false;
-            if(orgMemId){
+            if (orgMemId) {
                 if (temps.orgMemId == orgMemId) {
                     temps.onSel = true;
                 }
-            }else{
+            } else {
                 if (temps.orgMemId == curSelectMem.orgMemId) {
                     temps.onSel = true
                 }
@@ -275,7 +275,7 @@ export const loadGroupMember = async (id, currentPage, temp, orgMemId) => {
         })
         if (tempMemList.length < 20) {
             for (var i = tempMemList.length; i < 20; i++) {
-                tempMemList.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', memName: "", deptName: '', memTel: '', memType: '', memMobile: '', })
+                tempMemList.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', name: "", deptName: '', memTel: '', memType: '', memMobile: '', })
             }
         }
         store.dispatch(setCurSelectGroup(tempItem))
@@ -288,22 +288,22 @@ export const loadGroupMember = async (id, currentPage, temp, orgMemId) => {
             item.isDel = false;
             item.isCheck = false;
             let deptName = ((memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].deptName)) ? memMapCache[item.orgMemId].deptName : '');
-            item.deptName = getDeptName(deptName,item.dutyName);
+            item.deptName = getDeptName(deptName, item.dutyName);
             item.sourceType = 'group';
             item.devCodeZfy = ((memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].devCodeZfy)) ? memMapCache[item.orgMemId].devCodeZfy : '');
             item.devCodeJx = ((memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].devCodeJx)) ? memMapCache[item.orgMemId].devCodeJx : '');
             item.devCodeJk = ((memMapCache[item.orgMemId] && isNotNull(memMapCache[item.orgMemId].devCodeJk)) ? memMapCache[item.orgMemId].devCodeJk : '');
 
-            if(orgMemId){
+            if (orgMemId) {
                 if (item.orgMemId == orgMemId) {
                     item.onSel = true;
                 }
-            }else{
+            } else {
                 if (item.orgMemId == curSelectMem.orgMemId) {
                     item.onSel = true
                 }
             }
-            
+
             if (isCheckAll && checkedList.length < configData.set["disp.set.multSelect.max"]) {
                 // 全选
                 item.isCheck = true;
@@ -315,7 +315,7 @@ export const loadGroupMember = async (id, currentPage, temp, orgMemId) => {
         if (currentPage == 1) {
             // 第一页
             if (isShowEdit) {
-                data.list.unshift({ isDel: false, isCheck: false, id: 'mem-add', centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', memName: "", deptName: '', memTel: '', memType: '', memMobile: '', })
+                data.list.unshift({ isDel: false, isCheck: false, id: 'mem-add', centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', name: "", deptName: '', memTel: '', memType: '', memMobile: '', })
                 store.dispatch(setMemList([...data.list]));
                 fillMem()
             } else if (isShowCheck) {
@@ -341,7 +341,7 @@ export const loadGroupMember = async (id, currentPage, temp, orgMemId) => {
             } else {
                 // 填充fillLength个
                 for (var i = 0; i < fillLength; i++) {
-                    data.list.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', memName: "", deptName: '', memTel: '', memType: '', memMobile: '', })
+                    data.list.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', name: "", deptName: '', memTel: '', memType: '', memMobile: '', })
                 }
             }
             let list = [...memList, ...data.list];
@@ -352,7 +352,7 @@ export const loadGroupMember = async (id, currentPage, temp, orgMemId) => {
                         list.splice(i, 1);
                     }
                 })
-                list.unshift({ isDel: false, isCheck: false, id: 'mem-add', centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', memName: "", deptName: '', memTel: '', memType: '', memMobile: '', })
+                list.unshift({ isDel: false, isCheck: false, id: 'mem-add', centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', name: "", deptName: '', memTel: '', memType: '', memMobile: '', })
                 if (list[list.length - 1].id.toString().indexOf('none') > -1) {
                     list.splice(list.length - 1, 1);
                 }
@@ -391,7 +391,7 @@ export const loadOrgMember = async (deptId, orgMemId, currentPage) => {
             // let dutyName = (item.dutyName ? '-' + item.dutyName : '');
             // item.deptName = item.deptName + dutyName;
 
-            item.deptName = getDeptName(item.deptName,item.dutyName)
+            item.deptName = getDeptName(item.deptName, item.dutyName)
 
             if (orgMemId) {
                 if (item.orgMemId == orgMemId) {
@@ -465,7 +465,7 @@ export const loadOrgMember = async (deptId, orgMemId, currentPage) => {
         } else {
             // 填充fillLength个
             for (var i = 0; i < fillLength; i++) {
-                data.list.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', memName: "", deptName: '', memTel: '', memType: '', memMobile: '', })
+                data.list.push({ isDel: false, isCheck: false, id: 'none-' + i, centerId: '', onSel: false, groupId: '', orgMemId: '', memLevel: '', centerTel: '', groupName: '', name: "", deptName: '', memTel: '', memType: '', memMobile: '', })
             }
             if (data.list.length > 0) {
                 data.list.map((item, index) => {
@@ -506,7 +506,7 @@ export const loadCallRecord = async (params, update) => {
     let data = await apis.disp.queryCallRecord(params);
     data && data.list.map((item) => {
         if (JSON.stringify(memTelMapCache) != '{}') {
-            item.memName = memTelMapCache[item.tel] && memTelMapCache[item.tel].memName;
+            item.name = memTelMapCache[item.tel] && memTelMapCache[item.tel].name;
         }
         if (item.isCallInMiss !== 1 && item.tmAnswerT) {
             // 不是呼入未接&接了，计算通话时长
@@ -545,7 +545,7 @@ export const loadCallInMiss = async (param, update) => {
     let data = await apis.disp.queryCallInMiss(param);
     data && data.list.map((item) => {
         if (JSON.stringify(memTelMapCache) != '{}') {
-            item.memName = memTelMapCache[item.tel] && memTelMapCache[item.tel].memName;
+            item.name = memTelMapCache[item.tel] && memTelMapCache[item.tel].name;
         }
     })
     if (callInMissList.length > 0) {
@@ -562,7 +562,7 @@ export const loadCallInMiss = async (param, update) => {
     store.dispatch(setCallInMissData(data));
 }
 
-export const loadAudioList = async()=>{
+export const loadAudioList = async () => {
     let data = await apis.disp.listSerRecordNotify();
     data.list.forEach(element => {
         if (element.callLength) {
@@ -597,8 +597,8 @@ export const formatGroupRecord = (data, memTelMapCache) => {
         item.tmNotifys = item.tmNotify.substring(0, 4) + "/" + item.tmNotify.substring(4, 6) + "/" + item.tmNotify.substring(6, 8) + " " + item.tmNotify.substring(8, 10) + ":" + item.tmNotify.substring(10, 12)
         if (item.calleds.length > 0) {
             item.calleds.forEach((cal) => {
-                if (memTelMapCache[cal] && memTelMapCache[cal].memName != undefined) {
-                    item.memNames += memTelMapCache[cal].memName + "、"
+                if (memTelMapCache[cal] && memTelMapCache[cal].name != undefined) {
+                    item.memNames += memTelMapCache[cal].name + "、"
                 } else {
                     item.memNames = cal + "、"
                 }
@@ -608,9 +608,9 @@ export const formatGroupRecord = (data, memTelMapCache) => {
         if (item.groupRecords.length > 0) {
             item.groupRecords.forEach((notify) => {
                 if (memTelMapCache[notify.called]) {
-                    notify.memName = memTelMapCache[notify.called].memName
+                    notify.name = memTelMapCache[notify.called].name
                 } else {
-                    notify.memName = notify.called
+                    notify.name = notify.called
                 }
                 if (notify.notifyResult == 200) {
                     item.succNum = item.succNum + 1;
@@ -631,7 +631,7 @@ export const makeTempGroup = (groupRecords) => {
     let groupName = [];
     let tempMemList = [];
     groupRecords.map((item) => {
-        groupName.push(item.memName || item.called);
+        groupName.push(item.name || item.called);
         tempMemList.push(memTelMapCache[item.called]);
     })
     let tempItem = {
@@ -670,9 +670,9 @@ export const uniqueArr = (arr) => {
  * 判断不为空且不等于 undefined
  */
 export const isNotNull = (data) => {
-    if(data && data != undefined && data != '' && data != null){
+    if (data && data != undefined && data != '' && data != null) {
         return true
-    }else{
+    } else {
         return false
     }
 }
@@ -681,10 +681,10 @@ export const isNotNull = (data) => {
  * 1. 如果没有deptName属性 不要 - 没有
  * 
  */
-export const getDeptName = (deptName,dutyName) => {
+export const getDeptName = (deptName, dutyName) => {
     let opts = '';
     let realDeptName = '';
-    if(deptName && dutyName){
+    if (deptName && dutyName) {
         opts = '-';
     }
     realDeptName = deptName + opts + dutyName;
