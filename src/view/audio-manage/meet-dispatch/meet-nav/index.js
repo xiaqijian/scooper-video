@@ -150,33 +150,61 @@ class MeetNav extends Component {
     let { meetDetailList } = this.props;
     const { id } = listItem;
     let res = await meetapis.meetManagePrefix.getMeetInfo({ conferenceId: id })
-    let getMeetingDetail = await meetapis.meetManagePrefix.getMeetingDetail({ conferenceId: id })
-    console.log(res, getMeetingDetail);
-    let listParticipantsres = await meetapis.meetManagePrefix.listParticipants({ conferenceId: id })
-    console.log(listParticipantsres);
-    meetDetailList.map((item, index) => {
-      if (item.id == listItem.id) {
-        item.isSetMain = 1;
-      } else {
-        item.isSetMain = 2;
-      }
-    });
-    listItem.isSetMain = 1;
-    let lists = []
-    res.data.attendees.map((item) => {
-      listParticipantsres.content.map(items => {
-        if (item.uri === items.generalParam.uri) {
-          lists.push({
-            ...item,
-            ...items,
-          })
+    if (listItem.active) {
+      let getMeetingDetail = await meetapis.meetManagePrefix.getMeetingDetail({ conferenceId: id })
+      console.log(res, getMeetingDetail);
+      let listParticipantsres = await meetapis.meetManagePrefix.listParticipants({ conferenceId: id })
+      console.log(listParticipantsres);
+      meetDetailList.map((item, index) => {
+        if (item.id == listItem.id) {
+          item.isSetMain = 1;
+        } else {
+          item.isSetMain = 2;
         }
+      });
+      listItem.isSetMain = 1;
+      let lists = []
+      res.data.attendees.map((item) => {
+        listParticipantsres.content.map(items => {
+          if (item.uri === items.generalParam.uri) {
+            lists.push({
+              ...item,
+              ...items,
+            })
+          }
+        })
       })
-    })
-    listItem.attendees = lists || [];
-    listItem.onlinedata = getMeetingDetail;
-    listItem.content = listParticipantsres.content;
-    fillMeetDetailList(meetDetailList, listItem);
+      listItem.attendees = lists || [];
+      listItem.onlinedata = getMeetingDetail;
+      listItem.content = listParticipantsres.content;
+      fillMeetDetailList(meetDetailList, listItem);
+    } else {
+      meetDetailList.map((item, index) => {
+        if (item.id == listItem.id) {
+          item.isSetMain = 1;
+        } else {
+          item.isSetMain = 2;
+        }
+      });
+      listItem.isSetMain = 1;
+      let lists = []
+      // res.data.attendees.map((item) => {
+      //   listParticipantsres.content.map(items => {
+      //     if (item.uri === items.generalParam.uri) {
+      //       lists.push({
+      //         ...item,
+      //         ...items,
+      //       })
+      //     }
+      //   })
+      // })
+      listItem.attendees = res.data.attendees || [];
+      // listItem.onlinedata = getMeetingDetail;
+      // listItem.content = listParticipantsres.content;
+      fillMeetDetailList(meetDetailList, listItem);
+    }
+
+
   };
   setMainMeet = (listItem) => {
     let { meetDetailList } = this.props;
@@ -227,10 +255,10 @@ class MeetNav extends Component {
     return (
       <div className="meet-wrap">
         <SearchBox />
-        <button onClick={this.getMeetList}>好好</button>
+        {/* <button onClick={this.getMeetList}>好好</button> */}
         <ul>
-          {meetlist &&
-            meetlist.map((item, index) => {
+          {meetDetailList &&
+            meetDetailList.map((item, index) => {
 
               return (
                 <li

@@ -15,6 +15,7 @@ import MeetOper from "../meet-desk/meet-oper";
 import MeetSearch from "./meet-search";
 import AddMember from "../../../../component/add-member";
 import meetManager from "../../../../util/meet-manager";
+import { getMeetDetail } from "../../../../util/meet-method";
 
 @connect(
     state => state.meetHandle,
@@ -99,6 +100,7 @@ class BigPanel extends Component {
         this.setState({
             memModalVisible: false
         })
+        getMeetDetail(curMeet)
     };
     /**
     * 编辑预约会议

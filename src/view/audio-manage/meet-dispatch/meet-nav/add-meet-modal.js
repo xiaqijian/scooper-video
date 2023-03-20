@@ -11,6 +11,7 @@ import AddMember from "../../../../component/add-member";
 import { setMemTelMapCache } from '../../../../reducer/audio-handle-reducer'
 import { setAllMeetList, setMeetDetailList, setCurMeet, setEditRecord } from '../../../../reducer/meet-handle-reduce';
 import meetManager from "../../../../util/meet-manager";
+import { loadMeetList } from "../../../../util/meet-method";
 import { meetapis } from "../../../../api/meetapis";
 import { connect } from "react-redux";
 import moment from 'moment'
@@ -270,6 +271,7 @@ class AddMeetModal extends Component {
         })
         console.log(res);
         resultCallback(res)
+        loadMeetList()
         // meetManager.meetsObj.createMeetDetail(params.subject, '', resultCallback, params.accessCode, params.conferenceTimeType,
         //     params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
     }
@@ -292,11 +294,14 @@ class AddMeetModal extends Component {
      * 确定编辑
      */
     editOk = async (params, resultCallback) => {
+        const { data } = this.props
         console.log(params);
         let res = await meetapis.meetManagePrefix.updateMeet(
             params
         )
+        loadMeetList()
         console.log(res);
+        getMeetDetail(data)
         // let meetMembers = params.meetMembers ? params.meetMembers.join(";") : '';
         // meetManager.meetsObj.editMeet(params.id, params.subject, resultCallback, params.accessCode, params.conferenceTimeType,
         //     params.timeBegin, params.timeEnd, params.chairmanPassword, params.guestPassword, meetMembers)
@@ -343,7 +348,8 @@ class AddMeetModal extends Component {
                         {getFieldDecorator("subject", {
                             initialValue: data.subject || data.name || data.id || "",
                             rules: [
-                                { required: true, message: "请输入会议名称!" }
+                                { required: true, message: "请输入会议名称!" },
+                                { max: 64, message: "最大64位" }
                             ]
                         })(<Input autoComplete="off"
                             disabled={(data.id && (data.meetCreated == 'default' || data.id == data.subject || data.meetCreated == data.subject)) ? true : ''} />)}
@@ -379,7 +385,8 @@ class AddMeetModal extends Component {
                         {getFieldDecorator("chairmanPassword", {
                             initialValue: data.chairmanPassword || "",
                             rules: [
-                                { pattern: /^[0-9]*$/, message: "请输入数字" }
+                                { pattern: /^[0-9]*$/, message: "请输入数字" },
+                                { max: 6, message: "最大6位" }
                             ]
                         })(<Input autoComplete="off" />)}
                     </Form.Item>
@@ -387,7 +394,9 @@ class AddMeetModal extends Component {
                         {getFieldDecorator("guestPassword", {
                             initialValue: data.guestPassword || "",
                             rules: [
-                                { pattern: /^[0-9]*$/, message: "请输入数字" }
+                                { pattern: /^[0-9]*$/, message: "请输入数字" },
+                                { max: 6, message: "最大6位" }
+
                             ]
                         })(<Input autoComplete="off" />)}
                     </Form.Item>

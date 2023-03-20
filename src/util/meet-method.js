@@ -9,7 +9,8 @@ import { setCurMeet, setMeetDetailList } from "../reducer/meet-handle-reduce";
 import { uniqueArr } from "./method";
 import store from "../store";
 import dispatchManager from "./dispatch-manager";
-import { meetapis } from '../api/meetapis'
+import { meetapis } from '../api/meetapis';
+import moment from "moment";
 
 export const joinMeet = (tel) => {
   let { meetDetailList } = store.getState().meetHandle;
@@ -49,38 +50,50 @@ export const getMainMeetId = () => {
 export const loadMeetList = async () => {
   // let res = await meetapis.meetManagePrefix.reservedMeets();
   // console.log('查询正在召开和待召开的会议列表', res);
-  let { memTelMapCache } = store.getState().audioHandle;
-  console.log("memTelMapCache", memTelMapCache);
-  window.scooper.meetManager &&
-    window.scooper.meetManager.meetsObj.listMeets((data) => {
-      console.log("memTelMapCache", data);
+  // let { memTelMapCache } = store.getState().audioHandle;
+  // console.log("memTelMapCache", memTelMapCache);
+  // window.scooper.meetManager &&
+  //   window.scooper.meetManager.meetsObj.listMeets((data) => {
+  //     console.log("memTelMapCache", data);
 
-      data.list &&
-        data.list.map((item) => {
-          item.members = uniqueArr(item.members);
-          if (item.members.length > 0) {
-            item.members.map((mem) => {
-              mem.name =
-                (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].name) ||
-                mem.tel;
-              mem.deptName =
-                (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].deptName) ||
-                "";
-              if (mem.level == "chairman") {
-                mem.chair = true;
-              }
-            });
-          }
-          item.attendees = item.members || [];
-          if (item.meetCreateId == "default") {
-            item.meetSymbol = "main";
-            item.isSetMain = 1;
-          }
-        });
-      console.log("memTelMapCache", data.list);
+  //     data.list &&
+  //       data.list.map((item) => {
+  //         item.members = uniqueArr(item.members);
+  //         if (item.members.length > 0) {
+  //           item.members.map((mem) => {
+  //             mem.name =
+  //               (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].name) ||
+  //               mem.tel;
+  //             mem.deptName =
+  //               (memTelMapCache[mem.tel] && memTelMapCache[mem.tel].deptName) ||
+  //               "";
+  //             if (mem.level == "chairman") {
+  //               mem.chair = true;
+  //             }
+  //           });
+  //         }
+  //         item.attendees = item.members || [];
+  //         if (item.meetCreateId == "default") {
+  //           item.meetSymbol = "main";
+  //           item.isSetMain = 1;
+  //         }
+  //       });
+  //     console.log("memTelMapCache", data.list);
 
-      fillMeetDetailList(data.list);
-    });
+  //     fillMeetDetailList(data.list);
+  //   });
+  let res = await meetapis.meetManagePrefix.reservedMeets();
+  console.log(res, '查询正在召开和待召开的会议列表');
+  let meetDetailList = [...res.data.content];
+  meetDetailList.map((item) => {
+
+    item.timeBegin = moment.utc(item.scheduleStartTime).local().format('YYYY-MM-DD HH:mm:ss');
+
+  });
+  console.log(meetDetailList);
+  store.dispatch(setMeetDetailList([...meetDetailList]));
+
+  // fillMeetDetailList(meetDetailList)
 };
 /**
  * 填充会议列表
@@ -121,6 +134,35 @@ export const setMain = (list, curMeet) => {
   let curDom = document.getElementById(id);
   curDom && curDom.scrollIntoView(false);
 };
+// chongxinhuoquxiangqing
+export const getMeetDetail = async (listItem) => {
+  const { id } = listItem;
+  let res = await meetapis.meetManagePrefix.getMeetInfo({ conferenceId: id })
+  if (listItem.active) {
+    let getMeetingDetail = await meetapis.meetManagePrefix.getMeetingDetail({ conferenceId: id })
+    console.log(res, getMeetingDetail);
+    let listParticipantsres = await meetapis.meetManagePrefix.listParticipants({ conferenceId: id })
+    console.log(listParticipantsres);
+    let lists = []
+    res.data.attendees.map((item) => {
+      listParticipantsres.content.map(items => {
+        if (item.uri === items.generalParam.uri) {
+          lists.push({
+            ...item,
+            ...items,
+          })
+        }
+      })
+    })
+    listItem.attendees = lists || [];
+    listItem.onlinedata = getMeetingDetail;
+    listItem.content = listParticipantsres.content;
+    store.dispatch(setCurMeet(listItem));
+  } else {
+    listItem.attendees = res.data.attendees || [];
+    store.dispatch(setCurMeet(listItem));
+  }
+}
 
 /**
  * 会场列表排序  操作员的默认会场 > 其他操作员的默认会场 > 其他

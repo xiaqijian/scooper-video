@@ -21,6 +21,7 @@ import MeetOper from "./meet-oper";
 import MeetDetail from "./meet-detail-modal";
 import AddMember from "../../../../component/add-member";
 import meetManager from "../../../../util/meet-manager";
+import { getMeetDetail } from "../../../../util/meet-method";
 import { meetapis } from "../../../../api/meetapis";
 
 @connect((state) => state.meetHandle, {
@@ -154,6 +155,7 @@ class DeskDetail extends Component {
     let attendees = memData.map((item) => {
       return {
         account: item.memTel,
+        uri: item.memTel,
         name: item.memName,
         organizationName: item.deptName
       }
@@ -205,6 +207,7 @@ class DeskDetail extends Component {
     this.setState({
       memModalVisible: false,
     });
+    getMeetDetail(curMeets)
   };
   /**
    * 编辑预约会议

@@ -9,6 +9,7 @@ import MeetOper from "../meet-desk/meet-oper";
 import AddMember from "../../../../component/add-member";
 import MeetDetail from "../meet-desk/meet-detail-modal";
 import meetManager from "../../../../util/meet-manager";
+import { getMeetDetail } from "../../../../util/meet-method";
 import { meetapis } from "../../../../api/meetapis";
 
 
@@ -76,6 +77,7 @@ class BigDesk extends Component {
         let attendees = memData.map((item) => {
             return {
                 account: item.memTel,
+                uri: item.memTel,
                 name: item.memName,
                 organizationName: item.deptName
             }
@@ -128,6 +130,7 @@ class BigDesk extends Component {
         this.setState({
             addModalVisible: false
         })
+        getMeetDetail(curMeet)
     };
     /**
      * 编辑预约会议
