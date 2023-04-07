@@ -11,7 +11,7 @@ import AddMember from "../../../../component/add-member";
 import { setMemTelMapCache } from '../../../../reducer/audio-handle-reducer'
 import { setAllMeetList, setMeetDetailList, setCurMeet, setEditRecord } from '../../../../reducer/meet-handle-reduce';
 import meetManager from "../../../../util/meet-manager";
-import { loadMeetList } from "../../../../util/meet-method";
+import { loadMeetList, getMeetDetail } from "../../../../util/meet-method";
 import { meetapis } from "../../../../api/meetapis";
 import { connect } from "react-redux";
 import moment from 'moment'

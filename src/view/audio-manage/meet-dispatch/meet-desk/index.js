@@ -33,38 +33,54 @@ class MeetDesk extends Component {
   deskItemClick = async (list) => {
     if (list.id.indexOf("none-") == -1) {
       // this.props.setCurMeet(list)
-      const { id } = list
+      const { id } = list;
+
       let res = await meetapis.meetManagePrefix.getMeetInfo({ conferenceId: id })
-      let getMeetingDetailres = await meetapis.meetManagePrefix.getMeetingDetail({ conferenceId: id })
-      let listParticipantsres = await meetapis.meetManagePrefix.listParticipants({ conferenceId: id })
-      console.log(res, getMeetingDetailres);
-      console.log(listParticipantsres);
-
-      let { meetDetailList } = this.props;
-      meetDetailList.map((item, index) => {
-        if (item.id == list.id) {
-          item.isSetMain = 1;
-        } else {
-          item.isSetMain = 2;
-        }
-      });
-      let lists = []
-      res.data.attendees.map((item) => {
-        listParticipantsres.content.map(items => {
-          if (item.uri === items.generalParam.uri) {
-            lists.push({
-              ...item,
-              ...items,
-            })
+      if (list.active) {
+        let getMeetingDetailres = await meetapis.meetManagePrefix.getMeetingDetail({ conferenceId: id })
+        let listParticipantsres = await meetapis.meetManagePrefix.listParticipants({ conferenceId: id })
+        console.log(res, getMeetingDetailres);
+        console.log(listParticipantsres);
+        let { meetDetailList } = this.props;
+        meetDetailList.map((item, index) => {
+          if (item.id == list.id) {
+            item.isSetMain = 1;
+          } else {
+            item.isSetMain = 2;
           }
+        });
+        let lists = []
+        res.data.attendees.map((item) => {
+          listParticipantsres.content.map(items => {
+            if (item.uri === items.generalParam.uri) {
+              lists.push({
+                ...item,
+                ...items,
+              })
+            }
+          })
         })
-      })
-      list.isSetMain = 1;
-      list.onlinedata = getMeetingDetailres;
-      list.content = listParticipantsres.content;
-      list.attendees = lists;
+        list.isSetMain = 1;
+        list.onlinedata = getMeetingDetailres;
+        list.content = listParticipantsres.content;
+        list.attendees = lists;
 
-      fillMeetDetailList(meetDetailList, list);
+        fillMeetDetailList(meetDetailList, list);
+      } else {
+        let { meetDetailList } = this.props;
+        meetDetailList.map((item, index) => {
+          if (item.id == list.id) {
+            item.isSetMain = 1;
+          } else {
+            item.isSetMain = 2;
+          }
+        });
+        list.isSetMain = 1;
+        list.attendees = res.data.attendees;
+
+        fillMeetDetailList(meetDetailList, list);
+      }
+
     }
   };
   /**

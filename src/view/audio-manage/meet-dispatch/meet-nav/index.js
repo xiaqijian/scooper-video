@@ -150,6 +150,7 @@ class MeetNav extends Component {
     let { meetDetailList } = this.props;
     const { id } = listItem;
     let res = await meetapis.meetManagePrefix.getMeetInfo({ conferenceId: id })
+    console.log(listItem);
     if (listItem.active) {
       let getMeetingDetail = await meetapis.meetManagePrefix.getMeetingDetail({ conferenceId: id })
       console.log(res, getMeetingDetail);

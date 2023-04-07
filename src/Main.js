@@ -14,6 +14,7 @@ import Loadable from "react-loadable";
 import { commonData } from "./config/config";
 import { urlParam, getToken, devMode } from "./config/constants";
 import { getUrlRealParam } from "./util/method.js";
+import { loadMeetList } from "./util/meet-method";
 import {
   changeLoading,
   setConfigData,
@@ -23,6 +24,9 @@ import {
 import { ConfigProvider } from "antd";
 import zhCN from "antd/es/locale/zh_CN";
 import qs from "qs";
+
+let timefunc = null;
+
 
 function Loading(error) {
   if (error) {
@@ -145,9 +149,17 @@ class NavPage extends PureComponent {
       this.props.setNavArr(configArr);
     }
   };
-
+  getAllData = () => {
+    let _this = this;
+    let setIntervaltime = urlParam.setIntervaltime || 3000;
+    clearInterval(timefunc)
+    timefunc = setInterval(() => {
+      loadMeetList()
+    }, setIntervaltime)
+  }
   componentWillMount() {
     this.loadConfig();
+    this.getAllData();
     let token = urlParam.token;
     if (token) {
       sessionStorage.setItem("dispWebToken", token);
@@ -161,7 +173,10 @@ class NavPage extends PureComponent {
       // this.props.history.push('/login');
     }
   }
+  componentWillUnmount() {
+    clearInterval(timefunc)
 
+  }
   render() {
     const url = this.props.match.url;
     let { configData } = this.props;

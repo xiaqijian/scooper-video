@@ -25,6 +25,10 @@ import {
   getTelStatus
 } from "../../../util/method";
 import {
+  getMeetDetail
+} from "../../../util/meet-method";
+
+import {
   meetapis
 } from "../../../api/meetapis";
 
@@ -95,6 +99,7 @@ class MeetOperate extends Component {
       isMute: true
     })
     message.success('全体禁言')
+    getMeetDetail(curMeet)
     // curMeet.attendees.map((item) => {
     //   if (
     //     (item.tel || item.memTel) &&
@@ -119,6 +124,7 @@ class MeetOperate extends Component {
       isMute: false
     })
     message.success('全体发言')
+    getMeetDetail(curMeet)
 
     // curMeet.attendees.map((item) => {
     //   if (
@@ -137,16 +143,29 @@ class MeetOperate extends Component {
   /**
    * 停止录音
    */
-  stopRecord = (curMeet) => {
+  stopRecord = async (curMeet) => {
     // let id = curMeet.id;
     // window.scooper.meetManager.meetsObj.stopRecord(id);
+    let id = curMeet.id;
+    let res = await meetapis.meetOperatePrefix.setMeetOperate({
+      "conferenceId": id,
+      recordOpType: "STOP"
+    })
+    getMeetDetail(curMeet)
+
   };
   /**
    * 开始录音
    */
-  startRecord = (curMeet) => {
+  startRecord = async (curMeet) => {
     // let id = curMeet.id;
     // window.scooper.meetManager.meetsObj.startRecord(id);
+    let res = await meetapis.meetOperatePrefix.setMeetOperate({
+      "conferenceId": id,
+      recordOpType: "START"
+    })
+    getMeetDetail(curMeet)
+
   };
   /**
    * 会议解锁
@@ -161,7 +180,9 @@ class MeetOperate extends Component {
       ...curMeet,
       locked: false
     }
-    this.props.setCurMeet(curMeetobj)
+    // this.props.setCurMeet(curMeetobj)
+    getMeetDetail(curMeet)
+
     // window.scooper.meetManager.meetsObj.lock(id);
   };
   /**
@@ -174,6 +195,7 @@ class MeetOperate extends Component {
       isLock: true
     })
 
+    getMeetDetail(curMeet)
 
     // window.scooper.meetManager.meetsObj.unlock(id);
   };
@@ -186,6 +208,8 @@ class MeetOperate extends Component {
       "conferenceId": id,
       isVoiceActive: false
     })
+    getMeetDetail(curMeet)
+
   };
   /**
    * 会议放音
@@ -196,6 +220,8 @@ class MeetOperate extends Component {
       "conferenceId": id,
       isVoiceActive: true
     })
+    getMeetDetail(curMeet)
+
     // window.scooper.meetManager.meetsObj.startPlayVoice(id);
   };
 
@@ -203,11 +229,8 @@ class MeetOperate extends Component {
     let {
       curMeet
     } = this.props;
-    let meetStatus =
-      window.scooper.dispatchManager &&
-        window.scooper.dispatchManager.accountDetail ?
-        window.scooper.dispatchManager.accountDetail.meetRecord :
-        "";
+    // let meetStatus = curMeet.streamService ? curMeet.streamService.supportRecord : 1;
+    let meetStatus = 1;
     console.log(curMeet);
     return (<div className="meet-operate" >
       <Button className="meet-jy" onClick={() => {
@@ -223,7 +246,7 @@ class MeetOperate extends Component {
         }>
         <i className="icon-fy" > </i>全体发言 </Button>
       {
-        meetStatus == 1 ? (
+        meetStatus ? (
           <Button className="meet-tzly" >
             <i className="icon-ly" > </i>正在录音 </Button>
         ) : //会场录音大开关关闭  ---> 手动录制

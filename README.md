@@ -16,6 +16,29 @@
 选中：curMeet    设置方法：setCurMeet
 
 
+setAllMeetOpLogs
+
 设置token，关键字段：dispWebToken
 
 Loading    changeLoading
+
+<!-- add -->
+streamService {
+    amcRecord: true
+audioRecord: false
+autoRecord: false
+supportLive: false
+supportMinutes: false
+supportRecord: true
+}
+recordOpType
+"START"
+PSUSE
+STOP
+
+设置主持人
+录播停止
+轮询
+日志
+
+setIntervaltime设置定时轮询时间

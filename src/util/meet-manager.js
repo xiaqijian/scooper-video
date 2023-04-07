@@ -15,6 +15,7 @@ import timeUtil from "./time-util";
 import { fillMeetDetailList } from "./meet-method";
 import { uniqueArr } from "./method";
 import { devMode } from "../config/constants";
+import { meetapis } from '../api/meetapis'
 
 let dispatchManager = window.scooper.dispatchManager;
 /**
@@ -288,7 +289,7 @@ class MeetListen {
   /**
    * 添加日志
    */
-  addOpLog = (id, opMsg) => {
+  addOpLog = async (id, opMsg) => {
     let { allMeetOpLogs } = store.getState().meetHandle;
     if (!opMsg) return;
     let time = timeUtil.getTime();
@@ -312,6 +313,11 @@ class MeetListen {
       meetOplogs.logs.unshift(log);
       allMeetOpLogs.unshift(meetOplogs);
     }
+    // let res = await meetapis.meetManagePrefix.getMeetLogs({
+    //   confId,
+    //   startTime,
+    //   endTime,
+    // })
     store.dispatch(setAllMeetOpLogs([...allMeetOpLogs]));
   };
   /**

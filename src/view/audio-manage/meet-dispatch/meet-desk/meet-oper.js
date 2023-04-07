@@ -10,6 +10,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { setMeetDetailList } from "../../../../reducer/meet-handle-reduce";
 import { meetapis } from '../../../../api/meetapis'
+import { getMeetDetail } from '../../../../util/meet-method'
 
 @connect((state) => state.meetHandle, { setMeetDetailList })
 class MeetOper extends Component {
@@ -60,6 +61,7 @@ class MeetOper extends Component {
       participantId: item.state.participantId,
       isMute: false
     })
+    getMeetDetail(item)
     // if (item && item.id && (item.tel || item.memTel)) {
     //   window.scooper.meetManager.meetsObj.changeMemberLevel(
     //     item.id,
@@ -101,6 +103,7 @@ class MeetOper extends Component {
       conferenceId: item.id,
       ids: [item.state.participantId],
     })
+    getMeetDetail(item)
     // if (item && item.id && (item.tel || item.memTel)) {
     //   window.scooper.meetManager.meetsObj.kickMember(
     //     item.id,
@@ -118,6 +121,7 @@ class MeetOper extends Component {
       participantId: item.state.participantId,
       isOnline: false
     })
+    getMeetDetail(item)
     // if (item && (item.tel || item.memTel)) {
     //   window.scooper.dispatchManager.dispatcher.calls.hungUp(
     //     item.tel || item.memTel
@@ -134,6 +138,7 @@ class MeetOper extends Component {
       participantId: item.state.participantId,
       isOnline: false
     })
+    getMeetDetail(item)
     // let id = meet.id;
     // let tel = mem && (mem.tel || mem.memTel);
     // if (tel && id) {

@@ -35,6 +35,12 @@ export let meetapis = {
       type: "get",
       getResp: true
     },
+    // 查找会议log
+    getMeetLogs: {
+      url: "/meet/getMeetLogs?&username=zhzx&regionCode=340000",
+      type: "get",
+      getResp: true
+    },
     // 创建会议
     create: {
       url: "/meet/create?&username=zhzx&regionCode=340000",
